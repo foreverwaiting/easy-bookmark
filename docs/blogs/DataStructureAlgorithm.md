@@ -12,6 +12,8 @@
 
 ### tree结构
 
+[BFS DFS](algorithm/tree.md)
+
 ### js其他相关
 
 
