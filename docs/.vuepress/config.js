@@ -32,6 +32,10 @@ module.exports = {
                 text: '前端',
                 link: '/front/'
             },
+            {
+                text: '生活',
+                link: '/life/'
+            },
             {   text: 'hexo',
                 link: 'https://foreverwaiting.github.io/'
             }
