@@ -233,4 +233,32 @@ Generator 函数可以不用yield表达式，这时就变成了一个单纯的�
  yield表达式如果用在另一个表达式之中，必须放在圆括号里面。【console.log('Hello' + (yield 123)); // OK】
 四、next 方法的参数
 
+### ES6基础
+
+- [ES6基础](es6/base.md)
+
+### ES6（set，map，symbol）
+
+- [set，map，symbol](es6/setMapSymbol.md)
+
+### promise
+
+- [promise](es6/promise.md)
+
+### ES6数组
+
+- [ES6数组](es6/array.md)
+
+### 数据类型Map
+
+- [数据类型Map](es6/map.md)
+
+### ES6对象
+
+- [ES6对象](es6/obj.md)
+
+### ES6函数
+
+- [ES6函数](es6/function.md)
+
 待续。。。
