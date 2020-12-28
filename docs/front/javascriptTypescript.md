@@ -1016,6 +1016,92 @@ getXXXByXXX 获取的是动态集合，querySelector获取的是静态集合。
 
 简单的说就是，动态就是选出的元素会随文档改变，静态的不会，取出来之后就和文档的改变无关了。
 
+### lodash稀疏数组
+
+Array.from(arrayLike[, mapFn[, thisArg]])
+
+参数：
+arrayLike
+想要转换成数组的伪数组对象或可迭代对象。
+mapFn
+如果指定了该参数，新数组中的每个元素会执行该回调函数。
+thisArg
+可选参数，执行回调函数 mapFn 时 this 对象。
+
+返回值：
+一个新的数组实例。
+
+一、填充数组
+【使用值填充】：
+const result = Array.from({ length }, () => 0); 
+const result = Array(length).fill(0);
+【使用对象填充】：
+const resultA = Array.from({ length }, () => ({}));    每个对象都是独立的
+const resultB = Array(length).fill({});    每个对象都是引用的同一处
+由 Array.from 返回的 resultA 使用不同空对象实例进行初始化。之所以发生这种情况是因为每次调用时，mapFunction，即此处的 () => ({}) 都会返回一个新的对象。
+
+二、序列生成器(指定范围)
+三、Array.from(new Set(array));去重
+
+```js
+let length = 5
+let resultA = Array.from({ length }, () => ({
+    'a': '1',
+    'b': '2',
+}));
+let resultB = Array(5).fill({
+    'a': '1',
+    'b': '2',
+});
+console.log(resultA)
+console.log(resultB)
+console.log(resultA[0] === resultA[1])
+console.log(resultB[0] === resultB[1])
+
+const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+range(1, 10, 2); 
+// [1, 3, 5, 7, 9]
+```
+
+### 节流函数防抖函数
+
+```js
+// 节流函数
+  const throttle = (fn, delay = 500) => {
+    let flag = true;
+    return (...args) => {
+      if (!flag) return;
+      flag = false;
+      setTimeout(() => {
+        fn.apply(this, args);
+        flag = true;
+      }, delay);
+    };
+  };
+
+  // 防抖函数
+  const debounce = (fn, delay) => {
+    let timer = null;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        fn.apply(this, args);
+      }, delay);
+    };
+  };
+```
+
+### 满足 if (a == 1 & a == 2 & a == 3)这个条件
+
+```js
+const a = {
+  i: 1,
+  toString() {
+    return a.i++
+  }
+}
+```
+
 ## 万物皆空之 JavaScript 原型
 
 - [万物皆空之 JavaScript 原型](https://ulivz.com/2016/12/20/javascript-prototype/)
