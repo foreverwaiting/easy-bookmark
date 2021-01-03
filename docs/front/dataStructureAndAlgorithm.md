@@ -1119,3 +1119,138 @@ var maximumSwap = function(num) {
   return arr.join('')
 }
 ```
+
+### 千分位
+
+```js
+const num=1234567899.11
+function toThousands(num){
+	num=num+''
+	let result=''
+	const decimalNum=num.split('.')[1]
+	let intNum=num.split('.')[0]
+	while(intNum.length>3){
+		result=','+intNum.slice(-3)+result
+		intNum=intNum.slice(0,intNum.length-3)
+	}
+ return intNum+result+(decimalNum?'.'+decimalNum:'')
+}
+console.log(toThousands(num))
+```
+
+### 不同路径 Unique Paths
+
+```js
+// 建立M*N的矩阵，第0行第0列元素都是1
+// var uniquePaths = function(m, n) {
+//     if (m === 1 || n === 1) return 1;
+//     let d = [];
+
+//     for (let i=0; i<m;i++) {
+//         for (let j=0; j<n; j++) {
+//             if (i === 0 || j === 0) {
+//                 if (!d[i]) d[i] = [];
+//                 d[i][j] = 1;
+//             } else {
+//                 d[i][j] = d[i-1][j] + d[i][j-1];
+//             }
+//         }
+//     }
+
+//     return d[m-1][n-1];
+// };
+// 二维到一维【滚动数组思想」是一种常见的动态规划优化方法，在我们的题目中已经多次使用到，例如「剑指 Offer 46. 把数字翻译成字符串」、「70. 爬楼梯」等，当我们定义的状态在动态规划的转移方程中只和某几个状态相关的时候，就可以考虑这种优化方法，目的是给空间复杂度「降维」。】
+var uniquePaths = function(m, n) {
+  const dp = new Array(n).fill(1);
+  for(let i = 1; i < m; i++) {
+    for(let j = 1; j < n; j++) {
+      dp[j] = dp[j] + dp[j-1];
+    }
+  }
+  return dp[n-1];
+};
+```
+
+### 不同路径II 
+
+```js
+/**
+ * @param {number[][]} obstacleGrid
+ * @return {number}
+ */
+//  既然是障碍物，说明此路不通，即经过此节点的路径数为0，所以当遇到障碍物时，设置dp[i][r] = 0即可
+var uniquePathsWithObstacles = function(obstacleGrid) {
+    // 行
+    var n = obstacleGrid.length;
+    // 列
+    var m = obstacleGrid[0].length;
+    // 初始化
+    var dp = new Array(n);
+    for(var i = 0;i<n;i++){
+        dp[i] = new Array(m).fill(0);
+    }
+    dp[0][0] = obstacleGrid[0][0] == 0 ? 1 : 0;
+    // 如果起点就是障碍物
+    if(dp[0][0] == 0){
+        return 0 ;
+    }
+    // 第一行
+    for(var j = 1;j < m;j++){
+        if(obstacleGrid[0][j] != 1){
+            dp[0][j] = dp[0][j-1];
+        }
+    }
+    // 第一列
+    for(var r = 1;r < n;r++){
+        if(obstacleGrid[r][0] != 1){
+            dp[r][0] = dp[r-1][0];
+        }
+    }
+    // 动态递推
+    for(var i = 1;i < n;i++){
+        for(var r = 1;r < m;r++){
+            if(obstacleGrid[i][r] != 1){
+                dp[i][r] = dp[i-1][r] +dp[i][r-1];
+            }
+        }
+    }
+    return dp[n-1][m-1];
+};
+// 降维
+var uniquePathsWithObstacles = function(obstacleGrid) {
+    var n = obstacleGrid.length;
+    var m = obstacleGrid[0].length;
+    var result = Array(m).fill(0);
+    result[0] = 1;
+    for(var i = 0;i < n;i++){
+        for(var j = 0;j < m;j++){
+            if(obstacleGrid[i][j] == 1){
+                result[j] = 0;
+            }else if(j > 0){
+                result[j] += result[j-1];
+            }
+        }
+    }
+    return result[m-1];
+};
+```
+
+### 最大盛水问题
+
+```js
+var maxArea = function(height) {
+    if (!height || height.length <= 1) return 0;
+    var left = 0;
+    var right = height.length - 1;
+    var answer = 0;
+    while(left < right){
+        answer = Math.max(answer,((right - left) * (Math.min(height[left], height[right]))))
+        if (height[left] < height[right]) {
+            left ++
+        } else {
+            right --
+        }
+    }
+    return answer
+};
+```

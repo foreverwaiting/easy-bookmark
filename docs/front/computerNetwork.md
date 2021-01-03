@@ -203,6 +203,19 @@ UDP 场景：
 - 大部分应用无需维持连接
 - 需要低功耗
 
+### DNS 解析
+
+首先拿到 URL 后，浏览器会寻找本地的 DNS 缓存，看看是否有对应的 IP 地址，如果缓存中存在那就好了，如果没有，那就得向 DNS Server 发送一个请求，找到你想要的 IP 地址。
+首先他会向你的 ISP(互联网服务提供商) 相关的 DNS servers 发送 DNS query。然后这些 DNS 进行递归查询(recursive)。所谓的递归查询，就是能够直接返回对应的IP地址，而不是其他的 DNS server 地址。
+如果上述的 DNS Servers 没有你要的域名地址，则就会发送迭代查询，即会先从 root nameservers 找起。 即是假如你要查询 www.example.com ，会先从包含根结点的 13 台最高级域名服务器开始。
+接着，以从右向左的方式递进，找到 com.  然后向包含 com 的 TLD(顶级域名) nameservers 发送 DNS 请求。接着找到包含 example 的 DNS server。
+现在进入到了example.com 部分，即是现在正在询问的是权威服务器，该服务器里面包含了你想要的域名信息，也就是拿到了最后的结果 record 。
+递归查询的 DNS Server 接受到这 record 之后, 会将该record 保存一份到本地。 如果下一次你再请求这个 domain 时，我就可以直接返回给你了。由于每条记录都会存在 TLL ，所以 server 每隔一段时间都会发送一次请求，获取新的 record，
+最后，再经由最近的 DNS Server 将该条 record 返回。 同样，你的设备也会存一份该 record 的副本。 之后，就是 TCP 的事了，下面是一张萌萌的简化图：
+到这里，我们大致就可以梳理一下，迭代查询的过程如下：
+
+流程: . => com. => .exampl.com. => www.example.com. => IP adress
+
 
 - [互联网运作](https://www.bilibili.com/video/BV1Rz4y197Jd)
 

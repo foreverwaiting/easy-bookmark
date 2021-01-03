@@ -56,6 +56,8 @@ git push 推送本地库到远程库，将本地库的文件覆盖远程库的�
 
 - [git liaoxuefeng](https://www.liaoxuefeng.com/wiki/896043488029600)
 
+- [git](https://chinese.freecodecamp.org/news/git-internals-objects-branches-create-repo/)
+
 ### Gitlab Github git小乌龟 Jenkins自动化部署
 
 ## npm yarn
