@@ -114,6 +114,10 @@ $ git branch -D branch_name
 容器 docker odps过高 mq消息队列 redis 微服务
 
 
+数组里面有10万个数据，取第一个元素和第10万个元素的时间相差多少
+
+稀松数组 lodash
+
 ## 浏览器相关知识（强缓存、协商缓存、从输入 URL 到呈现页面过程、cookie、session）
 
 ## 编程题(节流防抖、call、bind、new、eventEmitter 、简单的业务实现或者写一个数据处理函数等等)
