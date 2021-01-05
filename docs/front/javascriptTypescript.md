@@ -1355,6 +1355,70 @@ for-of 循环也支持字符串遍历，它将字符串视为一系列 Unicode �
 
 for-of 也支持 Map 和 Set （两者均为 ES6 中新增的类型）对象遍历。
 
+### Object.freeze
+
+```js
+const user = {
+  name: 'Joe',
+  age: 25,
+  pet: {
+    type: 'dog',
+    name: 'Buttercup',
+  },
+};
+
+Object.freeze(user);
+
+user.pet.name = 'Daffodil';
+
+console.log(user.pet.name); //Daffodil
+```
+
+Object.freeze 将会使对象浅冻结，但不会保护深层属性不被修改。在这个例子中，不能对 user.age 进行修改，但是对 user.pet.name 进行修改却没有问题。如果我们觉得需要保护一个对象，避免其“从头到尾”发生改变，则可以递归地应用 Object.freeze 或使用现有的“深度冻结”库。
+
+
+### Promise 解决的顺序与 Promise.all 无关。
+
+```js
+const timer = a => {
+  return new Promise(res =>
+    setTimeout(() => {
+      res(a);
+    }, Math.random() * 100)
+  );
+};
+
+const all = Promise.all([timer('first'), timer('second')]).then(data =>
+  console.log(data)
+);
+// ["first", "second"]
+```
+我们能够可靠地依靠它们按照数组参数中提供的相同顺序返回。
+
+### 展开操作符
+
+```js
+const arr1 = [{ firstName: 'James' }];
+const arr2 = [...arr1];
+arr2[0].firstName = 'Jonah';
+
+console.log(arr1);
+//  [{ firstName: "Jonah" }]
+```
+
+展开操作符会创建数组的浅表副本
+
+### 数组方法绑定
+
+```js
+const map = ['a', 'b', 'c'].map.bind([1, 2, 3]);
+map(el => console.log(el));
+// 123
+```
+当 ['a', 'b', 'c'].map 被调用时，将会调用 this' 值为 '['a'，'b'，'c'] 的 Array.prototype.map。但是当用作 引用 时， Array.prototype.map 的引用。
+
+Function.prototype.bind 会将函数的 this 绑定到第一个参数（在本例中为 [1, 2, 3]），用 this 调用Array.prototype.map 将会导致这些项目被迭代并输出。
+
 
 
 ## 万物皆空之 JavaScript 原型
