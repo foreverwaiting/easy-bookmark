@@ -130,6 +130,67 @@ display: -webkit-box;
 -webkit-line-clamp: 3;overflow: hidden;
 ```
 
+### :focus-within
+
+```css
+/* 关键CSS代码： */
+.bar {
+    background-color: #e3e4e5;
+    color: #888;
+    padding-left: 40px;
+}
+.summary {
+    display: inline-block;
+    padding: 5px 28px;
+    text-indent: -15px;
+    user-select: none;
+    outline: 0;
+    position: relative;
+    z-index: 1;
+}
+.summary::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    margin: 4px 0 0 .5ch;
+    background: url(./arrow-on.svg) no-repeat;
+    background-size: 100% 100%;
+    transition: transform .2s;
+}
+.details:focus-within .summary,
+.summary:hover {
+    background-color: #fff;
+    box-shadow: inset 1px 0 #ddd, inset -1px 0 #ddd;
+}
+.details:focus-within .summary::after {
+    transform: rotate(180deg);
+}
+.box {
+    display: none;
+    position: absolute;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+.details:focus-within .box {
+    display: block;
+}
+```
+```html
+<!-- HTML代码： -->
+<div class="bar">
+    <div class="details">
+        <a href="javascript:" class="summary" tabindex="0">我的消息</a> 
+        <div class="box">
+            <a href="javascript:">我的回答<sup>12</sup></a>
+            <a href="javascript:">我的私信</a>
+            <a href="javascript:">未评价订单<sup>2</sup></a>
+            <a href="javascript:">我的关注</a>
+        </div>
+    </div>
+</div>
+<p>这里放一段文字表明上面的是悬浮效果。</p>
+```
+
 ## CSS揭秘
 
 - [CSS揭秘](https://www.cnblogs.com/forever-xuehf/p/12907577.html)

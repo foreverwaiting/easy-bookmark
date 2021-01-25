@@ -1419,6 +1419,101 @@ map(el => console.log(el));
 
 Function.prototype.bind 会将函数的 this 绑定到第一个参数（在本例中为 [1, 2, 3]），用 this 调用Array.prototype.map 将会导致这些项目被迭代并输出。
 
+## JS Base64编码解码
+
+## Base64解码
+
+（浏览器中）：
+var decodedData = window.atob(encodedData);
+或者（浏览器或js Worker线程中）：
+var decodedData = self.atob(encodedData);
+
+## Base64编码
+语法为（浏览器中）：
+var encodedData = window.btoa(stringToEncode);
+或者（浏览器或js Worker线程中）：
+var encodedData = self.btoa(stringToEncode);
+
+## 中文Base64数据转换会有报错问题
+
+中文先encode转码和decode编码。btoa(unescape(encodeURIComponent(str)))
+
+## 任意文件Base64编码
+
+借助FileReader对象和readAsDataURL方法，我们可以把任意的文件转换为Base64 Data-URI。
+var reader = new FileReader();
+reader.onload = function(e) {
+  // e.target.result就是该文件的完整Base64 Data-URI
+};
+reader.readAsDataURL(file);
+
+# HTML字符的转义和反转义
+
+## 1. 转义document.createTextNode把HTML内容作为文本节点的textContent内容，然后使用普通元素的innerHTML属性返回下就可以了
+
+```js
+let textNode = document.createTextNode('<span>by zhangxinxu</span>');
+let div = document.createElement('div');
+div.append(textNode);
+console.log(div.innerHTML);
+```
+## 2.反转义DOMParser API。
+
+let str = '&lt;span&gt;by zhangxinxu&lt;/span&gt;';
+let doc = new DOMParser().parseFromString(str, 'text/html');
+console.log(doc.documentElement.textContent);
+
+## 3.借助<textarea>元素，这是IE浏览器时代常用的一种方法
+
+let textarea = document.createElement('textarea');
+textarea.innerHTML = '&lt;span&gt;by zhangxinxu&lt;/span&gt;';
+console.log(textarea.childNodes[0].nodeValue);
+
+[DOMParser和XMLSerializer两个API简介](https://www.zhangxinxu.com/wordpress/2019/06/domparser-xmlserializer-api/)
+
+DOMParser可以让HTML字符串解析为DOM树，格式类型包括XML文档，或者HTML文档。
+XMLSerializer方法的作用和DOMParser相反，XMLSerializer可以让DOM树对象序列化为字符串。
+
+```js
+传统的字符串处理代码示意：
+/**
+ * 转义HTML标签的方法
+ * @param  {String} str 需要转义的HTML字符串
+ * @return {String}     转义后的字符串
+ */
+var funEncodeHTML = function (str) {
+    if (typeof str == 'string') {
+        return str.replace(/<|&|>/g, function (matches) {
+            return ({
+                '<': '&lt;',
+                '>': '&gt;',
+                '&': '&amp;'
+            })[matches];
+        });
+    }
+
+    return '';
+};
+/**
+ * 反转义HTML标签的方法
+ * @param  {String} str 需要反转义的字符串
+ * @return {String}     反转义后的字符串
+ */
+var funDecodeHTML = function (str) {
+    if (typeof str == 'string') {
+        return str.replace(/&lt;|&gt;|&amp;/g, function (matches) {
+            return ({
+                '&lt;': '<',
+                '&gt;': '>',
+                '&amp;': '&'
+            })[matches];
+        });
+    }
+
+    return '';
+};
+```
+
 
 
 ## 万物皆空之 JavaScript 原型
