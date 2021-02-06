@@ -1463,11 +1463,13 @@ let str = '&lt;span&gt;by zhangxinxu&lt;/span&gt;';
 let doc = new DOMParser().parseFromString(str, 'text/html');
 console.log(doc.documentElement.textContent);
 
-## 3.借助<textarea>元素，这是IE浏览器时代常用的一种方法
+## 3.借助textarea元素，这是IE浏览器时代常用的一种方法
 
+```js
 let textarea = document.createElement('textarea');
 textarea.innerHTML = '&lt;span&gt;by zhangxinxu&lt;/span&gt;';
 console.log(textarea.childNodes[0].nodeValue);
+```
 
 [DOMParser和XMLSerializer两个API简介](https://www.zhangxinxu.com/wordpress/2019/06/domparser-xmlserializer-api/)
 
