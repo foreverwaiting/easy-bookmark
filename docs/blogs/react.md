@@ -675,22 +675,373 @@ render();
 store.subscribe(render);
 ```
 
-待续。。。
+### Redux 的基本做法：
 
-### 中间件-
-### 中间件-
-### 中间件-
-### 中间件-
-### 中间件-
+- 用户发出 Action，Reducer 函数算出新的 State，View 重新渲染。
+- 但一个关键问题没有解决：异步操作怎么办？Action 发出以后，Reducer 立即算出 State，这叫做同步；Action 发出以后，过一段时间再执行 Reducer，这就是异步。
+- 怎么才能 Reducer 在异步操作结束后自动执行呢？这就要用到新的工具：中间件（middleware）。
+
+### 中间件-中间件的概念
+
+- 中间件就是一个函数，对store.dispatch方法进行了改造，在发出 Action 和执行 Reducer 这两步之间，添加了其他功能。
+
+### 中间件-中间件的用法
+
+- 常用的中间件都有现成的，只要引用别人写好的模块即可
+
+```js
+// 怎么使用中间件
+// redux-logger提供一个生成器createLogger，可以生成日志中间件logger
+import { applyMiddleware, createStore } from 'redux';
+import createLogger from 'redux-logger';
+const logger = createLogger();
+// 将它放在applyMiddleware方法之中，传入createStore方法，就完成了store.dispatch()的功能增强。 
+const store = createStore(
+  reducer,
+  applyMiddleware(logger)
+);
+
+// （1）createStore方法可以接受整个应用的初始状态作为参数，那样的话，applyMiddleware就是第三个参数了。
+const store = createStore(
+  reducer,
+  initial_state,
+  applyMiddleware(logger)
+);
+// （2）中间件的次序有讲究。
+// applyMiddleware方法的三个参数，就是三个中间件。有的中间件有次序要求，使用前要查一下文档。
+const store = createStore(
+  reducer,
+  applyMiddleware(thunk, promise, logger)
+);
+```
+
+### 中间件-applyMiddlewares()
+
+- applyMiddlewares:  Redux 的原生方法，作用是将所有中间件组成一个数组，依次执行。
+
+- 所有中间件被放进了一个数组chain，然后嵌套执行，最后执行store.dispatch。可以看到，中间件内部（middlewareAPI）可以拿到getState和dispatch这两个方法。
+
+### 中间件-异步操作的基本思路
+
+- 同步操作只要发出一种 Action 即可，异步操作的差别是它要发出三种 Action。操作发起时的 Action操作成功时的 Action操作失败时的 Action
+
+### 中间件-redux-thunk 中间件
+
+- 异步操作至少要送出两个 Action：用户触发第一个 Action，这个跟同步操作一样，没有问题；如何才能在操作结束时，系统自动送出第二个 Action 呢？
+
+- 使用redux-thunk中间件，改造store.dispatch，使得后者可以接受函数作为参数。因此，异步操作的第一种解决方案就是，写出一个返回函数的 Action Creator，然后使用redux-thunk中间件改造store.dispatch
 
 
-### 异步操作-
-### 异步操作-
-### 异步操作-
-### 异步操作-
-### 异步操作-
-### 异步操作-
-### 异步操作-
+### 异步操作-redux-promise 中间件
+
+- 异步操作的解决方案，就是让 Action Creator 返回一个 Promise 对象。
+
+- 如果 Action 本身是一个 Promise，它 resolve 以后的值应该是一个 Action 对象，会被dispatch方法送出（action.then(dispatch)），但reject 以后不会有任何动作；如果 Action 对象的payload属性是一个 Promise 对象，那么无论 resolve 和 reject，dispatch方法都会发出 Action。
+
+### React-Redux用法-组件分类
+
+- 组件分成两大类：UI 组件（presentational component）和容器组件（container component）。UI 组件负责 UI 的呈现，容器组件负责管理数据和逻辑。
+
+- 如果一个组件既有 UI 又有业务逻辑，那怎么办？回答是，将它拆分成下面的结构：外面是一个容器组件，里面包了一个UI 组件。前者负责与外部的通信，将数据传给后者，由后者渲染出视图。
+
+1、UI 组件：
+  只负责 UI 的呈现，不带有任何业务逻辑
+  没有状态（即不使用this.state这个变量）
+  所有数据都由参数（this.props）提供
+  不使用任何 Redux 的 API
+
+2、容器组件
+  负责管理数据和业务逻辑，不负责 UI 的呈现
+  带有内部状态
+  使用 Redux 的 API
+
+你可能会问，如果一个组件既有 UI 又有业务逻辑，那怎么办？回答是，将它拆分成下面的结构：外面是一个容器组件，里面包了一个UI 组件。前者负责与外部的通信，将数据传给后者，由后者渲染出视图。
+
+React-Redux 规定，所有的 UI 组件都由用户提供，容器组件则是由 React-Redux 自动生成。也就是说，用户负责视觉层，状态管理则是全部交给它。
+
+### React-Redux用法-connect()
+
+- React-Redux 提供connect方法，用于从 UI 组件生成容器组件。connect的意思，就是将这两种组件连起来。
+
+```js
+// TodoList是 UI 组件，VisibleTodoList就是由 React-Redux 通过connect方法自动生成的容器组件。
+import { connect } from 'react-redux'
+const VisibleTodoList = connect()(TodoList);
+```
+
+```js
+// connect方法的完整 API 
+import { connect } from 'react-redux'
+
+const VisibleTodoList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodoList)
+// connect方法接受两个参数：mapStateToProps和mapDispatchToProps。
+
+// 定义了 UI 组件的业务逻辑。前者负责输入逻辑，即将state映射到 UI 组件的参数（props），后者负责输出逻辑，即将用户对 UI 组件的操作映射成 Action。
+```
+
+### React-Redux用法-mapStateToProps()
+
+- mapStateToProps是一个函数。它的作用就是像它的名字那样，建立一个从（外部的）state对象到（UI 组件的）props对象的映射关系。作为函数，mapStateToProps执行后应该返回一个对象，里面的每一个键值对就是一个映射。
+
+```js
+// mapStateToProps是一个函数，它接受state作为参数，返回一个对象。
+// 对象有一个todos属性，代表 UI 组件的同名参数，后面的getVisibleTodos也是一个函数，可以从state算出 todos 的值。
+const mapStateToProps = (state) => {
+  return {
+    todos: getVisibleTodos(state.todos, state.visibilityFilter)
+  }
+}
+
+// getVisibleTodos
+const getVisibleTodos = (todos, filter) => {
+  switch (filter) {
+    case 'SHOW_ALL':
+      return todos
+    case 'SHOW_COMPLETED':
+      return todos.filter(t => t.completed)
+    case 'SHOW_ACTIVE':
+      return todos.filter(t => !t.completed)
+    default:
+      throw new Error('Unknown filter: ' + filter)
+  }
+}
+
+// mapStateToProps会订阅 Store，每当state更新的时候，就会自动执行，重新计算 UI 组件的参数，从而触发 UI 组件的重新渲染。
+
+// mapStateToProps的第一个参数总是state对象，还可以使用第二个参数，代表容器组件的props对象。
+
+// 容器组件的代码
+//    <FilterLink filter="SHOW_ALL">
+//      All
+//    </FilterLink>
+
+// 使用ownProps作为参数后，如果容器组件的参数发生变化，也会引发 UI 组件重新渲染。
+const mapStateToProps = (state, ownProps) => {
+  return {
+    active: ownProps.filter === state.visibilityFilter
+  }
+}
+// connect方法可以省略mapStateToProps参数，那样的话，UI 组件就不会订阅Store，就是说 Store 的更新不会引起 UI 组件的更新。
+```
+
+### React-Redux用法-mapDispatchToProps()
+
+- mapDispatchToProps是connect函数的第二个参数，用来建立 UI 组件的参数到store.dispatch方法的映射。也就是说，它定义了哪些用户的操作应该当作 Action，传给 Store。它可以是一个函数，也可以是一个对象。
+
+```js
+// 如果mapDispatchToProps是一个函数，会得到dispatch和ownProps（容器组件的props对象）两个参数。
+const mapDispatchToProps = (
+  dispatch,
+  ownProps
+) => {
+  return {
+    onClick: () => {
+      dispatch({
+        type: 'SET_VISIBILITY_FILTER',
+        filter: ownProps.filter
+      });
+    }
+  };
+}
+// mapDispatchToProps作为函数，应该返回一个对象，该对象的每个键值对都是一个映射，定义了 UI 组件的参数怎样发出 Action。
+
+
+// 如果mapDispatchToProps是一个对象，它的每个键名也是对应 UI 组件的同名参数，键值应该是一个函数，会被当作 Action creator ，返回的 Action 会由 Redux 自动发出。
+const mapDispatchToProps = {
+  onClick: (filter) => {
+    type: 'SET_VISIBILITY_FILTER',
+    filter: filter
+  };
+}
+```
+
+### React-Redux用法-Provider 组件
+
+- 让容器组件拿到state: connect方法生成容器组件以后，需要让容器组件拿到state对象，才能生成 UI 组件的参数。一种解决方法是将state对象作为参数，传入容器组件。但是，这样做比较麻烦，尤其是容器组件可能在很深的层级，一级级将state传下去就很麻烦。React-Redux 提供Provider组件，可以让容器组件拿到state。
+
+```js
+// Provider在根组件外面包了一层，这样一来，App的所有子组件就默认都可以拿到state了。
+
+// 它的原理是React组件的context属性
+
+// store放在了上下文对象context上面。然后，子组件就可以从context拿到store
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import todoApp from './reducers'
+import App from './components/App'
+
+let store = createStore(todoApp);
+
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
+```
+
+### React-Redux用法-实例：计数器
+
+- 1、计数器组件，它是一个纯的 UI 组件
+
+```js
+// 这个 UI 组件有两个参数：value和onIncreaseClick。前者需要从state计算得到，后者需要向外发出 Action。
+class Counter extends Component {
+  render() {
+    const { value, onIncreaseClick } = this.props
+    return (
+      <div>
+        <span>{value}</span>
+        <button onClick={onIncreaseClick}>Increase</button>
+      </div>
+    )
+  }
+}
+```
+
+- 2、定义value到state的映射，以及onIncreaseClick到dispatch的映射。
+
+```js
+function mapStateToProps(state) {
+  return {
+    value: state.count
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onIncreaseClick: () => dispatch(increaseAction)
+  }
+}
+
+// Action Creator
+const increaseAction = { type: 'increase' }
+```
+
+- 3、使用connect方法生成容器组件。
+
+```js
+const App = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Counter)
+```
+
+- 4、定义这个组件的 Reducer。
+
+```js
+// Reducer
+function counter(state = { count: 0 }, action) {
+  const count = state.count
+  switch (action.type) {
+    case 'increase':
+      return { count: count + 1 }
+    default:
+      return state
+  }
+}
+```
+
+- 5、生成store对象，并使用Provider在根组件外面包一层
+
+```js
+import { loadState, saveState } from './localStorage';
+
+const persistedState = loadState();
+const store = createStore(
+  todoApp,
+  persistedState
+);
+
+store.subscribe(throttle(() => {
+  saveState({
+    todos: store.getState().todos,
+  })
+}, 1000))
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+```
+
+### redux完整示例
+
+```js
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import ReactDOM from 'react-dom'
+import { createStore } from 'redux'
+import { Provider, connect } from 'react-redux'
+
+// React component
+class Counter extends Component {
+  render() {
+    const { value, onIncreaseClick } = this.props
+    return (
+      <div>
+        <span>{value}</span>
+        <button onClick={onIncreaseClick}>Increase</button>
+      </div>
+    )
+  }
+}
+
+Counter.propTypes = {
+  value: PropTypes.number.isRequired,
+  onIncreaseClick: PropTypes.func.isRequired
+}
+
+// Action
+const increaseAction = { type: 'increase' }
+
+// Reducer
+function counter(state = { count: 0 }, action) {
+  const count = state.count
+  switch (action.type) {
+    case 'increase':
+      return { count: count + 1 }
+    default:
+      return state
+  }
+}
+
+// Store
+const store = createStore(counter)
+
+// Map Redux state to component props
+function mapStateToProps(state) {
+  return {
+    value: state.count
+  }
+}
+
+// Map Redux actions to component props
+function mapDispatchToProps(dispatch) {
+  return {
+    onIncreaseClick: () => dispatch(increaseAction)
+  }
+}
+
+// Connected Component
+const App = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Counter)
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
+```
+
 
 ### React 钩子-React 的两套 API
 
@@ -1080,8 +1431,161 @@ const Person = ({ personId }) => {
 };
 ```
 
+### umi3 使用 dva
 
+技术架构：Ts、dva、
 
+dva中主要分3层，models,services,components,其中models是最重要概念，这里放的是各种数据，与数据交互的应该都是在这里。services是请求后台接口的方法。components是组件了。
+
+```js
+// model的基本结构
+{   
+  namespace: String, // 命名空间名字，必填     
+  //namespace: 'global' 说明以下此处的dva命名空间为 global，即你调用的时候需要采用 global.XXX 的形式   
+  state: Object, // 状态   
+  reducer: Object, // 同步更新 state 修改状态  
+  effects: Object, // 副作用：处理异步逻辑     
+  //当数据需要从服务器获取时，需要发起异步请求，请求到数据之后，通过调用 Reducers更新数据到全局state   
+  subscriptions: Object // 订阅数据源
+}
+```
+- 1、reducer：用来处理同步操作。如果不需要调接口时候，我们前台传递的 action可以直接调用 reducers里的方法。
+  - reducer是一个函数，接收state 和 action，返回老的或新的state。
+  ```js
+  save(state, action) {
+    return { …state, …action.payload }; 
+  },
+  ```
+  - state:为当前 Model 下的所有 state 值
+  - action:当前台页面需要进行数据操作时，就会创建一个 action,action 存放了传递过来需要对当前 state 进行改变的数据。
+  ```js
+  reducers:{
+  changeTitle(state, { payload: { num }){ 
+    //changeTitle可以理解为一个方法名 
+    //payload:就是 action 里传递过来的数据。
+    //num 是传过来的，名字随便起，不是state中的num，这接收一个action
+    return {...state,...num}
+    //return：返回的是新的 state。等于舍弃了旧的 state,重新 return 一个新的 state 作为当前 Model 的 state。
+    //一般情况下，我们要解开旧的 state,将它重新赋值给新的 state。...state 为 ES6 语法。
+    //将操作完成得数据累加到 return 中。
+    //同名的数据会覆盖，所以不用担心旧的 state 值会影响到新设置的值。
+    //不同名的数据会追加。
+  },
+  ```
+
+  - 页面调用
+  ```js
+    //页面使用dispatch进行使用
+    this.props.dispatch({
+        type: 'pageModel/changeTitle',  //namespace+需要调用的reducer方法
+        payload: 'Hello World',
+      });
+    };
+  ```
+
+- 2、effects：用来处理异步操作。如果需要调取接口的话，前台页面就需要调用 effects 里的方法。
+  - 将数据取出来，在传递给 reducers 里的方法进行数据操作和同步 state。
+  - Dva 中的异步操作都放到 effects 中管理，基于 Redux-saga 实现 Effect 是一个 Generator函数，内部使用 yield 关键字，标识每一步的操作
+  - 每一个 effect 都可以接收两个参数：
+    - 包含 dispatch 携带参数 payload 的 action 对象
+    - dva 提供的 effect 函数内部的处理函数集。【常用的有 call: 执行异步函数、put: 发出一个 Action类似于
+    dispatch 触发reducer改变state、select: 返回 model 中的 state //用于从state里获取数据】
+
+```js
+// 1.call
+  *deleteOne({ payload }, { call }) {
+  //deleteOne方法名，payload是传来的参数，是个对象，如果没参数可以写成{_,{call, put}}
+  //*:这个 * 符号，可能小伙伴们不熟悉，简单点，只要记住每个 effects 里方法前面都加上 * 即可。
+  //(这表明它是一个异步函数，里面可以使用 yield 等待其他异步函数执行结果。)
+
+  //payload:当前台页面需要进行数据操作时，就会创建一个 action,
+  //action 存放了传递过来需要对当前 state 进行改变的数据。
+  //payload 就是存放在 action 里面的数据。
+  const rsp = yield call(cardsService.deleteOne,{num:payload.numCount});
+  //call:与后台服务端接口进行交互。
+  //第一个传参：后台服务器接口对应的名称。第二个参数：入参。
+  //cardsService是引入service层那个js的一个名字，num是后台要求传的参数，rsp就是后台返回来的数据
+  // 请求成功之后，调用 reducer 更新 state
+
+  service中异步请求(cardsService.js)
+  // request 是封装的一个网络请求库  
+
+  async function deleteOne(data) {
+   return request("queryFromApi", {
+    data,
+    method: "post",
+    dataType: "payload"
+  })}
+```
+
+```js
+// 2.select
+  *deleteOne({ payload }, { select, put }) {
+　　 effects:{
+      const m = yield select((state) => state.test.num)
+      //select就是用来选择上面state里的数据
+    }
+  }
+```
+
+```js
+// 3.put
+  yield put({
+  　type: "addNum",
+    // put:用来发出事件，即 action。一般调用 reducers 下的方法进行同步数据。
+    //type:该 Model 层里 reducers 下的方法名。
+    //payload:参数的传递。
+    payload: {
+    　 num: data, 
+      // 把后台返回的数据赋值给了num
+      //假如那个reducer中方法是由这里effects去触发的，那个num名必须是这里名字num，如果reducer中方法不是这触发，那名字可随便起
+      return rsp;
+    },
+  }
+```
+
+- 3、subscriptions：订阅监听，比如我们监听路由，进入页面就如何
+
+```js
+setup ({ dispatch, history, query }) {
+　return history.listen(
+　　async ({ pathname, search, query}) => {
+　　　if (pathname==="/testdemo") {// 当进入testdemo这路由，就会触发fetchUser方法
+　　　　dispatch({ type: "fetchUser" })
+　　　}
+　})
+}
+```
+
+- 4、connect：connect 连接 Model 和 Route 页面下的数据
+
+```js
+// dva 有提供 connect 方法。只要在每个 Routes 页面导入下面的代码即可。
+import { connect } from 'dva';
+
+// 对于组件：我们在最后导出时使用 connect 进行与 Models 的连接。
+// index 为 Model 层里面的 namespace。命名空间
+export default connect(({index}) => ({index}))(IndexPage);
+```
+
+- 5、前台调用 Model 层方法
+
+```js
+const { dispatch } = this.props; 
+//在 dva 中，可以通过 `this.props` 直接取得 `dispatch`
+dispatch ({
+  type:'example/fetch',  //指定哪个 model 层里面的哪个 方法
+  payload:{name:'exampleNew'}, 
+  //需要传递到 model 层里面的参数。
+  //payload 为固定用法(我自己的理解)。
+})
+
+// parame和query传值:
+// query更加类似于我们ajax中get传参，params则类似于post，说的再简单一点，前者在浏览器地址栏中显示参数，后者则不显示
+```
+
+- [dva github](https://github.com/dvajs/dva/blob/master/README_zh-CN.md)
+- [使用dva与服务端进行数据交互](https://www.ahwgs.cn/ruheshiyongdvayufuwuduanjinxingshujujiaohu.html)
 
 ## react native
 
