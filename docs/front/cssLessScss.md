@@ -191,6 +191,152 @@ display: -webkit-box;
 <p>这里放一段文字表明上面的是悬浮效果。</p>
 ```
 
+### CSS实现中文简繁转换
+
+```css
+font-variant-east-asian: traditional;
+```
+- 需要字体支持-OS X和iOS有效，因为这种效果需要字体本身包含繁体变体。而在Windows系统中的几个默认字体都没有包含繁体变体，而OS X，也就是iMac或者 Mac Pro，以及iOS系统，也就是苹果手机，iPad等设备的默认中文字体是包含繁体变体的。
+
+- 苹方字体 支持。（font-variant-east-asian属性实现的繁体效果则原始的字符还是简体中文，只是视觉呈现的是繁体而已）
+
+### ::part伪元素
+
+- [part MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::part)
+
+### 两个type=range input实现区域范围选择
+
+- [使用了Shadow DOM开发的Web Components组件](https://www.zhangxinxu.com/study/202102/two-range-input-demo.php)
+
+### 元素重叠
+
+- margin负值定位、绝对定位外层relative限制，提示信息absolute绝对定位
+- Grid布局也可以
+
+```css
+/* CSS代码： */
+figure {
+    display: inline-grid;
+}
+figure > img,
+figure > figcaption {
+    grid-area: 1 / 1 / 2 / 2;
+}
+figure > figcaption {
+    align-self: end;
+    text-align: center;
+    background-color: #0009;
+    color: #fff;
+    line-height: 2;
+}
+/* HTML代码： */
+<figure>
+    <img src="11.jpg" alt="上海钓鱼自然风景">
+    <figcaption>上海钓鱼自然风景 by zhangxinxu</figcaption>
+</figure>
+```
+
+### Web Components中引入外部CSS的3种方法
+
+- @import方法：简单，但性能差，兼容性好
+```js
+class uiRange extends HTMLElement {
+    constructor () {
+        super();
+        // 附加Shadow DOM
+        this.attachShadow({
+            mode: 'open'
+        });
+        // 创建样式
+        let node = document.createElement('style');
+        node.innerHTML = `@import './range.css';`;
+        this.shadowRoot.append(node);
+    }
+    ...
+}
+if (!customElements.get('ui-range')) {
+    customElements.define('ui-range', uiRange);
+}
+```
+- fetch获取请求：复杂，但性能好异步请求，兼容性好
+```js
+class uiRange extends HTMLElement {
+    constructor () {
+        super();
+        // 附加Shadow DOM
+        this.attachShadow({
+            mode: 'open'
+        });
+        // 获取样式
+        fetch('./range.css').then(response => response.text()).then(data => {
+            let node = document.createElement('style');
+            node.innerHTML = data;
+            shadow.appendChild(node);
+        });
+    }
+    ...
+}
+if (!customElements.get('ui-range')) {
+    customElements.define('ui-range', uiRange);
+}
+```
+- 作为CSS module import：简单，性能好，但兼容性差
+```js
+// import引入；CSS文件直接import这个语法目前仅Chrome及其同样内核浏览器支持，因此Firefox和Safari下使用的是fetch方法。
+import styles from './range.css';
+class uiRange extends HTMLElement {
+    constructor () {
+        super();
+
+        let shadow = this.attachShadow({
+            mode: 'open'
+        });
+        // adoptedStyleSheets采用；adoptedStyleSheets这个API方法是随着样式表构造（Constructed StyleSheets）一起出现的。存在与shadowRoot和document两个对象上，用来设置样式。
+        shadow.adoptedStyleSheets = [styles];
+    }
+    ...
+}
+if (!customElements.get('ui-range')) {
+    customElements.define('ui-range', uiRange);
+}
+```
+
+### CSS全局关键字
+
+- inherit、initial、unset和revert都是CSS全局关键字。（全局关键字指的是所有的CSS属性都可以使用这几个关键字作为属性值。）
+
+    - revert关键字可以让当前元素的样式还原成浏览器内置的样式，注意，是还原到浏览器内置的默认样式，而不是CSS属性原本的初始值。
+
+    - inherit是继承的意思
+
+    - initial表示初始值的意思
+
+    - unset表示不固定值
+
+### 垂直排版，text-combine-upright
+
+- 文本在水平或垂直方向上如何排布writing-mode: horizontal-tb【left-right-top-bottom】 | vertical-rl【top-bottom-right-left】 | vertical-lr【垂直方向内内容从上到下，水平方向从左到右】 | sideways-rl | sideways-lr
+
+- 设定行中字符的方向【仅影响纵向模式（当 writing-mode 的值不是horizontal-tb）】text-orientation:
+    - mixed默认值。顺时针旋转水平书写的字符90°，将垂直书写的文字自然布局。
+    - upright将水平书写的字符自然布局（直排），包括垂直书写的文字（as well as the glyphs for vertical scripts）。注意这个关键字会导致所有字符被视为从左到右，也就是 direction 被强制设为 ltr。
+    - sideways所有字符被布局为与水平方式一样，但是整行文本被顺时针旋转90°。
+    - sideways-right处于兼容目的，sideways 的别名。
+    - use-glyph-orientation对于SVG元素，这个关键字导致使用已弃用的SVG属性。 glyph-orientation-vertical 和 glyph-orientation-horizontal。
+
+- text-combine-upright: 让垂直排版中的局部区域的文字水平排版，同时多个水平排版字符占据的宽度和一个正常的字符一样。
+    - none初始值。不连续横排。
+    - all试图水平排版框内所有连续字符，使它们占用框垂直线内单个字符的空间。
+    - digits `<integer>`多少个连续数字认为是横着显示。默认是2，范围不能在2-4之外，否则认为是不合法。也就是最多只能让一个标签内4个字符水平排列。
+
+### css属性
+
+- line-break中文标点换行
+
+- aspect-ratio明确元素的高宽比例
+
+- text-underline-offset设置下划线偏移位置(下划线和文字重叠的问题)，text-decoration为underline才有效。`text-underline-offset: auto | <length> | <percent>`
+
 ## CSS揭秘
 
 - [CSS揭秘](https://www.cnblogs.com/forever-xuehf/p/12907577.html)
