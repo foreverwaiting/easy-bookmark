@@ -1,6 +1,6 @@
 # typescript
 
-## TS 泛型基础知识
+## TS 泛型基础知识 1
 
 ### 在函数中使用泛型
 
@@ -416,3 +416,5 @@ const todo: TodoPreview = {
   completed: false
 }
 ```
+
+待续
