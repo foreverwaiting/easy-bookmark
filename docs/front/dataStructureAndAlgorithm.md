@@ -4,38 +4,42 @@
 
 分类：数组、字符串、列表、栈、队列、链表、字典、散列、集合、二叉树、图、等等
 
-算法：树结构（先序、中序、后序遍历）；tree结构与list相互转化过滤查询等；图和图的算法；排序算法；检索算法（顺序查找、二分查找等）；动态规划；贪心算法等等
+算法：树结构（先序、中序、后序遍历）；tree 结构与 list 相互转化过滤查询等；图和图的算法；排序算法；检索算法（顺序查找、二分查找等）；动态规划；贪心算法等等
 
 ### 数组排序
 
 - 简单使用 sort 方法的时候，是按位排序的
 - 升降序
-原则：
-当返回值大于0时，a放在b的后面；
-当返回值小于0时，a放在b的前面；
-当返回值等于0时，ab位置不改变。
+  原则：
+  当返回值大于 0 时，a 放在 b 的后面；
+  当返回值小于 0 时，a 放在 b 的前面；
+  当返回值等于 0 时，ab 位置不改变。
 
 ```js
 var arr = [1, 22, 15, 32, 4, 5]
-    arr.sort((a, b) => {return a - b}) // 升序排序 [1, 4, 5, 15, 22, 32]
-    arr.sort((a, b) => {return b - a}) // 降序排序 [32, 22, 15, 5, 4, 1]
+arr.sort((a, b) => {
+  return a - b
+}) // 升序排序 [1, 4, 5, 15, 22, 32]
+arr.sort((a, b) => {
+  return b - a
+}) // 降序排序 [32, 22, 15, 5, 4, 1]
 ```
 
-- a-b 或者 b-a其实是分情况讨论后的简写
+- a-b 或者 b-a 其实是分情况讨论后的简写
 - 原始写法
 
 ```js
 var arr = [1, 22, 15, 32, 4, 5]
-    arr.sort((a, b) => {
-      if (a > b) return 1;
-      else if (a < b) return -1;
-      else return 0;
-    }); // [1,4,5,15,22,32]
+arr.sort((a, b) => {
+  if (a > b) return 1
+  else if (a < b) return -1
+  else return 0
+}) // [1,4,5,15,22,32]
 ```
 
-- 数组push(后面加) + 数组pop，(后面删返回被删的) = 栈【后进先出】【仅能在表尾进行插入或删除操作的线性】【一摞盘子是现实世界中常见的栈的例子】
+- 数组 push(后面加) + 数组 pop，(后面删返回被删的) = 栈【后进先出】【仅能在表尾进行插入或删除操作的线性】【一摞盘子是现实世界中常见的栈的例子】
 
-- 数组unshift(前面加【和在数组的末尾添加元素比起来，在数组的开头添加元素更难。如果不利用数组提供的可 变函数，则新的元素添加进来后，需要把后面的每个元素都相应地向后移一个位置。】) + 数组shift(前面删【返回被删的】) = 队列【先进先出，后进后出】【表的队尾进行插入，而在队头删除元素】
+- 数组 unshift(前面加【和在数组的末尾添加元素比起来，在数组的开头添加元素更难。如果不利用数组提供的可 变函数，则新的元素添加进来后，需要把后面的每个元素都相应地向后移一个位置。】) + 数组 shift(前面删【返回被删的】) = 队列【先进先出，后进后出】【表的队尾进行插入，而在队头删除元素】
 
 ### 数组操作
 
@@ -45,12 +49,12 @@ var arr = [1, 22, 15, 32, 4, 5]
 ### 栈队列实例
 
 - 栈：
-    1、进制转换
-    2、判断回文数
-    3、递归
+  1、进制转换
+  2、判断回文数
+  3、递归
 
 - 队列：
-    1、基数排序
+  1、基数排序
 
 ### 链表
 
@@ -65,7 +69,7 @@ var arr = [1, 22, 15, 32, 4, 5]
 ### 字典，散列
 
 1、字典
-利用Object.keys可对字典像数组那样排序
+利用 Object.keys 可对字典像数组那样排序
 2、散列
 3、set
 
@@ -76,15 +80,13 @@ var arr = [1, 22, 15, 32, 4, 5]
 3、二叉树是一种特殊的树，它的子节点个数不超过两个
 4、树的层次【树的深度】
 
-
 ### 对象相关操作
 
-### tree结构
+### tree 结构
 
 [BFS DFS](algorithm/tree.md)
 
-### js其他相关
-
+### js 其他相关
 
 ## 算法
 
@@ -94,7 +96,7 @@ var arr = [1, 22, 15, 32, 4, 5]
 
 常见有：
 
-O(N)、O(log2N)、O(N2)、O(nlog2N)、O(N*K)、O(N+K)、
+O(N)、O(log2N)、O(N2)、O(nlog2N)、O(N\*K)、O(N+K)、
 
 2.空间复杂度：用来度量算法的空间占用，是一个函数。【解决问题临时占用存储空间的大小，随着问题规模（数据量）的扩大，临时占用存储空间的大小是怎么变化的】
 
@@ -104,25 +106,25 @@ O(1)、O(nlog2N)、O(N+K)、
 
 3.稳定性
 
-稳定：如果a原本在b前面，而a=b，排序之后a仍然在b的前面。
-不稳定：如果a原本在b的前面，而a=b，排序之后 a 可能会出现在 b 的后面。
+稳定：如果 a 原本在 b 前面，而 a=b，排序之后 a 仍然在 b 的前面。
+不稳定：如果 a 原本在 b 的前面，而 a=b，排序之后 a 可能会出现在 b 的后面。
 
 ### 排序算法
 
 十种常见排序算法可以分为两大类：
 
-比较类排序：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此也称为非线性时间比较类排序。
-非比较类排序：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此也称为线性时间非比较类排序。 
+比较类排序：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破 O(nlogn)，因此也称为非线性时间比较类排序。
+非比较类排序：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此也称为线性时间非比较类排序。
 
 [十种常见排序算法](algorithm/排序算法.md)
 
 [动态规划](algorithm/动态规划.md)
 
-### JS树结构操作
+### JS 树结构操作
 
 [查找、遍历、筛选、树结构和列表结构相互转换](https://wintc.top/article/20)
 
-待补充：leetcode刷题
+待补充：leetcode 刷题
 
 ### 动态规划
 
@@ -137,19 +139,19 @@ O(1)、O(nlog2N)、O(N+K)、
 nums[0] + nums[1] = 2 + 7 = 9 , 返回 [0, 1]
 
 ```js
-var twoSum = function (nums, target) {
-  const map = new Map();
+var twoSum = function(nums, target) {
+  const map = new Map()
   for (let i = 0; i < nums.length; i++) {
-    const ele = nums[i];
-    const result = target - ele;
+    const ele = nums[i]
+    const result = target - ele
     if (map.has(result)) {
       return [map.get(result), i]
     } else {
       map.set(ele, i)
     }
   }
-  return [];
-};
+  return []
+}
 ```
 
 ### 字符串转换整数
@@ -157,70 +159,70 @@ var twoSum = function (nums, target) {
 ```js
 /*
  * 示例 1:
- * 
+ *
  * 输入: "42"
  * 输出: 42
- * 
- * 
+ *
+ *
  * 示例 2:
- * 
+ *
  * 输入: "   -42"
  * 输出: -42
  * 解释: 第一个非空白字符为 '-', 它是一个负号。
  * 我们尽可能将负号与后面所有连续出现的数字组合起来，最后得到 -42 。
- * 
- * 
+ *
+ *
  * 示例 3:
- * 
+ *
  * 输入: "4193 with words"
  * 输出: 4193
  * 解释: 转换截止于数字 '3' ，因为它的下一个字符不为数字。
- * 
- * 
+ *
+ *
  * 示例 4:
- * 
+ *
  * 输入: "words and 987"
  * 输出: 0
  * 解释: 第一个非空字符是 'w', 但它不是数字或正、负号。
  * ⁠    因此无法执行有效的转换。
- * 
+ *
  * 示例 5:
- * 
+ *
  * 输入: "-91283472332"
  * 输出: -2147483648
- * 解释: 数字 "-91283472332" 超过 32 位有符号整数范围。 
+ * 解释: 数字 "-91283472332" 超过 32 位有符号整数范围。
  * 因此返回 INT_MIN (−2^31) 。
- * 
- * 
+ *
+ *
  */
-var myAtoi = function (str) {
-  let num = parseInt(str, 10);
-  if (isNaN(num)) return 0;
-  if (num < Math.pow(-2, 31)) return Math.pow(-2, 31);
-  if (num > Math.pow(2, 31) - 1) return Math.pow(2, 31) - 1;
-  return num;
-};
+var myAtoi = function(str) {
+  let num = parseInt(str, 10)
+  if (isNaN(num)) return 0
+  if (num < Math.pow(-2, 31)) return Math.pow(-2, 31)
+  if (num > Math.pow(2, 31) - 1) return Math.pow(2, 31) - 1
+  return num
+}
 ```
 
 ### 回文数
 
 ```js
-var isPalindrome = function (x) {
+var isPalindrome = function(x) {
   //暴力解题法：转字符串
   // return x.toString() == x.toString().split("").reverse().join("");
   if (x < 0 || (x % 10 == 0 && x != 0)) {
-    return false;
+    return false
   }
 
-  let rev = 0;
+  let rev = 0
   // ~~1.9;       // => 1
   // ~~-1.9;      // => -1
   while (rev < x) {
-    rev = rev * 10 + x % 10;
-    x = ~~(x / 10);
+    rev = rev * 10 + (x % 10)
+    x = ~~(x / 10)
   }
-  return (rev === x) || (~~(rev / 10) === x)
-};
+  return rev === x || ~~(rev / 10) === x
+}
 ```
 
 ### 盛最多水的容器
@@ -228,27 +230,30 @@ var isPalindrome = function (x) {
 ```js
 /*
  * 示例：
- * 
+ *
  * 输入：[1,8,6,2,5,4,8,3,7]
  * 输出：49
  */
-var maxArea = function (height) {
+var maxArea = function(height) {
   if (!height || height.length <= 1) {
     return 0
   }
-  let left = 0;
-  let right = height.length - 1;
-  let result = 0;
+  let left = 0
+  let right = height.length - 1
+  let result = 0
   while (left < right) {
-    result = Math.max(result, (right - left) * (Math.min(height[left], height[right])));
+    result = Math.max(
+      result,
+      (right - left) * Math.min(height[left], height[right])
+    )
     if (height[left] < height[right]) {
       left++
     } else {
       right--
     }
   }
-  return result;
-};
+  return result
+}
 ```
 
 ### 三数之和
@@ -256,27 +261,27 @@ var maxArea = function (height) {
 ```js
 /*
  * 给定数组 nums = [-1, 0, 1, 2, -1, -4]，
- * 
+ *
  * 满足要求的三元组集合为：
  * [
  * ⁠ [-1, 0, 1],
  * ⁠ [-1, -1, 2]
  * ]
  */
-var threeSum = function (nums) {
-  const result = [];
-  nums.sort(function (a, b) {
-    return a - b;
+var threeSum = function(nums) {
+  const result = []
+  nums.sort(function(a, b) {
+    return a - b
   })
   for (let i = 0; i < nums.length - 2; i++) {
     if (i === 0 || nums[i] !== nums[i - 1]) {
-      var start = i + 1;
-      var end = nums.length - 1;
+      var start = i + 1
+      var end = nums.length - 1
       while (start < end) {
         if (nums[i] + nums[start] + nums[end] === 0) {
-          result.push([nums[i], nums[start], nums[end]]);
-          start++;
-          end--;
+          result.push([nums[i], nums[start], nums[end]])
+          start++
+          end--
           while (start < end && nums[start] === nums[start - 1]) {
             start++
           }
@@ -291,8 +296,8 @@ var threeSum = function (nums) {
       }
     }
   }
-  return result;
-};
+  return result
+}
 ```
 
 ### 螺旋矩阵
@@ -301,9 +306,9 @@ var threeSum = function (nums) {
 /*
  *
  * 给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
- * 
+ *
  * 示例 1:
- * 
+ *
  * 输入:
  * [
  * ⁠[ 1, 2, 3 ],
@@ -311,10 +316,10 @@ var threeSum = function (nums) {
  * ⁠[ 7, 8, 9 ]
  * ]
  * 输出: [1,2,3,6,9,8,7,4,5]
- * 
- * 
+ *
+ *
  * 示例 2:
- * 
+ *
  * 输入:
  * [
  * ⁠ [1, 2, 3, 4],
@@ -322,16 +327,15 @@ var threeSum = function (nums) {
  * ⁠ [9,10,11,12]
  * ]
  * 输出: [1,2,3,4,8,12,11,10,9,5,6,7]
- * 
- * 
+ *
+ *
  */
- var spiralOrder = function (matrix) {
+var spiralOrder = function(matrix) {
   var res = []
   var i = 0
   var j = 0
   var n = matrix.length - 1
-  if (n < 0)
-    return []
+  if (n < 0) return []
   var m = matrix[0].length - 1
   var turn = m == 0 ? 'd' : 'r'
   var boundl = 0
@@ -368,40 +372,42 @@ var threeSum = function (nums) {
     }
   }
   return res
-};
+}
 ```
+
 ### 寻找峰值
 
 ```js
 /*
-* 
+ *
  * 示例 1:
- * 
+ *
  * 输入: nums = [1,2,3,1]
  * 输出: 2
  * 解释: 3 是峰值元素，你的函数应该返回其索引 2。
- * 
+ *
  * 示例 2:
- * 
+ *
  * 输入: nums = [1,2,1,3,5,6,4]
- * 输出: 1 或 5 
+ * 输出: 1 或 5
  * 解释: 你的函数可以返回索引 1，其峰值元素为 2；
  * 或者返回索引 5， 其峰值元素为 6。
- * 
- * 
+ *
+ *
  * 说明:
- * 
+ *
  * 你的解法应该是 O(logN) 时间复杂度的。
- * 
+ *
  */
- var findPeakElement = function(nums) {
+var findPeakElement = function(nums) {
   // for (let i = 0; i < nums.length - 1; i++) {
   //   if (nums[i] > nums[i+1]) {
   //     return i
   //   }
   // }
   // return nums.length - 1
-  var left = 0, right = nums.length -1;
+  var left = 0,
+    right = nums.length - 1
   while (left < right) {
     var mid = Math.floor((left + right) / 2)
     if (nums[mid] < nums[mid + 1]) {
@@ -411,34 +417,34 @@ var threeSum = function (nums) {
     }
   }
   return left
-};
+}
 ```
 
 ### 将数组分成和相等的三个部分
 
 ```js
 /*
- * 
+ *
  * 示例 1：
- * 
+ *
  * 输入：[0,2,1,-6,6,-7,9,1,2,0,1]
  * 输出：true
  * 解释：0 + 2 + 1 = -6 + 6 - 7 + 9 + 1 = 2 + 0 + 1
- * 
- * 
+ *
+ *
  * 示例 2：
- * 
+ *
  * 输入：[0,2,1,-6,6,7,9,-1,2,0,1]
  * 输出：false
- * 
- * 
+ *
+ *
  * 示例 3：
- * 
+ *
  * 输入：[3,3,6,5,-2,2,5,1,-9,4]
  * 输出：true
  * 解释：3 + 3 = 6 = 5 - 2 + 2 + 5 + 1 - 9 + 4
- * 
- * 
+ *
+ *
  /
  var canThreePartsEqualSum = function (A) {
   let sum = A.mySum(); // 数组的累加和
@@ -473,22 +479,26 @@ Array.prototype.mySum = function () {
 
 ```js
 function sumPrime(num) {
-    if (num < 2) {
-        return 0;
+  if (num < 2) {
+    return 0
+  }
+
+  let arr = Array(num + 1).fill(true)
+
+  for (let index = 2; index < Math.sqrt(num); index++) {
+    let j = i ** 2
+    while (arr[i] == true && j <= num) {
+      arr[j] = false
+      j += i
     }
+    console.log(
+      arr.map((x, i) => {
+        return x ? i : 0
+      })
+    )
+  }
 
-    let arr = Array(num + 1).fill(true)
-
-    for (let index = 2; index < Math.sqrt(num); index++) {
-        let j = i ** 2
-        while (arr[i] == true && j <= num) {
-            arr[j] = false
-            j += i
-        }
-        console.log(arr.map((x, i) => { return x ? i : 0 }))
-    }
-
-    return arr.reduce((x, curr, i) => x + (curr ? index : 0), 0) - 1
+  return arr.reduce((x, curr, i) => x + (curr ? index : 0), 0) - 1
 }
 sumPrime(100)
 ```
@@ -498,7 +508,7 @@ sumPrime(100)
 ```js
 // 示例 1:
 
-// 给定 matrix = 
+// 给定 matrix =
 // [
 //   [1,2,3],
 //   [4,5,6],
@@ -519,7 +529,7 @@ sumPrime(100)
 //   [ 2, 4, 8,10],
 //   [13, 3, 6, 7],
 //   [15,14,12,16]
-// ], 
+// ],
 
 // 原地旋转输入矩阵，使其变为:
 // [
@@ -529,59 +539,59 @@ sumPrime(100)
 //   [16, 7,10,11]
 // ]
 // 思路：先变147，258，369，，，再反转
-var rotate = function (matrix) {
+var rotate = function(matrix) {
   for (let i = 0; i < matrix.length; i++) {
     for (let j = i; j < matrix[i].length; j++) {
-      [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]]
+      ;[matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]]
     }
   }
   matrix.forEach(row => row.reverse())
-};
+}
 ```
 
 ### 质数筛
 
 ```js
 function sumPrime(num) {
-    if (num < 2) {
-        return 0;
+  if (num < 2) {
+    return 0
+  }
+
+  let arr = Array(num + 1).fill(true)
+
+  for (let i = 2; i < Math.sqrt(num); i++) {
+    let j = i ** 2
+    while (arr[i] === true && j <= num) {
+      arr[j] = false
+      j += i
     }
+  }
 
-    let arr = Array(num + 1).fill(true)
-
-    for (let i = 2; i < Math.sqrt(num); i++) {
-        let j = i ** 2
-        while (arr[i] === true && j <= num) {
-            arr[j] = false
-            j += i
-        }
-    }
-
-    return arr.reduce((x, curr, index) => x + (curr ? index : 0), 0) - 1
+  return arr.reduce((x, curr, index) => x + (curr ? index : 0), 0) - 1
 }
 
 sumPrime(140)
-console.log(sumPrime(140)) 
-// 
+console.log(sumPrime(140))
+//
 function sumPrimeMe(num) {
-    let res = 0
-    for (let i = 2; i < num; i++) {
-        if (isPrime(i)) {
-            res += i
-        }
+  let res = 0
+  for (let i = 2; i < num; i++) {
+    if (isPrime(i)) {
+      res += i
     }
-    return res
+  }
+  return res
 }
 function isPrime(x) {
-    for (let index = 2; index <= Math.sqrt(x); index++) {
-        if (x % index == 0) {
-            return false
-        }
+  for (let index = 2; index <= Math.sqrt(x); index++) {
+    if (x % index == 0) {
+      return false
     }
-    return true
+  }
+  return true
 }
 sumPrimeMe(140)
-console.log(sumPrimeMe(140)) 
+console.log(sumPrimeMe(140))
 ```
 
 ### 拿硬币
@@ -614,13 +624,13 @@ console.log(sumPrimeMe(140))
  * @param {number[]} coins
  * @return {number}
  */
-var minCount = function (coins) {
-  var sum = 0;
-  coins.map(function (x) {
+var minCount = function(coins) {
+  var sum = 0
+  coins.map(function(x) {
     sum = sum + parseInt((x + 1) / 2)
   })
-  return sum;
-};
+  return sum
+}
 ```
 
 ### 斐波那契数列
@@ -628,7 +638,7 @@ var minCount = function (coins) {
 ```js
 // 指数级
 function fibonacci1(n) {
-    return n == 1 || n == 2 ? 1 : fibonacci1(n -1) + fibonacci1(n -2)
+  return n == 1 || n == 2 ? 1 : fibonacci1(n - 1) + fibonacci1(n - 2)
 }
 // 需要执行2的n次方
 // fibonacci(10)返回55，也就是第10个斐波那契数
@@ -636,94 +646,108 @@ var start_data1 = new Date()
 console.log(fibonacci1(31)) // 执行了2的10次共 1024次
 
 // 线性 [reduce和for循环算法   （动态规划）]
-  function fibonacci2(n) {
-    let [a,b] = [0,1]
-    for (let i = 0; i < n; i++) {
-      [a, b] = [b, a+b]
-    }
-    return b
+function fibonacci2(n) {
+  let [a, b] = [0, 1]
+  for (let i = 0; i < n; i++) {
+    ;[a, b] = [b, a + b]
   }
+  return b
+}
 
-  function fibonacci3(n) {
-    return Array(n).fill().reduce( ([a,b], _) => {
-      return [b, a+b]
-    }, [0,1])[1]
-  }
+function fibonacci3(n) {
+  return Array(n)
+    .fill()
+    .reduce(
+      ([a, b], _) => {
+        return [b, a + b]
+      },
+      [0, 1]
+    )[1]
+}
 ```
 
-### 递归DOM节点的绝对位置
+### 递归 DOM 节点的绝对位置
 
 ```js
-  // offsetLeft offsetRight是相对于offsetParent的位置
-  // Element.getBoundingClientRect()是相对于视窗的位置，会受滚动影响
-  function get_layout(ele) {
-    const layout = {
-      width : ele.offsetWidth,
-      height : ele.offsetHeight,
-      top : ele.offsetTop,
-      left : ele.offsetLeft
-    }
-    if (ele.offsetParent) {
-      const parentLayout = get_layout(ele.offsetParent)
-      layout.left += parentLayout.left
-      layout.top += parentLayout.top
-    }
-    return layout
+// offsetLeft offsetRight是相对于offsetParent的位置
+// Element.getBoundingClientRect()是相对于视窗的位置，会受滚动影响
+function get_layout(ele) {
+  const layout = {
+    width: ele.offsetWidth,
+    height: ele.offsetHeight,
+    top: ele.offsetTop,
+    left: ele.offsetLeft
   }
+  if (ele.offsetParent) {
+    const parentLayout = get_layout(ele.offsetParent)
+    layout.left += parentLayout.left
+    layout.top += parentLayout.top
+  }
+  return layout
+}
 ```
 
 ### 汉子排序
 
 ```js
 // 汉子排序
-var arr = ['王成成','王峰','蒋介石','李明'].sort((a,b) => a.localeCompare(b, 'zh'))
+var arr = ['王成成', '王峰', '蒋介石', '李明'].sort((a, b) =>
+  a.localeCompare(b, 'zh')
+)
 console.log(arr)
 ```
 
 ### 笛卡尔积
 
 ```js
-  function dikaerji(...Matrix) {
-    if (Matrix.length === 0) return []
-    if (Matrix.length === 1) return Matrix[0]
-    return Matrix.reduce((A,B) => {
-      const product = []
-      for (let i = 0; i < A.length; i++) {
-        for (let j = 0; j < B.length; j++) {
-          product.push(
-            Array.isArray(A[i]) ? [...A[i], B[j]] : [A[i], B[j]]
-          )
-        }
+function dikaerji(...Matrix) {
+  if (Matrix.length === 0) return []
+  if (Matrix.length === 1) return Matrix[0]
+  return Matrix.reduce((A, B) => {
+    const product = []
+    for (let i = 0; i < A.length; i++) {
+      for (let j = 0; j < B.length; j++) {
+        product.push(Array.isArray(A[i]) ? [...A[i], B[j]] : [A[i], B[j]])
       }
-      console.log(product)
-      return product
-    })
-  }
-  var arr = [['a','b'],[3,4],['x','y']]
-  dikaerji(...arr)
+    }
+    console.log(product)
+    return product
+  })
+}
+var arr = [
+  ['a', 'b'],
+  [3, 4],
+  ['x', 'y']
+]
+dikaerji(...arr)
 ```
 
 ### 全排列
 
 ```js
-  function* perm1(A, N) {
-    if(!N) { N = A.length}
-    if(N === 1) { yield A.slice(); return}
-    for (let i = 0; i < N; i++) {
-      swap(A, i, N - 1)
-      yield * perm1(A, N - 1)
-      swap(A, i, N - 1)
-    }
+function* perm1(A, N) {
+  if (!N) {
+    N = A.length
   }
-  var it = perm1(arr)
-  console.log([...it])
+  if (N === 1) {
+    yield A.slice()
+    return
+  }
+  for (let i = 0; i < N; i++) {
+    swap(A, i, N - 1)
+    yield* perm1(A, N - 1)
+    swap(A, i, N - 1)
+  }
+}
+var it = perm1(arr)
+console.log([...it])
 
-  // 
-  function swap(arr,i,j) {  
-    if(i!=j) {   
-      [ arr[i], arr[j]] = [ arr[j], arr[i]]
-    }  
+//
+function swap(arr, i, j) {
+  if (i != j) {
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
   }
+}
 ```
 
 ### 生成器
@@ -731,46 +755,50 @@ console.log(arr)
 ```js
 // 生成器构造斐波那契数列
 function* fibonacci() {
-  let a = 1, b = 1
-  yield a; yield b
+  let a = 1,
+    b = 1
+  yield a
+  yield b
   while (true) {
     const t = b
-    b = a + b; a = t
+    b = a + b
+    a = t
     yield b
   }
 }
 const it = fibonacci()
-const feb10 = Array.form( Array(10), it.next, it).map( x => x.value )
+const feb10 = Array.form(Array(10), it.next, it).map(x => x.value)
 console.log(feb10)
 
 // 数组展平的生成器实现
 function* flatten(array) {
   for (let i = 0; i < array.length; i++) {
-    if ( Array.isArray(array[i]) ) {
-      yield * flatten(array[i])
+    if (Array.isArray(array[i])) {
+      yield* flatten(array[i])
     } else {
       yield array[i]
-    } 
+    }
   }
 }
-console.log( [...flatten([1,2,[3,4,5,[6,7]]])] )
+console.log([...flatten([1, 2, [3, 4, 5, [6, 7]]])])
 ```
 
 ### 数组最大深度
 
 ```js
-  var arr1 = [1, 2, [1, [1, 2, [1, 2, [1, 2, [1, 2, [1, 2, [1, 2]]]]]], 3]], a = 1;
-  function multiarr(arr1) {
-    for (i = 0; i < arr1.length; i++) {
-      if (arr1[i] instanceof Array) {
-        a++;
-        arr1 = arr1[i];
-        multiarr(arr1);
-      }
+var arr1 = [1, 2, [1, [1, 2, [1, 2, [1, 2, [1, 2, [1, 2, [1, 2]]]]]], 3]],
+  a = 1
+function multiarr(arr1) {
+  for (i = 0; i < arr1.length; i++) {
+    if (arr1[i] instanceof Array) {
+      a++
+      arr1 = arr1[i]
+      multiarr(arr1)
     }
-    return a;
   }
-  console.log(multiarr(arr1));
+  return a
+}
+console.log(multiarr(arr1))
 ```
 
 ### 数组展平通过传入整数参数控制“拉平”层数
@@ -778,58 +806,61 @@ console.log( [...flatten([1,2,[3,4,5,[6,7]]])] )
 ```js
 // array展平
 function flatten(arr) {
-    return [].concat(
-        ...arr.map(x =>
-            Array.isArray(x) ? flatten(x) : x
-        )
-    )
+  return [].concat(...arr.map(x => (Array.isArray(x) ? flatten(x) : x)))
 }
-flatten(arr);
-
+flatten(arr)
 
 // reduce + 递归
 function flat(arr, num = 1) {
-    return num > 0
-        ? arr.reduce(
-            (pre, cur) =>
-                pre.concat(Array.isArray(cur) ? flat(cur, num - 1) : cur),
-            []
-        )
-        : arr.slice();
+  return num > 0
+    ? arr.reduce(
+        (pre, cur) => pre.concat(Array.isArray(cur) ? flat(cur, num - 1) : cur),
+        []
+      )
+    : arr.slice()
 }
-const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
-flat(arr, Infinity);
+const arr = [
+  1,
+  2,
+  3,
+  4,
+  [1, 2, 3, [1, 2, 3, [1, 2, 3]]],
+  5,
+  'string',
+  { name: '弹铁蛋同学' }
+]
+flat(arr, Infinity)
 ```
 
 ### hailstone
 
 ```js
-function hailstoneArr(e){
-    var length = 0;
-    var arr = [];
-    while (e>1) {
-        (e % 2) ? e = 3 * e + 1 : e /=2;
-        arr.push(e)
-        length++;
-    }
-    return arr;
-    console.log(length);
-    console.log(arr);
-}
-function hailstoneLength(e){
-    var length = 0;
-    var arr = [];
-    while (e>1) {
-    (e % 2) ? e = 3 * e + 1 : e /=2;
+function hailstoneArr(e) {
+  var length = 0
+  var arr = []
+  while (e > 1) {
+    e % 2 ? (e = 3 * e + 1) : (e /= 2)
     arr.push(e)
-    length++;
-    }
-    return length;
-    console.log(length);
-    console.log(arr);
+    length++
+  }
+  return arr
+  console.log(length)
+  console.log(arr)
 }
-hailstoneArr(42);
-hailstoneLength(42);
+function hailstoneLength(e) {
+  var length = 0
+  var arr = []
+  while (e > 1) {
+    e % 2 ? (e = 3 * e + 1) : (e /= 2)
+    arr.push(e)
+    length++
+  }
+  return length
+  console.log(length)
+  console.log(arr)
+}
+hailstoneArr(42)
+hailstoneLength(42)
 ```
 
 ### 按属性分组对象数组
@@ -839,33 +870,33 @@ var people = [
   { name: 'Alice', age: 21 },
   { name: 'Max', age: 20 },
   { name: 'Jane', age: 20 }
-];
-var groupInPro = function (arr,pro) {
-  return arr.reduce(function (res,item) {
+]
+var groupInPro = function(arr, pro) {
+  return arr.reduce(function(res, item) {
     var key = item[pro]
     if (!res[key]) {
       res[key] = []
     }
     res[key].push(item)
     return res
-  },{})
+  }, {})
 }
-console.log(groupInPro(people,'age'))
+console.log(groupInPro(people, 'age'))
 ```
 
 ### sku
 
 ```js
-let names = ["iPhone X", "iPhone XS"]
+let names = ['iPhone X', 'iPhone XS']
 
-let colors = ["黑色", "白色"]
+let colors = ['黑色', '白色']
 
-let storages = ["64g", "256g"]
+let storages = ['64g', '256g']
 
-let combine = function (...chunks) {
+let combine = function(...chunks) {
   let res = []
 
-  let helper = function (chunkIndex, prev) {
+  let helper = function(chunkIndex, prev) {
     let chunk = chunks[chunkIndex]
     let isLast = chunkIndex === chunks.length - 1
     for (let val of chunk) {
@@ -892,33 +923,33 @@ console.log(combine(names, colors, storages))
 
 ```js
 var intToRoman = function(num) {
-let dic = [
-    {s: 'I', n: 1},
-    {s: 'IV', n: 4},
-    {s: 'V', n: 5},
-    {s: 'IX', n: 9},
-    {s: 'X', n: 10},
-    {s: 'XL', n: 40},
-    {s: 'L', n: 50},
-    {s: 'XC', n: 90},
-    {s: 'C', n: 100},
-    {s: 'CD', n: 400},
-    {s: 'D', n: 500},
-    {s: 'CM', n: 900},
-    {s: 'M', n: 1000}
-];
-let res = "";
-while(num > 0) {
-    for(let i = dic.length-1; i >=0; --i) {
-        if(num - dic[i].n >= 0) {
-            res += dic[i].s;
-            num -= dic[i].n;
-            break;
-        }
+  let dic = [
+    { s: 'I', n: 1 },
+    { s: 'IV', n: 4 },
+    { s: 'V', n: 5 },
+    { s: 'IX', n: 9 },
+    { s: 'X', n: 10 },
+    { s: 'XL', n: 40 },
+    { s: 'L', n: 50 },
+    { s: 'XC', n: 90 },
+    { s: 'C', n: 100 },
+    { s: 'CD', n: 400 },
+    { s: 'D', n: 500 },
+    { s: 'CM', n: 900 },
+    { s: 'M', n: 1000 }
+  ]
+  let res = ''
+  while (num > 0) {
+    for (let i = dic.length - 1; i >= 0; --i) {
+      if (num - dic[i].n >= 0) {
+        res += dic[i].s
+        num -= dic[i].n
+        break
+      }
     }
+  }
+  return res
 }
-return res;
-};
 console.log(intToRoman(3210))
 ```
 
@@ -926,101 +957,102 @@ console.log(intToRoman(3210))
 
 ```js
 var romanToInt = function(s) {
-    const romaMap = {
-        'I': 1,
-        'V': 5,
-        'X': 10,
-        'L': 50,
-        'C': 100,
-        'D': 500,
-        'M': 1000,
-        'IV': 4,
-        'IX': 9,
-        'XL': 40,
-        'XC': 90,
-        'CD': 400,
-        'CM': 900,
-    }
-    let result = 0
-    const romaSplit = s.match(/(CM)|(CD)|(XC)|(XL)|(IX)|(IV)|(IX)|(\w)/g) // \w	查找单词字符正则
-    console.log(romaSplit)
-    for (const v of romaSplit) {
-        result += romaMap[v]
-    }
-    return result
-};
+  const romaMap = {
+    I: 1,
+    V: 5,
+    X: 10,
+    L: 50,
+    C: 100,
+    D: 500,
+    M: 1000,
+    IV: 4,
+    IX: 9,
+    XL: 40,
+    XC: 90,
+    CD: 400,
+    CM: 900
+  }
+  let result = 0
+  const romaSplit = s.match(/(CM)|(CD)|(XC)|(XL)|(IX)|(IV)|(IX)|(\w)/g) // \w	查找单词字符正则
+  console.log(romaSplit)
+  for (const v of romaSplit) {
+    result += romaMap[v]
+  }
+  return result
+}
 console.log(romanToInt('III'))
-console.log(romanToInt("MCMXCIVII"))
-console.log(romanToInt("MMMCCX"))
+console.log(romanToInt('MCMXCIVII'))
+console.log(romanToInt('MMMCCX'))
 ```
 
 ### 合并 并排序
 
 ```js
 var array = [
-    {a:7,b:100},
-    {a:5,b:900},
-    {a:1,b:400},
-    {a:2,b:600},
-    {a:3,b:200},
-    {a:4,b:100},
-    {a:1,b:1000},
-    {a:2,b:880},
-    {a:3,b:30},
-    {a:2,b:10},
-    {a:3,b:90},
-    {a:4,b:100},
-    {a:5,b:10},
-    {a:3,b:700},
-    {a:1,b:100},
-    {a:6,b:400},
-    {a:3,b:200},
-    {a:4,b:800}
-];
+  { a: 7, b: 100 },
+  { a: 5, b: 900 },
+  { a: 1, b: 400 },
+  { a: 2, b: 600 },
+  { a: 3, b: 200 },
+  { a: 4, b: 100 },
+  { a: 1, b: 1000 },
+  { a: 2, b: 880 },
+  { a: 3, b: 30 },
+  { a: 2, b: 10 },
+  { a: 3, b: 90 },
+  { a: 4, b: 100 },
+  { a: 5, b: 10 },
+  { a: 3, b: 700 },
+  { a: 1, b: 100 },
+  { a: 6, b: 400 },
+  { a: 3, b: 200 },
+  { a: 4, b: 800 }
+]
 // 合并同类项
-var obj={},newArr=[];
-array.forEach(function(item){
-    //根据对象的属性是唯一的，将值作为对象的属性名
-    if(!obj[item.a]){
-        var arr=[];
-        arr.push(item);
-        newArr.push(arr);
-        obj[item.a]=item;
-    }else{
-        newArr.forEach(function(value,index){
-            //如果已经存在  就循环新组的值将值插入属性相同的数组里   为了防止重复添加   只要和第一个比较就可以了
-            if(value[0].a==item.a){
-                value.push(item)
-            }
-        })
-    }
+var obj = {},
+  newArr = []
+array.forEach(function(item) {
+  //根据对象的属性是唯一的，将值作为对象的属性名
+  if (!obj[item.a]) {
+    var arr = []
+    arr.push(item)
+    newArr.push(arr)
+    obj[item.a] = item
+  } else {
+    newArr.forEach(function(value, index) {
+      //如果已经存在  就循环新组的值将值插入属性相同的数组里   为了防止重复添加   只要和第一个比较就可以了
+      if (value[0].a == item.a) {
+        value.push(item)
+      }
+    })
+  }
 })
 // b属性由小到大排序
-function compare(value){
-        return function(aa,bb){
-            var aaa = aa[value];
-            var bbb = bb[value];
-            return aaa - bbb;
-        }
-      }
+function compare(value) {
+  return function(aa, bb) {
+    var aaa = aa[value]
+    var bbb = bb[value]
+    return aaa - bbb
+  }
+}
 for (let index = 0; index < newArr.length; index++) {
-    const element = newArr[index];
-    element.sort(compare('b'))
+  const element = newArr[index]
+  element.sort(compare('b'))
 }
 
 // a属性由小到大排序
-function BubbleSort1(newArr){
-    var i,j,temp;
-    for(i=0;i<newArr.length-1;i++){
-        for(j=i+1;j<newArr.length;j++){
-            if(newArr[i][0].a>newArr[j][0].a){
-                temp=newArr[j];
-                newArr[j]=newArr[i];
-                newArr[i]=temp;
-            }
-        }
+function BubbleSort1(newArr) {
+  var i, j, temp
+  for (i = 0; i < newArr.length - 1; i++) {
+    for (j = i + 1; j < newArr.length; j++) {
+      if (newArr[i][0].a > newArr[j][0].a) {
+        temp = newArr[j]
+        newArr[j] = newArr[i]
+        newArr[i] = temp
+      }
     }
-    return newArr;
+  }
+  return newArr
 }
 ```
 
@@ -1123,17 +1155,17 @@ var maximumSwap = function(num) {
 ### 千分位
 
 ```js
-const num=1234567899.11
-function toThousands(num){
-	num=num+''
-	let result=''
-	const decimalNum=num.split('.')[1]
-	let intNum=num.split('.')[0]
-	while(intNum.length>3){
-		result=','+intNum.slice(-3)+result
-		intNum=intNum.slice(0,intNum.length-3)
-	}
- return intNum+result+(decimalNum?'.'+decimalNum:'')
+const num = 1234567899.11
+function toThousands(num) {
+  num = num + ''
+  let result = ''
+  const decimalNum = num.split('.')[1]
+  let intNum = num.split('.')[0]
+  while (intNum.length > 3) {
+    result = ',' + intNum.slice(-3) + result
+    intNum = intNum.slice(0, intNum.length - 3)
+  }
+  return intNum + result + (decimalNum ? '.' + decimalNum : '')
 }
 console.log(toThousands(num))
 ```
@@ -1161,17 +1193,17 @@ console.log(toThousands(num))
 // };
 // 二维到一维【滚动数组思想」是一种常见的动态规划优化方法，在我们的题目中已经多次使用到，例如「剑指 Offer 46. 把数字翻译成字符串」、「70. 爬楼梯」等，当我们定义的状态在动态规划的转移方程中只和某几个状态相关的时候，就可以考虑这种优化方法，目的是给空间复杂度「降维」。】
 var uniquePaths = function(m, n) {
-  const dp = new Array(n).fill(1);
-  for(let i = 1; i < m; i++) {
-    for(let j = 1; j < n; j++) {
-      dp[j] = dp[j] + dp[j-1];
+  const dp = new Array(n).fill(1)
+  for (let i = 1; i < m; i++) {
+    for (let j = 1; j < n; j++) {
+      dp[j] = dp[j] + dp[j - 1]
     }
   }
-  return dp[n-1];
-};
+  return dp[n - 1]
+}
 ```
 
-### 不同路径II 
+### 不同路径 II
 
 ```js
 /**
@@ -1180,77 +1212,124 @@ var uniquePaths = function(m, n) {
  */
 //  既然是障碍物，说明此路不通，即经过此节点的路径数为0，所以当遇到障碍物时，设置dp[i][r] = 0即可
 var uniquePathsWithObstacles = function(obstacleGrid) {
-    // 行
-    var n = obstacleGrid.length;
-    // 列
-    var m = obstacleGrid[0].length;
-    // 初始化
-    var dp = new Array(n);
-    for(var i = 0;i<n;i++){
-        dp[i] = new Array(m).fill(0);
+  // 行
+  var n = obstacleGrid.length
+  // 列
+  var m = obstacleGrid[0].length
+  // 初始化
+  var dp = new Array(n)
+  for (var i = 0; i < n; i++) {
+    dp[i] = new Array(m).fill(0)
+  }
+  dp[0][0] = obstacleGrid[0][0] == 0 ? 1 : 0
+  // 如果起点就是障碍物
+  if (dp[0][0] == 0) {
+    return 0
+  }
+  // 第一行
+  for (var j = 1; j < m; j++) {
+    if (obstacleGrid[0][j] != 1) {
+      dp[0][j] = dp[0][j - 1]
     }
-    dp[0][0] = obstacleGrid[0][0] == 0 ? 1 : 0;
-    // 如果起点就是障碍物
-    if(dp[0][0] == 0){
-        return 0 ;
+  }
+  // 第一列
+  for (var r = 1; r < n; r++) {
+    if (obstacleGrid[r][0] != 1) {
+      dp[r][0] = dp[r - 1][0]
     }
-    // 第一行
-    for(var j = 1;j < m;j++){
-        if(obstacleGrid[0][j] != 1){
-            dp[0][j] = dp[0][j-1];
-        }
+  }
+  // 动态递推
+  for (var i = 1; i < n; i++) {
+    for (var r = 1; r < m; r++) {
+      if (obstacleGrid[i][r] != 1) {
+        dp[i][r] = dp[i - 1][r] + dp[i][r - 1]
+      }
     }
-    // 第一列
-    for(var r = 1;r < n;r++){
-        if(obstacleGrid[r][0] != 1){
-            dp[r][0] = dp[r-1][0];
-        }
-    }
-    // 动态递推
-    for(var i = 1;i < n;i++){
-        for(var r = 1;r < m;r++){
-            if(obstacleGrid[i][r] != 1){
-                dp[i][r] = dp[i-1][r] +dp[i][r-1];
-            }
-        }
-    }
-    return dp[n-1][m-1];
-};
+  }
+  return dp[n - 1][m - 1]
+}
 // 降维
 var uniquePathsWithObstacles = function(obstacleGrid) {
-    var n = obstacleGrid.length;
-    var m = obstacleGrid[0].length;
-    var result = Array(m).fill(0);
-    result[0] = 1;
-    for(var i = 0;i < n;i++){
-        for(var j = 0;j < m;j++){
-            if(obstacleGrid[i][j] == 1){
-                result[j] = 0;
-            }else if(j > 0){
-                result[j] += result[j-1];
-            }
-        }
+  var n = obstacleGrid.length
+  var m = obstacleGrid[0].length
+  var result = Array(m).fill(0)
+  result[0] = 1
+  for (var i = 0; i < n; i++) {
+    for (var j = 0; j < m; j++) {
+      if (obstacleGrid[i][j] == 1) {
+        result[j] = 0
+      } else if (j > 0) {
+        result[j] += result[j - 1]
+      }
     }
-    return result[m-1];
-};
+  }
+  return result[m - 1]
+}
 ```
 
 ### 最大盛水问题
 
 ```js
 var maxArea = function(height) {
-    if (!height || height.length <= 1) return 0;
-    var left = 0;
-    var right = height.length - 1;
-    var answer = 0;
-    while(left < right){
-        answer = Math.max(answer,((right - left) * (Math.min(height[left], height[right]))))
-        if (height[left] < height[right]) {
-            left ++
-        } else {
-            right --
-        }
+  if (!height || height.length <= 1) return 0
+  var left = 0
+  var right = height.length - 1
+  var answer = 0
+  while (left < right) {
+    answer = Math.max(
+      answer,
+      (right - left) * Math.min(height[left], height[right])
+    )
+    if (height[left] < height[right]) {
+      left++
+    } else {
+      right--
     }
-    return answer
-};
+  }
+  return answer
+}
+```
+
+### 数组子集
+
+输入：nums = [1,2,3]
+输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+
+```js
+// 回溯
+const subsets = nums => {
+  const res = []
+
+  const dfs = (index, list) => {
+    if (index == nums.length) {
+      // 指针越界
+      res.push(list.slice()) // 加入解集
+      return // 结束当前的递归
+    }
+    list.push(nums[index]) // 选择这个数
+    dfs(index + 1, list) // 基于该选择，继续往下递归，考察下一个数
+    list.pop() // 上面的递归结束，撤销该选择
+    dfs(index + 1, list) // 不选这个数，继续往下递归，考察下一个数
+  }
+
+  dfs(0, [])
+  return res
+}
+
+// 递归
+const subsets = nums => {
+  const res = []
+
+  const dfs = (index, list) => {
+    res.push(list.slice()) // 调用子递归前，加入解集
+    for (let i = index; i < nums.length; i++) {
+      // 枚举出所有可选的数
+      list.push(nums[i]) // 选这个数
+      dfs(i + 1, list) // 基于选这个数，继续递归，传入的是i+1，不是index+1
+      list.pop() // 撤销选这个数
+    }
+  }
+  dfs(0, [])
+  return res
+}
 ```
