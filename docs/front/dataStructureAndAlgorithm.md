@@ -1387,3 +1387,77 @@ var longestCommonPrefix = function(strs) {
   return ans
 }
 ```
+
+### 目标和
+
+给你一个整数数组 nums 和一个整数 target 。向数组中的每个整数前添加  '+' 或 '-' ，然后串联起所有整数，可以构造一个 表达式 ：
+例如，nums = [2, 1] ，可以在 2 之前添加 '+' ，在 1 之前添加 '-' ，然后串联起来得到表达式 "+2-1" 。
+返回可以通过上述方法构造的、运算结果等于 target 的不同 表达式 的数目。
+
+- [目标和](https://leetcode-cn.com/problems/target-sum/solution/mu-biao-he-by-leetcode-solution-o0cp/)
+
+```js
+// 例子
+// 输入：nums = [1,1,1,1,1], target = 3
+// 输出：5
+// 解释：一共有 5 种方法让最终目标和为 3 。
+;-1 + 1 + 1 + 1 + 1 = 3 + 1 - 1 + 1 + 1 + 1 = 3 + 1 + 1 - 1 + 1 + 1 = 3 +
+1 +
+1 +
+1 -
+1 +
+1 = 3 + 1 + 1 + 1 + 1 - 1 = 3
+```
+
+```js
+// 回溯
+// 数组 nums 的每个元素都可以添加符号 + 或 -，因此每个元素有 2 种添加符号的方法，n 个数共有 2^n种添加符号的方法，对应 2^n 种不同的表达式。当 n 个元素都添加符号之后，即得到一种表达式，如果表达式的结果等于目标数 target，则该表达式即为符合要求的表达式。
+
+// 可以使用回溯的方法遍历所有的表达式，回溯过程中维护一个计数器 count，当遇到一种表达式的结果等于目标数 target 时，将 count 的值加 1。遍历完所有的表达式之后，即可得到结果等于目标数 target 的表达式的数目。
+
+var findTargetSumWays = function(nums, target) {
+  let count = 0
+  const backtrack = (nums, target, index, sum) => {
+    if (index === nums.length) {
+      if (sum === target) {
+        count++
+      }
+    } else {
+      backtrack(nums, target, index + 1, sum + nums[index])
+      backtrack(nums, target, index + 1, sum - nums[index])
+    }
+  }
+  backtrack(nums, target, 0, 0)
+  return count
+}
+// 时间复杂度：O(2^n)，其中 n 是数组 nums 的长度。
+// 空间复杂度：O(n)，其中 n 是数组 nums 的长度。
+```
+
+```js
+// 动态规划
+// 记数组的元素和为 sum，添加 - 号的元素之和为 neg，则其余添加 + 的元素之和为 sum−neg，得到的表达式的结果为:
+// (sum−neg)−neg=sum−2⋅neg=target
+// 即：neg = (sum - target) / 2
+var findTargetSumWays = function(nums, target) {
+  let sum = 0
+  for (const num of nums) {
+    sum += num
+  }
+  const diff = sum - target
+  if (diff < 0 || diff % 2 !== 0) {
+    return 0
+  }
+  const neg = Math.floor(diff / 2)
+  const dp = new Array(neg + 1).fill(0)
+  dp[0] = 1
+  for (const num of nums) {
+    for (let j = neg; j >= num; j--) {
+      dp[j] += dp[j - num]
+    }
+  }
+  return dp[neg]
+}
+// 时间复杂度：O(n × (sum − target))
+// 空间复杂度：O(sum − target)
+```
