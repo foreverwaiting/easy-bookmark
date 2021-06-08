@@ -1401,12 +1401,9 @@ var longestCommonPrefix = function(strs) {
 // 输入：nums = [1,1,1,1,1], target = 3
 // 输出：5
 // 解释：一共有 5 种方法让最终目标和为 3 。
-;-1 + 1 + 1 + 1 + 1 = 3 + 1 - 1 + 1 + 1 + 1 = 3 + 1 + 1 - 1 + 1 + 1 = 3 +
-1 +
-1 +
-1 -
-1 +
-1 = 3 + 1 + 1 + 1 + 1 - 1 = 3
+// -1 + 1 + 1 + 1 + 1 = 3
+// + 1 - 1 + 1 + 1 + 1 = 3
+// + 1 + 1 - 1 + 1 + 1 = 3
 ```
 
 ```js
@@ -1460,4 +1457,95 @@ var findTargetSumWays = function(nums, target) {
 }
 // 时间复杂度：O(n × (sum − target))
 // 空间复杂度：O(sum − target)
+```
+
+### 单词拆分
+
+```js
+// 输入: s = "leetcode", wordDict = ["leet", "code"]
+// 输出: true
+// 解释: 返回 true 因为 "leetcode" 可以被拆分成 "leet code"。
+
+// 输入: s = "applepenapple", wordDict = ["apple", "pen"]
+// 输出: true
+// 解释: 返回 true 因为 "applepenapple" 可以被拆分成 "apple pen apple"。注意你可以重复使用字典中的单词。
+
+// 输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+// 输出: false
+```
+
+```js
+// 动态规划
+function wordBreak(s: string, wordDict: string[]): boolean {
+  const n: number = s.length
+  const wordDictSet: Set<string> = new Set(wordDict)
+  const dp: Array<boolean> = new Array(n + 1).fill(false)
+  dp[0] = true
+  for (let i = 1; i <= n; i++) {
+    for (let j = 0; j < i; j++) {
+      if (dp[j] && wordDictSet.has(s.substr(j, i - j))) {
+        dp[i] = true
+        break
+      }
+    }
+  }
+  return dp[n]
+}
+```
+
+### 单词拆分 2
+
+```js
+// 输入:
+s = 'catsanddog'
+wordDict = ['cat', 'cats', 'and', 'sand', 'dog']
+// 输出:
+arr = ['cats and dog', 'cat sand dog']
+
+// 输入:
+s = 'pineapplepenapple'
+wordDict = ['apple', 'pen', 'applepen', 'pine', 'pineapple']
+// 输出:
+arr = ['pine apple pen apple', 'pineapple pen apple', 'pine applepen apple']
+// 解释: 注意你可以重复使用字典中的单词。
+
+// 输入:
+s = 'catsandog'
+wordDict = ['cats', 'dog', 'sand', 'and', 'cat']
+// 输出:
+arr = []
+```
+
+```js
+// 动态规划
+const backtrack = (s, length, wordSet, index, map) => {
+  if (map.has(index)) {
+    return map.get(index)
+  }
+  const wordBreaks = []
+  if (index === length) {
+    wordBreaks.push([])
+  }
+  for (let i = index + 1; i <= length; i++) {
+    const word = s.substring(index, i)
+    if (wordSet.has(word)) {
+      const nextWordBreaks = backtrack(s, length, wordSet, i, map)
+      for (const nextWordBreak of nextWordBreaks) {
+        const wordBreak = [word, ...nextWordBreak]
+        wordBreaks.push(wordBreak)
+      }
+    }
+  }
+  map.set(index, wordBreaks)
+  return wordBreaks
+}
+var wordBreak = function(s, wordDict) {
+  const map = new Map()
+  const wordBreaks = backtrack(s, s.length, new Set(wordDict), 0, map)
+  const breakList = []
+  for (const wordBreak of wordBreaks) {
+    breakList.push(wordBreak.join(' '))
+  }
+  return breakList
+}
 ```
