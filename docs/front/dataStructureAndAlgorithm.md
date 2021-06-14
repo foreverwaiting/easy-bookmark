@@ -1631,6 +1631,128 @@ var coinChange = function(coins, amount) {
 }
 ```
 
+### 最大正方形
+
+```js
+// 暴力法
+// 遍历矩阵中的每个元素，每次遇到 1，则将该元素作为正方形的左上角；
+// 确定正方形的左上角后，根据左上角所在的行和列计算可能的最大正方形的边长（正方形的范围不能超出矩阵的行数和列数），在该边长范围内寻找只包含 1 的最大正方形；
+// 每次在下方新增一行以及在右方新增一列，判断新增的行和列是否满足所有元素都是 1。
+function maximalSquare(matrix) {
+  console.time()
+  let maxSide = 0
+  if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+    return maxSide
+  }
+  let rows = matrix.length
+  let columns = matrix[0].length
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+      // 遇到一个 1 作为正方形的左上角
+      if (matrix[i][j] == '1') {
+        maxSide = Math.max(maxSide, 1)
+        // 计算可能的最大正方形边长
+        let currentMaxSide = Math.min(rows - i, columns - j)
+        for (let k = 1; k < currentMaxSide; k++) {
+          // 判断新增的一行一列是否均为 1
+          let flag = true
+          if (matrix[i + k][j + k] == '0') {
+            break
+          }
+          for (let m = 0; m < k; m++) {
+            if (matrix[i + k][j + m] == '0' || matrix[i + m][j + k] == '0') {
+              flag = false
+              break
+            }
+          }
+          if (flag) {
+            maxSide = Math.max(maxSide, k + 1)
+          } else {
+            break
+          }
+        }
+      }
+    }
+  }
+  let maxSquare = maxSide * maxSide
+  console.timeEnd()
+  return maxSquare
+}
+// 时间复杂度: m 和 nn 是矩阵的行数和列数
+// 1.需要遍历整个矩阵寻找每个 11，遍历矩阵的时间复杂度是 O(mn)O(mn)。
+// 2.对于每个可能的正方形，其边长不超过 m 和 n 中的最小值，需要遍历该正方形中的每个元素判断是不是只包含 1，遍历正方形时间复杂度是 O(min(m,n)^2)
+// 3.总时间复杂度是 O(mn min(m,n)^2)
+
+// 空间复杂度：O(1) 额外使用的空间复杂度为常数。
+```
+
+```js
+// 动态规划
+// 动态方程dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
+
+function maximalSquare(matrix) {
+  console.time()
+  let maxSide = 0
+  if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+    return maxSide
+  }
+  let rows = matrix.length
+  let columns = matrix[0].length
+
+  let dp = new Array(matrix.length)
+  for (let i = 0; i < rows; i++) {
+    dp[i] = new Array(matrix[i].length).fill(0)
+    for (let j = 0; j < columns; j++) {
+      if (matrix[i][j] == '1') {
+        if (i == 0 || j == 0) {
+          dp[i][j] = 1
+        } else {
+          dp[i][j] =
+            Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1
+        }
+        maxSide = Math.max(maxSide, dp[i][j])
+      }
+    }
+  }
+  let maxSquare = maxSide * maxSide
+  console.timeEnd()
+  return maxSquare
+}
+// 时间复杂度：O(mn)
+// 空间复杂度：O(mn)
+```
+
+### 统计全为 1 的正方形子矩阵
+
+给你一个 m \* n 的矩阵，矩阵中的元素不是 0 就是 1，请你统计并返回其中完全由 1 组成的 正方形 子矩阵的个数。
+
+```js
+var countSquares = function(matrix) {
+  if (matrix.length === 0 || matrix[0].length === 0) return 0
+  let rowLimit = matrix.length,
+    colLimit = matrix[0].length,
+    count = 0
+  let dp = JSON.parse(JSON.stringify(matrix))
+
+  for (let i = 0; i < rowLimit; i++) {
+    for (let j = 0; j < colLimit; j++) {
+      if (matrix[i][j] !== 0) {
+        // 如果不越界，那就求出以当前点为右下角的正方形边长
+        if (i - 1 >= 0 && j - 1 >= 0) {
+          dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1
+          count += dp[i][j] // 边长是几，以当前点为右下角的正方形就有几个，通过观察可以得出此结论
+        } else {
+          // 如果越界了，也要加 1，至少当前点是1，可以计为一个正方形
+          count += 1
+        }
+      }
+    }
+  }
+
+  return count
+}
+```
+
 ### mac 安装
 
 - cat /etc/shells 查看所有终端类型
