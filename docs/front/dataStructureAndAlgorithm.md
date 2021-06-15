@@ -1753,6 +1753,104 @@ var countSquares = function(matrix) {
 }
 ```
 
+### 二分法
+
+使得时间复杂度为：O(logn)
+
+### 最长回文子串
+
+一个字符串中最长的回文子串
+
+```js
+// 暴力枚举
+var longestPalindrome = function(s) {
+  function isPalindrome(str) {
+    var len = str.length
+    var middle = parseInt(len / 2)
+    for (var i = 0; i < middle; i++) {
+      if (str[i] != str[len - i - 1]) {
+        return false
+      }
+    }
+    return true
+  }
+  var ans = ''
+  var max = 0
+  var len = s.length
+  for (var i = 0; i < len; i++) {
+    for (var r = i + 1; r <= len; r++) {
+      var tmpStr = s.substring(i, r)
+      if (isPalindrome(tmpStr) && tmpStr.length > max) {
+        ans = s.substring(i, r)
+        max = tmpStr.length
+      }
+    }
+  }
+  return ans
+}
+// 时间复杂度O(n^3)
+// 空间复杂度O(1)
+```
+
+```js
+// 巧解
+// 两种情况
+// 一种是回文子串长度为奇数（如aba，中心是b）
+// 另一种回文子串长度为偶数（如abba，中心是b，b）
+// 循环遍历字符串 对取到的每个值 都假设他可能成为最后的中心进行判断
+var longestPalindrome = function(s) {
+  if (s.length < 2) {
+    return s
+  }
+  let res = ''
+  for (let i = 0; i < s.length; i++) {
+    // 回文子串长度是奇数
+    helper(i, i)
+    // 回文子串长度是偶数
+    helper(i, i + 1)
+  }
+
+  function helper(m, n) {
+    while (m >= 0 && n < s.length && s[m] == s[n]) {
+      m--
+      n++
+    }
+    // 注意此处m,n的值循环完后  是恰好不满足循环条件的时刻
+    // 此时m到n的距离为n-m+1，但是mn两个边界不能取 所以应该取m+1到n-1的区间  长度是n-m-1
+    if (n - m - 1 > res.length) {
+      // slice也要取[m+1,n-1]这个区间
+      res = s.slice(m + 1, n)
+    }
+  }
+  return res
+}
+```
+
+```js
+// 动态规划
+var longestPalindrome = function(s) {
+  let len = s.length
+  let res = ''
+  //创建二维数组
+  let dp = Array.from(new Array(len), () => new Array(len).fill(0))
+  //从字符串首部开始
+  for (let i = 0; i < len; i++) {
+    //从字符串i前开始依次向前查找
+    for (let j = i; j >= 0; j--) {
+      dp[j][i] = s[i] == s[j] && (i - j < 2 || dp[j + 1][i - 1])
+      if (dp[j][i] && i - j + 1 > res.length) {
+        res = s.substring(j, i + 1)
+      }
+    }
+  }
+  console.log(dp)
+  return res
+}
+```
+
+```js
+```
+
 ### mac 安装
 
 - cat /etc/shells 查看所有终端类型
