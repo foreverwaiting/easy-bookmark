@@ -1,7 +1,3 @@
----
-sidebar: auto
----
-
 # interesting
 
 ::: tip 说明

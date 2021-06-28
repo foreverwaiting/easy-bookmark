@@ -17,6 +17,7 @@
   - [javascript 工具库](#javascript%E5%B7%A5%E5%85%B7%E5%BA%93)
   - [小程序](#%E5%B0%8F%E7%A8%8B%E5%BA%8F)
   - [css](#css)
+  - [有意思](#%E6%9C%89%E6%84%8F%E6%80%9D-1)
 
 # 态度
 
@@ -137,3 +138,15 @@
 [CSSer 非常优秀的 CSS 网站](https://css-tricks.com/)
 
 [濒危动物折纸公益网（css 效果）](http://species-in-pieces.com/)
+
+## 有意思
+
+- [**build-your-own-x**](https://github.com/danistefanovic/build-your-own-x) 教你用各种语言实现 Bot Database Neural Network
+- [**nsfwjs**](https://github.com/infinitered/nsfwjs) 前端图片鉴黄，基于 Tensorflow
+- [**elevator.js**](https://github.com/tholman/elevator.js) 我很喜欢的一个库，让一个 back-to-top 的效果有了一种坐复古电梯的感觉
+- [**WebGL-Fluid-Simulation**](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) 很酷的 WebGL 交互
+- [**react-kawaii**](https://github.com/miukimiu/react-kawaii) 一个非常可爱的 React 卡通人脸库，很有意思
+- [**chart-race-react**](https://github.com/Mckinsey666/chart-race-react) 图表竞赛 长条图赛跑动画 在微博或者 b 站这种类型视频很火
+- [**98.css**](https://jdan.github.io/98.css/#tree-view) windows 98 主题分格 css
+
+https://panjiachen.github.io/awesome-bookmarks/diary/read.html
