@@ -106,3 +106,111 @@ father 包管理 多个 package.json
 docz 快速写文档的库 lerna monorepo 管理
 
 Charles 抓包用，支持 https
+
+### sm
+
+#### vue 响应式数据的原理
+
+1.核心点: Object.defineProperty
+
+2.默认 Vue 在初始化数据时，会给 data 中的属性使用 Object.defineProperty 重新定义所有属
+性,当页面取到对应属性时。会进行依赖收集（收集当前组件的 watcher） 如果属性发生变化会通
+知相关依赖进行更新操作。
+
+#### vue 如何检测数组变化
+
+使用函数劫持的方式，重写了数组的方法
+
+Vue 将 data 中的数组，进行了原型链重写。指向了自己定义的数组原型方法，这样当调用数组
+api 时，可以通知依赖更新.如果数组中包含着引用类型。会对数组中的引用类型再次进行监控。
+
+#### 为何 Vue 采用异步渲染 nextTick
+
+因为如果不采用异步更新，那么每次更新数据都会对当前组件进行重新渲染.所以为了性能考虑。 Vue
+会在本轮数据更新后，再去异步更新视图!
+
+#### nextTick 实现原理
+
+理解:(宏任务和微任务) 异步方法
+
+nextTick 方法主要是使用了宏任务和微任务,定义了一个异步方法.多次调用 nextTick 会将方法存入
+队列中，通过这个异步方法清空当前队列。 所以这个 nextTick 方法就是异步方法
+
+#### watch computer method 区别
+
+默认 computed 也是一个 watcher 是具备缓存的，只要当依赖的属性发生变化时才会更新视图（lazy：true，默认不执行），计算属性算的是 data 没有的属性
+
+watch
+
+#### Watch 中的 deep:true 是如何实现的 递归
+
+当用户指定了 watch 中的 deep 属性为 true 时，如果当前监控的值是数组类型。会对对象中的每
+一项进行求值，此时会将当前 watcher 存入到对应属性的依赖中，这样数组中对象发生变化时也
+会通知数据更新
+
+#### vue
+
+要掌握每个生命周期什么时候被调用
+beforeCreate 在实例初始化之后，数据观测(data observer) 之前被调用。
+created 实例已经创建完成之后被调用。在这一步，实例已完成以下的配置：数据观测(data
+observer)，属性和方法的运算， watch/event 事件回调。这里没有$el
+beforeMount 在挂载开始之前被调用：相关的 render 函数首次被调用。
+mounted el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子。
+beforeUpdate 数据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前。
+updated 由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。
+beforeDestroy 实例销毁之前调用。在这一步，实例仍然完全可用。
+destroyed Vue 实例销毁后调用。调用后， Vue 实例指示的所有东西都会解绑定，所有的事件
+监听器会被移除，所有的子实例也会被销毁。 该钩子在服务器端渲染期间不被调用。
+要掌握每个生命周期内部可以做什么事
+created 实例已经创建完成，因为它是最早触发的原因可以进行一些数据，资源的请求。
+mounted 实例已经挂载完成，可以进行一些 DOM 操作
+beforeUpdate 可以在这个钩子中进一步地更改状态，这不会触发附加的重渲染过程。
+updated 可以执行依赖于 DOM 的操作。然而在大多数情况下，你应该避免在此期间更改状态，
+因为这可能会导致更新无限循环。 该钩子在服务器端渲染期间不被调用。
+destroyed 可以执行一些优化操作,清空定时器，解除绑定事件
+
+### 请求接口放哪里
+
+在 created 的时候，视图中的 dom 并没有渲染出来，所以此时如果直接去操 dom 节点，无法找到相
+关的元素
+在 mounted 中，由于此时 dom 已经渲染出来了，所以可以直接操作 dom 节点
+一般情况下都放到 mounted 中,保证逻辑的统一性,因为生命周期是同步执行的， ajax 是异步执行的
+服务端渲染不支持 mounted 方法，所以在服务端渲染的情况下统一放到 created 中
+
+何时需要使用 beforeDestroy
+理解:
+可能在当前页面中使用了 \$on 方法，那需要在组件销毁前解绑。
+清除自己定义的定时器
+解除事件的绑定 scroll mousemove ....
+
+### ast 语法树 VNode + data 【with 语法-js】
+
+将 template 转化成 render 函数
+
+```js
+function baseCompile (
+template: string,
+options: CompilerOptions
+) {
+const ast = parse(template.trim(), options) // 1.将模板转化成ast语法树
+if (options.optimize !== false) { // 2.优化树
+optimize(ast, options)
+}
+const code = generate(ast, options) // 3.生成树
+return {
+ast,
+render: code.render,
+staticRenderFns: code.staticRenderFns
+}
+})
+```
+
+### diff 算法的时间复杂度
+
+两个树的完全的 diff 算法是一个时间复杂度为 O(n3) , Vue 进行了优化·O(n3) 复杂度的问题转换成
+O(n) 复杂度的问题(只比较同级不考虑跨级问题) 在前端当中， 你很少会跨越层级地移动 Dom 元素。 所
+以 Virtual Dom 只会对同一个层级的元素进行对比。
+
+template 转 ast 树 转 render 函数 转 \_create 转 虚拟 DOM
+
+转 ast 语法树，vue 使用的一个库，这个库是 jquery 之父写的
