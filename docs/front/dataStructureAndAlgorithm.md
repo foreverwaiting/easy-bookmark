@@ -1848,6 +1848,223 @@ var longestPalindrome = function(s) {
 }
 ```
 
+### 数组交集
+
+- [数组交集](https://github.com/sisterAn/JavaScript-Algorithms/issues/6)
+
+```js
+// 两个数组
+const fn = (n1, n2) => [...new Set(n1.filter(i => n2.includes(i)))]
+// 或
+var intersection = function(nums1, nums2) {
+  let map1 = new Set(nums1)
+  let map2 = new Set(nums2)
+  let res = []
+  map1.forEach(item => {
+    if (map2.has(item)) {
+      res.push(item)
+    }
+  })
+  return res
+}
+```
+
+```js
+/*找差集*/
+function difference(arr1, arr2) {
+  var set1 = new Set(arr1)
+  var set2 = new Set(arr2)
+  for (let ele of set1) {
+    if (set2.has(ele)) {
+      set2.delete(ele)
+    }
+  }
+  return Array.from(set2)
+}
+
+/*找并集*/
+function union(arr1, arr2) {
+  return Array.from(new Set([...arr1, ...arr2]))
+}
+```
+
+```js
+// 多个数组交集，reduce两个的就行
+const intersection = function(...args) {
+  if (args.length === 0) {
+    return []
+  }
+  if (args.length === 1) {
+    return args[0]
+  }
+  return [
+    ...new Set(
+      args.reduce((result, arg) => {
+        return result.filter(item => arg.includes(item))
+      })
+    )
+  ]
+}
+```
+
+- [最长公共串](https://github.com/sisterAn/JavaScript-Algorithms/issues/19)
+
+```js
+// 获取数组中的最大值及最小值字符串，最小字符串与最大字符串的最长公共前缀也为其他字符串的公共前缀，即为字符串数组的最长公共前缀
+// 时间复杂度：O(n+m)，n是数组的长度， m 是字符串数组中最短字符的长度
+// 空间复杂度：O(1)
+var longestCommonPrefix = function(strs) {
+  if (strs === null || strs.length === 0) return ''
+  if (strs.length === 1) return strs[0]
+  let min = 0,
+    max = 0
+  for (let i = 1; i < strs.length; i++) {
+    if (strs[min] > strs[i]) min = i
+    if (strs[max] < strs[i]) max = i
+  }
+  for (let j = 0; j < strs[min].length; j++) {
+    if (strs[min].charAt(j) !== strs[max].charAt(j)) {
+      return strs[min].substring(0, j)
+    }
+  }
+  return strs[min]
+}
+```
+
+```js
+// 分治策略 归并思想
+// 时间复杂度：O(s)，s 是所有字符串中字符数量的总和
+
+// 空间复杂度：O(m*logn)，n是数组的长度，m为字符串数组中最长字符的长度
+var longestCommonPrefix = function(strs) {
+  if (strs === null || strs.length === 0) return ''
+  return lCPrefixRec(strs)
+}
+
+// 若分裂后的两个数组长度不为 1，则继续分裂
+// 直到分裂后的数组长度都为 1，
+// 然后比较获取最长公共前缀
+function lCPrefixRec(arr) {
+  let length = arr.length
+  if (length === 1) {
+    return arr[0]
+  }
+  let mid = Math.floor(length / 2),
+    left = arr.slice(0, mid),
+    right = arr.slice(mid, length)
+  return lCPrefixTwo(lCPrefixRec(left), lCPrefixRec(right))
+}
+
+// 求 str1 与 str2 的最长公共前缀
+function lCPrefixTwo(str1, str2) {
+  let j = 0
+  for (; j < str1.length && j < str2.length; j++) {
+    if (str1.charAt(j) !== str2.charAt(j)) {
+      break
+    }
+  }
+  return str1.substring(0, j)
+}
+```
+
+### 无重复字符的最长子串
+
+```js
+// 时间复杂度：O(n)
+
+// 空间复杂度：O(n)
+// 使用 map 来存储当前已经遍历过的字符，key 为字符，value 为下标
+
+// 使用 i 来标记无重复子串开始下标，j 为当前遍历字符下标
+
+// 遍历字符串，判断当前字符是否已经在 map 中存在，存在则更新无重复子串开始下标 i 为相同字符的下一位置，此时从 i 到 j 为最新的无重复子串，更新 max ，将当前字符与下标放入 map 中
+
+// 最后，返回 max 即可
+var lengthOfLongestSubstring = function(s) {
+  let map = new Map(),
+    max = 0
+  for (let i = 0, j = 0; j < s.length; j++) {
+    if (map.has(s[j])) {
+      i = Math.max(map.get(s[j]) + 1, i)
+    }
+    max = Math.max(max, j - i + 1)
+    map.set(s[j], j)
+  }
+  return max
+}
+```
+
+### 有效的括号
+
+```js
+// 时间复杂度：O(n)
+
+// 空间复杂度：O(n)
+// 首先判断该元素是否是 { 、 ( 、 [ ，直接入栈
+// 否则该字符为 } 、 ) 、 ] 中的一种，如果该字符串有效，则该元素应该与栈顶匹配，例如栈中元素有 ({， 如果继续遍历到的元素为 ), 那么当前元素序列为 ({) 是不可能有效的，所以此时与栈顶元素匹配失败，则直接返回 false ，字符串无效
+// 当遍历完成时，所有已匹配的字符都已匹配出栈，如果此时栈为空，则字符串有效，如果栈不为空，说明字符串中还有未匹配的字符，字符串无效
+const isValid = function(s) {
+  let map = {
+    '{': '}',
+    '(': ')',
+    '[': ']'
+  }
+  let stack = []
+  for (let i = 0; i < s.length; i++) {
+    if (map[s[i]]) {
+      stack.push(s[i])
+    } else if (s[i] !== map[stack.pop()]) {
+      return false
+    }
+  }
+  return stack.length === 0
+}
+```
+
+### 字符串相加
+
+```js
+// 从 num1 ，num2 的尾部开始计算，模拟人工加法，保存到 tmp 中；
+
+// 计算 tmp 的个位数，并添加到 result 的头部，这里的 result 是 string 类型，不是 number 类型；
+
+// 计算进位，改成 tmp，进行下次循环
+
+// 索引溢出处理：循环结束，根据 tmp 判断是否有进位，并在 result 头部添加进位 1
+
+// 返回 result
+var addStrings = function(num1, num2) {
+  let a = num1.length,
+    b = num2.length,
+    result = '',
+    tmp = 0
+  while (a || b) {
+    a ? (tmp += +num1[--a]) : ''
+    b ? (tmp += +num2[--b]) : ''
+
+    result = (tmp % 10) + result
+    if (tmp > 9) tmp = 1
+    else tmp = 0
+  }
+  if (tmp) result = 1 + result
+  return result
+}
+// 时间复杂度 O(max(M,N))
+// 空间复杂度 O(1)
+```
+
+### 堆排序、Top K、中位数
+
+```js
+https://github.com/sisterAn/JavaScript-Algorithms/issues/60
+```
+
+### js 数组
+
+```js
+https://github.com/sisterAn/JavaScript-Algorithms/issues/2
+```
+
 ### Terminal
 
 Terminal 用 iTerm2 + zsh + oh-my-zsh 的组合，主题是 robbyrussell
@@ -1907,3 +2124,17 @@ source ~/.oh-my-zsh/plugins/incr/incr.zsh
 - source .zshrc 保存配置
 
 - /bin/zsh -c “\$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)” 进入选源中科大、清华、腾讯、阿里的源
+
+3、github 慢
+
+```js
+// sudo vim /etc/hosts
+// 进入  http://ping.chinaz.com/github.com  查看最快的然后在sudo vim /etc/hosts中修改保存即可
+```
+
+4、zsh 主题全路径显示当前路径
+
+```js
+// vim ~/.oh-my-zsh/themes/robbyrussell.zsh-theme
+// %{$fg[cyan]%}%c%{$reset_color%}中的%c就是当前文件夹名的意思，把它修改成[$PWD]，整个也就变成了%{$fg[cyan]%}[$PWD]%{$reset_color%}b，$PWD是终端自带变量，值为当前路径，只是把它取出来而已
+```
