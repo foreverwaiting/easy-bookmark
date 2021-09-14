@@ -4,15 +4,111 @@
 
 ## 2021-09
 
+### 2021-09-14
+
+- https://mp.weixin.qq.com/s/4UyEHM-YmdgrfF_yze9Bpg
+- https://mp.weixin.qq.com/s/jSx_Es72jcC2gZl9k181xw
+- rpc，graphQl：https://segmentfault.com/a/1190000013961872，https://segmentfault.com/a/1190000014131950
+- ast 语法树：https://github.com/CodeLittlePrince/blog/issues/19
+- with、eval、newFunction：https://www.yuque.com/chengzishuo/dty0x8/dvw94r
+- 技术清单：https://github.com/alienzhou/frontend-tech-list
+- 单线程 js：https://github.com/JChehe/blog/blob/master/posts/%E5%85%B3%E4%BA%8EJavaScript%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BA%8B.md
+
+- 脚手架 node：https://juejin.cn/post/6844903526947110919
+
+### 2021-09-13
+
+Monaco Editor: vscode 的前身，主要功能为编辑器
+
+#### Monaco Editor 的核心功能与组件：
+
+行号
+
+Overlay Widget，可以渲染任意的内容小部件，能选择放置在顶部、底部或编辑器中间。例如编辑器内的查找框即是一个 Overlay Widget
+
+ViewLine，每一行都表示一个 ViewLine
+
+Decorations 装饰块，可以指定某个位置的代码块以何种样式呈现，例如修改其背景色、前景色等
+
+Content Widget，与 Overlay Widget 类似，但可以基于行、列指定其位置。例如自动补全的列表框就是一个 Content Widget
+
+View Zone, 与 Overlay、Content Widget 不同，它可以插入到特定的行之间将其撑开。例如在上图中 88 行与 89 行之间的查找引用窗口
+
+支持通过 Decorations API 来添加更多的装饰，例如版本控制中为修改过的行号添加一个色块，又或者在调试状态下显示断点信息等
+
+对于不同编程语言的基础支持（即`高亮`）则需要通过`注册语言`规则的方式来实现，Monaco 默认使用了名为 Monarch 的高亮系统（而 VS Code 使用的则是 Textmate），Monarch 规定了语言需要包含的关键字、类型、操作符，以及 Tokenizer。Tokenizer 是一组正则表达式，表示以何种规则来识别这些关键字以及括号、注释块，Monarch 将会依照正则表达式的配置来匹配每个 Token，并为之渲染对应的主题色
+
+对于高级的`语言特性`支持，Monaco 也提供了遵循 LSP 标准的 API，例如`自动补全、鼠标悬停、查找引用、定义跳转`等常见功能都可以通过`注册语言服务器`来实现，而 Monaco 本身自带了包括 TypeScirpt/JavaScript、CSS、HTML 的语言服务支持
+
+- [json view 编辑器基于 Monaco](https://www.npmjs.com/package/react-json-view)
+
+#### Chrome 89 新功能(大量 DevTools 新特性)
+
+支持选择 CSS 的 :target 伪类，当 URL 中的 hash 和 DOM 元素的 id 相同时，将触发该元素的 :target 伪类
+
+复制 CSS 属性的新选项
+
+- 类的复制选项:
+  - Copy selector：复制当前选择器名称；
+  - Copy rule：复制当前选择器的规则；
+  - Copy all declarations：复制当前规则下的所有声明，包括无效属性和带前缀的属性。
+- 属性的复制选项:
+  - Copy declaration：复制当前行的声明；
+  - Copy property：复制当前行的属性；
+  - Copy value：复制当前行的值。
+
+保持记录网络日志：DevTools 现在始终保持记录网络日志（Record network log）设置。以前，每当页面重新加载时，DevTools 都会重置用户的选择。
+
+Console、Sources 面板中复制对象的新选项：现在可以使用 Console 和 Sources 面板中的新选项来快捷复制对象值。这非常方便，尤其是当需要复制一个比较大的对象（例如一个长数组）时。！！！！！！！
+
+支持超出视口的元素截图：在 Element 面板中，右键单击一个 DOM 元素并选择 Capture node screenshot 可以使用元素截图功能。
+
+Cookies 相关更新：显示 url 解码后的 cookie 的新选项
+
+在设备模式下模拟双屏和`可折叠屏幕`
+
 ### 2021-09-12
 
 - 文件上传，断点上传：https://mp.weixin.qq.com/s/hOkxwjSHGZ-3oXyN3CwwqQ
 
   - https://panjiachen.github.io/awesome-bookmarks/diary/read.html#%E4%BA%94%E6%9C%88
 
-- 埋点：https://mp.weixin.qq.com/s/ithQ2DDFvTfpuaixH8pt2A
+- 前端异常埋点：https://mp.weixin.qq.com/s/ithQ2DDFvTfpuaixH8pt2A
 
+  - 前端异常捕获
+    - try…catch: 无法捕获（异步任务抛出的异常，promise（异常内部捕获到了，并未往上抛异常，使用 catch 处理））
+    - 全局异常监听 window.onerror
+      ```js
+      window.addEventListener('error', function() {
+        console.log(error)
+        // 异常上报
+      })
+      ```
+      - 好处：同步任务、异步任务都可捕获，可以得到具体的异常信息、异常文件的 URL、异常的行号与列号及异常的堆栈信息，再捕获异常后，统一上报至我们的日志服务器，而且可以全局监听
+      - 坏处：浏览器兼容性、跨域脚本无法准确捕获异常，跨域之后 window.onerror 捕获不到正确的异常信息，而是统一返回一个 Script error，可通过在 script 标签使用 crossorigin 属性来规避这个问题
+    - Promise 内部异常: onerror 以及 try-catch 也无法捕获 Promise 实例抛出的异常，只能最后在 catch 函数上处理
+  - vue 工程异常
+    - Vue.config.errorHandler 这样的 Vue 全局配置，可以在 Vue 指定组件的渲染和观察期间未捕获错误的处理函数
+  - 生产环境：由于代码是经过 webpack 打包后压缩`混淆`的代码，导致 error 堆栈信息里的报错的代码行数都在第一行了
+  - 错误上报：
+    - img 标签 这种方式无需加载任何通讯库，而且页面是无需刷新的，相当于 get 请求，没有跨域问题。缺点是有 url 长度限制。（通过动态创建一个 img,浏览器就会向服务器发送 get 请求。将需要上报的错误数据放在 url 中，利用这种方式就可以将错误上报到服务器了）
+    - ajax 与正常的接口请求无异，可以用 post
+  - 上报信息：应该包含异常位置（行号，列号），异常信息等。
+  - 服务端收集日志：`log4js-node`插件。拿到上报的 error 日志后，解析（会拿到 colno 为 2319，lineno 为 1），安装一个插件帮助我们找到对应`压缩前`的代码位置(npm install source-map -S:先读取对应的 map 文件（按 filename 对应），然后只需传入压缩后的报错行号列号即可，就会返回压缩前的错误信息。)。
+  - 数据存储 日志可视化
+  - 错误日志类型分类
+  - 上报频率，防抖
+  - https://mp.weixin.qq.com/s/4UyEHM-YmdgrfF_yze9Bpg
+  - https://mp.weixin.qq.com/s/jSx_Es72jcC2gZl9k181xw
   - ut 打点上报，sls、odps 日志存储（流量染色），traceId 透传注入
+
+  try catch: 同步、async await
+
+  onerror：同步、异步
+
+  error 事件监听：同步、异步、资源加载（img）
+
+  unhandlerejection：Promise、async await
 
 - Bundleless【组件动态加载】： https://mp.weixin.qq.com/s/1v9UX_z27_lioId1ZSEcDQ
 
