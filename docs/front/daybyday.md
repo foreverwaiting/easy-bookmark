@@ -4,10 +4,424 @@
 
 ## 2021-09
 
+### 2021-09-20
+
+#### Service Worker
+
+浏览器在后台独立于网页运行的、用 JavaScript 编写的脚本。想要玩转 Service Worker，是需要学习它的 API 的
+
+- 我们需要手动编写 service-worker.js 文件。
+- 我们需要在网页中下载并注册 service-worker.js 文件。
+- Service Worker 具有超能力，可以拦截并处理 HTTP 请求。Service Worker 要求 HTTPS，注意那个"S"，但为了开发调试方便，localhost 除外
+
+Service Worker 的生命周期:
+
+- ervice Worker 生命周期：安装中、安装后、激活中、激活后、我废了。
+- 首次导航到网站时，会下载、解析并执行 Service Worker 文件，触发 install 事件，尝试安装 Service Worker，如果 install 事件回调函数中的操作都执行成功，标志 Service Worker 安装成功，此时进入 waiting 状态，注意这时的 Service Worker 只是准备好了而已，并没有生效，当用户二次进入网站时，才会激活 Service Worker，此时会触发 activate 事件，标志 Service Worker 正式启动，开始响应 fetch、post、sync 等事件。
+- 主要事件
+  - install：Service Worker 安装时触发，通常在这个时机缓存文件。
+  - activate：Service Worker 激活时触发，通常在这个时机做一些重置的操作，例如处理旧版本 Service Worker 的缓存。
+  - fetch：浏览器发起 HTTP 请求时触发，通常在这个事件的回调函数中匹配缓存，是最常用的事件。
+  - push：和推送通知功能相关
+  - sync：和后台同步功能相关
+- Service Worker 的应用:
+  - 1.`缓存静态资源`。（利用 CacheStorage API 来缓存 js、css、字体、图片等静态文件。我们可以在 Service Worker 的 install 阶段，指定需要缓存的具体文件，在 fetch 事件的回调函数中，检查请求的 url，如果匹配了已缓存的资源，则不再从服务端获取，以此达到提升网页性能的目的。）
+  - 2.`离线体验`。（将首页 index.html 也缓存呢？那结果是我们的网页甚至可以支持离线浏览。）
+  - 3.`体验优化`。（网页中图片是很消耗带宽资源的，用户等待网站加载，很多时候都是在等图片，大多数放在 CDN 上的图片，都支持添加后缀参数获取不同分辨率照片的功能。假设我们有办法知道一个用户的网络条件的好坏（至于如何判断一个用户的网络条件，是另外一件事，可以让用户选择，也可用技术手段解决），把用户分级，暂且分为两级：网速快的和网速慢的。我们把网速级别信息放到 HTTP 请求的 header 中（或其它你想得到的合适的地方），当发起图片请求的时候，我们有机会拿到用户的网络级别，如果是网速快的用户，我们通过后缀参数返回 CDN 上高分辨率的图片，反之相反。这样的结果是网速快的用户可以看到更清晰的照片，而网速慢的用户虽然看到的照片清晰度差，但可以更早地看到照片，不必经过漫长的等待。）
+
+Service Worker 的初衷是极致优化用户体验，是用来锦上添花的，技术只是技术，但实际应用前，应考虑成本和收益。
+
+- [Service Worker](https://juejin.cn/post/6844903887296528398)
+
+### 2021-09-19
+
+为什么 app 都开发极速版（用看视频红包推广），已经有一个普通版，为什么还要去推广阉割的版本呢？【极速版通俗来讲就是，产品的简化版，只包含产品的核心功能，安装包会更小，运行速度会更快。】
+
+- 拉新获客成本降低
+- 获取下沉市场的用户，有些用户群体流量不足、网络差、手机内存小等等，一二三线的用户已经获取差不多了，上线网赚活动，邀请好友拉新领红包
+- 极速版特有的功能：看视频赚金币
+  - 网赚游戏，这种模式毕竟属于灰色地带，若上架到主版本后，政策突然锁紧，主版本会受影响太大。
+  - 将其上架于极速版是保险的措施。而选择网赚模式，也只是恰好这种模式，更加适合下沉市场。
+  - 试验某些可能涉嫌违规的功能，避免主版本 app 违规。
+
+架构图: 4+1 视图。分别为场景视图、逻辑视图、物理视图、处理流程视图和开发视图。
+
+- 场景视图：描述系统的参与者与功能用例间的关系，反映系统的最终需求和交互设计，通常由用例图表示。
+- 处理流程视图：描述系统软件组件之间的通信时序，数据的输入输出，反映系统的功能流程与数据流程,通常由时序图和流程图表示
+- 开发视图：描述系统的模块划分和组成，以及细化到内部包的组成设计，服务于开发人员，反映系统开发实施过程
+
+vue&react 区别
+
+1、模式
+
+- Vue 使用的是 web 开发者更熟悉的`模板与特性`。模板+JavaScript+CSS 的组合模式呈现，它跟 web 现有的 HTML、JavaScript、CSS 能够更好地配合
+- React 的特色在于`函数式编程`的理念和丰富的技术选型, 更容易吸引在 FP 上持续走下去的开发者。
+
+2、Vue 跟 React 的最大区别在于数据的 reactivity，就是反应式系统上
+
+- Vue 提供反应式的数据，当数据改动时，界面就会自动更新。Push-based：改动数据之后，数据本身会把这个改动推送出去，告知渲染系统自动进行渲染
+- React 里面需要调用方法 SetState。Pull-based：用户要给系统一个明确的信号说明现在需要重新渲染了，这个系统才会重新渲染
+
+两者不是完全互斥的，比如说在 React 里面，你也可以用一些第三方的库像 MobX 实现 Push-based 的系统，同时你也可以在 Vue2.0 里面，通过一些手段，比如把数据 freeze 起来，让数据不再具有反应式特点，或者通过手动调用组件更新的方法来做一个 pull-based 系统。所以两者并没有一个绝对的界限，只是默认的倾向性不同而已。
+
+### 2021-09-18
+
+#### 扫码登陆
+
+基于 token 的认证机制：
+
+- 账号密码登录时，客户端会将设备信息一起传递给服务端，
+- 如果账号密码校验通过，服务端会把`账号与设备进行一个绑定`，存在一个数据结构中，这个数据结构中包含了账号 ID，设备 ID，设备类型等等，然后服务端会生成一个 token，用它来映射数据结构，这个 token 其实就是一串有着特殊意义的字符串，它的意义就在于，通过它可以找到对应的账号与设备信息，
+- 客户端得到这个 token 后，需要进行一个本地保存，每次访问系统 API 都`携带上token与设备信息`。
+- 服务端就可以通过 token 找到与它绑定的账号与设备信息，然后把绑定的设备信息与客户端每次传来的设备信息进行比较，如果相同，那么校验通过，返回 AP 接口响应数据，如果不同，那就是校验不通过拒绝访问。
+
+扫码登陆：【PC 端、手机端、服务端】
+
+- 1、PC 二维码准备阶段：用户打开 PC 端，切换到二维码登录界面
+
+  - PC 端向服务端发起请求，生成用户登录的二维码，并且把 PC 端设备信息也传递给服务端
+  - 服务端收到请求后，它生成二维码 ID，并将二维码 ID 与 PC 端设备信息进行绑定，把二维码 ID 返回给 PC 端
+  - PC 端收到二维码 ID 后，生成二维码(二维码中肯定包含了 ID)
+  - 为了`及时知道二维码的状态`，客户端在`展现二维码后`，PC 端`不断的轮询`服务端，比如每隔一秒就轮询一次，`请求`服务端告诉`当前二维码的状态`及相关信息
+
+- 2、扫描状态切换
+
+  - 用户用手机去`扫描`PC 端的`二维码`，通过二维码内容`取到`其中的`二维码ID`
+  - 再`调用`服务端`API`将移动端的`身份信息`与`二维码ID`一起发送给服务端
+  - 服务端接收到后，它可以将身份信息与二维码 ID 进行绑定，生成临时 token。然后返回给手机端(临时 token，为的就是手机端在下一步操作时，可以用它作为凭证。以此确保扫码，登录两步操作是同一部手机端发出的)
+  - 因为 PC 端一直在轮询二维码状态，所以这时候二维码状态发生了改变，它就可以在界面上把二维码状态更新为已扫描
+
+- 3、状态的确认
+  - 手机端在接收到临时 token 后会弹出确认登录界面，用户点击`确认`时，手机端携带临时 token 用来调用服务端的接口，告诉服务端，我已经确认
+  - 服务端收到确认后，根据二维码 ID 绑定的设备信息与账号信息，`生成用户PC端登录的token`
+  - 这时候`PC端的轮询接口`，它就可以`得知`二维码的状态已经变成了"`已确认`"。并且`从服务端`可以`获取`到用户登录的`token`
+  - 到这里，`登录就成功了`，后端 PC 端就可以用 token 去访问服务端的资源了
+
+scene value 扫码场景值: 从相册选取和直接扫的 scene 肯定不一样
+
+- [深入浅出 Commonjs 和 Es Module](https://mp.weixin.qq.com/s/y_uk7wXAfvq8FzcUZrR93w)
+- [二维码扫码登录](https://juejin.cn/post/6940976355097985032#heading-8)
+
+#### ts 如何工作
+
+- [TS 工作](https://mp.weixin.qq.com/s/_zbrH7V-MDHnYSGXfc_Dsg)
+
+工作原理：
+
+- TypeScript 源码经过扫描器扫描之后变成一系列 Token；
+- 解析器解析 token，得到一棵 AST 语法树；
+- 绑定器遍历 AST 语法树，生成一系列 Symbol，并将这些 Symbol 连接到对应的节点上；
+- 检查器再次扫描 AST，检查类型，并将错误收集起来；
+- 发射器根据 AST 生成 JavaScript 代码。
+
+VSCode 内置了对 TypeScript 语言的支持，类型检查主要通过 TypeScript 插件（extension）进行。插件背后就是 Language Service Protocal。
+
+- LSP 是由微软提出的的一个协议，目的是为了解决插件在不同的编辑器之间进行复用的问题。LSP 协议在语言插件和编辑器之间做了一层隔离，插件不再直接和编辑器通信，而是通过 LSP 协议进行转发。这样在遵循了 LSP 的编译器中，相同功能的插件，可以一次编写，多处运行。LSP 协议的插件存在两个部分
+  - LSP 客户端，它用来和 VSCode 环境交互。通常用 JS/TS 写成，可以获取到 VSCode API，因此可以监听 VSCode 传过来的事件，或者向 VSCode 发送通知。
+    - 创建语言服务器；
+    - 作为 VSCode 和语言服务器之间沟通的桥梁。
+  - 语言服务器(如：tsserver)。它是语言特性的核心实现，用来对文本进行词法分析、语法分析、语义诊断等。它在一个单独的进程中运行。
+    - TypeScript 插件的语言服务器其实就是一个在独立进程中运行的 tsserver.js 文件。我们可以在 typescript 源码的 src 文件下面找到 tsserver 文件夹，这个文件夹编译之后，就是我们项目中的 node_modules/typescript/lib/tsserver.js 文件。tsserver 接收插件客户端传过来的各种消息，将文件交给 typescript-core 分析处理，处理结果回传给客户端后，再由插件客户端交给 VSCode，进行展示/执行动作等
+
+TypeScript 与 babel：
+
+- 错误提示功能由 VSCode 提供。但是我们的代码需要经过编译之后才能在浏览器中运行，这个过程中是什么东西处理了 TypeScript 呢？答案是 Babel
+- Babel 最初是设计用来将 ECMAScript 2015+的代码转换成后向兼容的代码，主要工作就是语法转换和 polyfill。只要 Babel 能识别 TypeScript 语法，就能对 TypeScript 语法进行转换。因此，Babel 和 TypeScript 团队进行了长达一年的合作，推出了`@babel/preset-typescript` 这个插件。使用这个插件，就能将 TypeScript 转换成 JavaScript
+
+  - Babel 有两种常见使用场景，一种是直接在 CLI 中调用 babel 命令，另一种是将 Babel 和打包工具（如 webpack）结合使用。
+  - webpack 中使用 babel 处理 typescript。在 webpack 中使用@babel/preset-typescript 插件，只需要两步。
+    - 1、首先是配置 babel，让它加载@babel/preset-typescript 插件
+    ```json
+    {
+      "presets": ["@babel/preset-typescript"]
+    }
+    ```
+    - 2、配置 webpack，让 babel 能处理 ts 文件
+    ```js
+    {
+      'rules'[
+        {
+          test: /.ts$/,
+          use: 'label-loader'
+        }
+      ]
+    }
+    ```
+    - 3、这样的话，webpack 在遇到.ts 文件时，会调用 label-loader 处理这个文件。label-loader 将这个文件转换成标准 JavaScript 文件后，将处理结果交还 webpack，webpack 继续后面的流程。
+
+- label-loader：将 TypeScript 文件转换成标准 JavaScript？直接删除掉类型注解。
+
+  - 解析：将原代码处理为 AST。对应 babel-parse
+  - 转换：对 AST 进行遍历，在此过程中对节点进行添加、更新、移除等操作。对应 babel-tranverse。
+  - 生成：把转换后的 AST 转换成字符串形式的代码，同时创建源码映射。对应 babel-generator。
+
+- 校验提交到代码仓库的代码（VSCode 只提示类型错误，babel 完全不校验类型）
+  - 执行：`tsc --noEmit --skipLibCheck`。tsc 命令对应的 TypeScript 版本，就是 node_modules 下安装的 TypeScript 的版本，这个版本可能跟 VSCode 的 TypeScript 插件使用的 tsserver 的版本不一致。这在大多数情况下没有问题，VSCode 内置的 TypeScript 版本一般都比项目中依赖的 TypeScript 版本高，TypeScript 是后向兼容的。如果遇到 VSCode 类型检查正常，但是 tsc 命令检查出错，或相反的情况，可以从版本方面排查一下。
+  - 配合 husky，在 gitcommit 之前先执行一下这个命令，检查一下类型。如果类型验证不通过就不执行 git commit
+
+### 2021-09-17
+
+#### 链式调用
+
+`return this`实现，把对象再返回回来，对象就可以继续调用方法，实现链式操作了。
+
+```js
+// 实现一个find函数，并且find函数能够满足下列条件
+
+// title数据类型为string|null
+// userId为主键，数据类型为number
+
+// 原始数据
+const data = [
+  { userId: 8, title: 'title1' },
+  { userId: 11, title: 'other' },
+  { userId: 15, title: null },
+  { userId: 19, title: 'title2' }
+]
+
+// 查找data中，符合条件的数据，并进行排序
+const result = find(data)
+  .where({
+    title: /\d$/
+  })
+  .orderBy('userId', 'desc')
+
+// 输出
+;[
+  { userId: 19, title: 'title2' },
+  { userId: 8, title: 'title1' }
+]
+```
+
+```js
+function find(origin) {
+  return {
+    data: origin,
+    where: function(searchObj) {
+      const keys = Reflect.ownKeys(searchObj)
+
+      for (let i = 0; i < keys.length; i++) {
+        this.data = this.data.filter(item =>
+          searchObj[keys[i]].test(item[keys[i]])
+        )
+      }
+
+      return find(this.data)
+    },
+    orderBy: function(key, sorter) {
+      this.data.sort((a, b) => {
+        return sorter === 'desc' ? b[key] - a[key] : a[key] - b[key]
+      })
+
+      return this.data
+    }
+  }
+}
+```
+
+#### 判断对象是否存在循环引用
+
+可以通过 map 来进行暂存，当值是对象的情况下，我们将对象存在 map 中，循环判断是否存在，如果存在就是存在环了，同时进行递归调用。
+
+#### 高阶函数
+
+柯里化（Currying）：又称部分求值（Partial Evaluation），是把接受多个参数的原函数变换成接受一个单一参数（原函数的第一个参数）的函数，并且返回一个新函数，新函数能够接受余下的参数，最后返回同原函数一样的结果。核心思想是把多参数传入的函数拆成单（或部分）参数函数，内部再返回调用下一个单（或部分）参数函数，依次处理剩余的参数。
+
+柯里化有 3 个常见作用：
+
+- 参数复用
+- 提前返回
+- 延迟计算/运行
+
+```js
+// ES5 方式
+function currying(fn) {
+  var rest1 = Array.prototype.slice.call(arguments)
+  rest1.shift()
+  return function() {
+    var rest2 = Array.prototype.slice.call(arguments)
+    return fn.apply(null, rest1.concat(rest2))
+  }
+}
+// ES6 方式
+function currying(fn, ...rest1) {
+  return function(...rest2) {
+    return fn.apply(null, rest1.concat(rest2))
+  }
+}
+```
+
+偏函数是创建一个调用另外一个部分（参数或变量已预制的函数）的函数，函数可以根据传入的参数来生成一个真正执行的函数。其本身不包括我们真正需要的逻辑代码，只是根据传入的参数返回其他的函数，返回的函数中才有真正的处理逻辑比如：
+
+```js
+var isType = function(type) {
+  returnfunction(obj) {
+    returnObject.prototype.toString.call(obj) === `[object ${type}]`
+  }
+}
+
+var isString = isType('String')
+var isFunction = isType('Function')
+```
+
+- 柯里化是把一个接受 n 个参数的函数，由原本的一次性传递所有参数并执行变成了可以分多次接受参数再执行，例如：add = (x, y, z) => x + y + z→ curryAdd = x => y => z => x + y + z；
+- 偏函数固定了函数的某个部分，通过传入的参数或者方法返回一个新的函数来接受剩余的参数，数量可能是一个也可能是多个；
+
+技术调研
+
+- 现存方案
+- 对比环节：echarts、three.js、antdv、d3、chart.js
+- 原理：echarts 是 svg/canvas 双引擎，而 three.js 更多的是基于 webgl
+- 活跃度：github star 数、代码更新频率、issue 响应速度、文档完整度、在线示例、官方团队和社区的规模
+- 生产环境可用性：web 在线编辑器，ACE 和 CodeMirror，CodeMirror 的受欢迎程度更高，羽雀、github 都是基于其打造自己的在线编辑器
+- 功能：可视化是关系数据（树状图、脑图、流程图），antv-G6；3D 环绕地球效果来说，echarts、three.js；
+- 兼容性：浏览器的最低兼容版本、是否涉及 pc 端/移动端
+- 性能：包体积、渲染速度。对于移动端 gzip 之后超过 200k，pc 端 gzip 之后超过 500k，都可以认为是体积有点大了
+- 可维护性：工作量、学习/维护成本、对于业务的侵入度、最佳实践
+- 缺陷及隐患
+- 最后产出文档
+
+  - 1、需求背景
+  - 2、一句话结论
+  - 3、现存方案对比记录
+  - 4、参考文档链接
+
+- [技术调研](https://juejin.cn/post/6901845776880795662#heading-15)
+
+### 2021-09-16
+
+#### 渲染性能
+
+HTML 和 CSS 定义了渲染的内容，而 JavaScript 可以干预内容和渲染过程。
+
+渲染视角拆分为：渲染内容、渲染过程、JavaScript 干预
+
+通过网络 I/O 或磁盘 I/O （缓存）加载 HTML CSS 之后的链路为：解码 HTML、CSS 文件（GZip 文本传输前压缩等）、处理过程（HTML、CSS Passing）、DOM Tree 构建、Style 内联、布局、合成器、绘制，这里涉及浏览器引擎进行大量的解析和计算等处理过程，为此，需要引入一个概念：关键渲染路径（Critical Rendering Path），简称：CRP。`https://mp.weixin.qq.com/s/cpSBcCHB7lYYGq1PE26qtg`
+
+CRP 的步骤：【关键渲染路径 CRP】
+
+- 地址栏输入 url，request page -> get Page，一旦浏览器得到响应，它就开始解析它。当它遇到一个依赖关系时，它就会尝试下载它
+
+- 处理 HTML 标记并构建 DOM 树：如果它是一个样式文件（CSS 文件），浏览器就必须在渲染页面之前完全解析它（`这就是为什么说CSS具有渲染阻碍性`）
+
+- 处理 CSS 标记并构建 CSSOM 树：如果它是一个脚本文件（JavaScript 文件），浏览器必须： 停止解析，下载脚本，并运行它。只有在这之后，它才能继续解析，因为 JavaScript 脚本可以改变页面内容（特别是 HTML）。（`这就是为什么说JavaScript阻塞解析`）
+
+- 将 DOM 树和 CSSOM 树合并大一个渲染树：建立了 DOM 树和 CSSOM 树，结合在一起就得到了渲染树
+
+- 根据渲染树来生成布局 flow：将渲染树转换为布局。
+
+- 将各个节点布局绘制 paint 到屏幕上：根据浏览器在前几个阶段计算出来的数据对像素进行字面上的着色
+
+优化页面的关键渲染路径（Critical Rendering Path）三件事：
+
+- 减少关键资源请求数: 减小使用阻塞的资源（CSS 和 JS），注意，并非所有资源是关键资源，尤其是 CSS 和 JS（比如使用媒体查询的 CSS，使用异步的 JS 就不关键了）
+
+- 减少关键资源大小：使用各种手段，比如减少、压缩和缓存关键资源，数据量越小，引擎计算复杂度越小
+
+- 缩短关键渲染路径长度
+  - 对 CRP 进行分析和特性描述，记录 关键资源数量、关键资源大小 和 CRP 长度
+  - 最大限度减少关键资源的数量：删除它们，延迟它们的下载，将它们标记为异步等
+  - 优化关键资源字节数以缩短下载时间（往返次数），减少 CRP 长度
+  - 优化其余关键资源的加载顺序，需要尽早下载所有关键资源，以缩短 CRP 长度
+  - 检测 CRP 中一些重要指标（关键资源数量、关键资源大小 、CRP 长度等等）：在 Chrome 中使用 Lighthouse 插件
+
+重绘不一定需要重排，重排必然会导致重绘。
+
+- 重排 repaint：当渲染树的一部分必须更新并且节点的尺寸发生了变化，浏览器会使渲染树中受到影响的部分失效，并重新构造渲染树。（尺寸、位置、增删 DOM、浏览器窗口变化、set style）
+- 重绘 reflow：是在一个元素的外观被改变所触发的浏览器行为，浏览器会根据元素的新属性重新绘制，使元素呈现新的外观。（position 属性为 absolute 或 fixed 的元素，重排开销比较小，不用考虑它对其他元素的影响）
+
+#### tab 自动吸顶多滚动容器
+
+- 1.外层滚动容器与 tab 容器滚动是一体化，滚动过渡要自然
+- 2.tabbar 在滚动至顶时需自动吸顶
+- 3.不同 tab 容器之间支持横滑切换浏览操作
+- 4.不同 tab 容器的滚动浏览是隔离的，需要保持各自的浏览位置
+- 5.不同 tab 容器可以承载着无限列表内容
+
+H5:
+
+- position:sticky 吸顶
+  - sticky 节点是以最近一个拥有滚动机制的父节点（overflow 不等于 visible 时）来固定
+- 嵌套滚动中的滚动惯性传递
+- 横滑：translate3d
+- [intersectionobserver：](https://foreverwaiting.github.io/easy-bookmark/blogs/mdn.html#intersectionobserver-%E4%BA%A4%E5%8F%89%E8%A7%82%E5%AF%9F%E8%80%85%E3%80%90%E8%AE%A1%E7%AE%97web%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%85%83%E7%B4%A0%E7%9A%84%E4%BD%8D%E7%BD%AE%E3%80%91)
+
+### 2021-09-15
+
+#### 防盗链
+
+防止别人盗用链接（图片音视频等）：
+
+当在请求上述资源时候，请求头中有 Host(请求的主机)和 Referer(来源)两个参数，两者不同即可判定为盗链，在 node 服务中判断并作出操作即可。（返回裂图或替换）
+
+```js
+// js部分
+const fs = require('fs')
+const path = require('path')
+const http = require('http')
+const url = require('url')
+const getHostName = function(str) {
+  let { hostname } = url.parse(str)
+  return hostname
+}
+
+http
+  .createServer((req, res) => {
+    let refer = req.headers['referer'] || req.headers['referrer'] // 请求头都是小写的
+    // 先看一下refer的值，去和host的值作对比，不相等就需要防盗链了
+    // 要读取文件 返回给客户端
+    let { pathname } = url.parse(req.url)
+    let src = path.join(__dirname, 'public', '.' + pathname)
+    // src代表我要找的文件
+    fs.stat(src, err => {
+      // 先判断文件存不存在
+      if (!err) {
+        if (refer) {
+          // 不是所有图片都有来源
+          let referHost = getHostName(refer)
+          let host = req.headers['host'].split(':')[0]
+
+          if (referHost !== host) {
+            // 防盗链
+            fs.createReadStream(path.join(__dirname, 'public', './1.jpg')).pipe(
+              res
+            )
+          } else {
+            // 正常显示，如果路径存在，可以正常显示直接返回
+            fs.createReadStream(src).pipe(res)
+          }
+        } else {
+          // 正常显示，如果路径存在，可以正常显示直接返回
+          fs.createReadStream(src).pipe(res)
+        }
+      } else {
+        res.end('end')
+      }
+    })
+  })
+  .listen(8888)
+```
+
+#### CSS: content-visibility(长列表性能优化)
+
+允许用户代理跳过元素的呈现工作(包括布局和绘制)，直到需要它时，这使得初始页面加载速度更快。
+
+属性及优点：
+
+- visible：默认值，对布局和呈现不会产生什么影响
+- hidden：元素跳过其内容的呈现。用户代理功能也不可访问（相当于设置了 display：none）
+  - 用户代理：如，在页面中查找(command F)，按 Tab 键顺序导航，焦点事件。
+- auto：对于用户可见区域的元素，浏览器会正常渲染其内容；对于不可见区域的元素，浏览器会`暂时跳过`其内容的呈现，等到其处于用户可见区域时，浏览器在渲染其内容。【对于暂时跳过的，虽未在视区，但其用户代理仍可访问】
+
+缺点：
+
+- 兼容性差：https://caniuse.com/?search=content-visibility
+- 对滚动条的影响：由于视图外的 img 未渲染时候高度为 0，出现视区->图片渲染->页面高度增加->滚动条滚动闪动
+  - 解决：`contains -intrinsic-size` 此 CSS 属性控制由 content-visibility 指定的元素的自然大小，所以设定一个默认值即可暂时解决。
+
 ### 2021-09-14
 
-- https://mp.weixin.qq.com/s/4UyEHM-YmdgrfF_yze9Bpg
-- https://mp.weixin.qq.com/s/jSx_Es72jcC2gZl9k181xw
+- 异常监控：https://mp.weixin.qq.com/s/4UyEHM-YmdgrfF_yze9Bpg、https://mp.weixin.qq.com/s/jSx_Es72jcC2gZl9k181xw、https://mp.weixin.qq.com/s/wI-_69GV3r55EMG-DaTNUA
 - rpc，graphQl：https://segmentfault.com/a/1190000013961872，https://segmentfault.com/a/1190000014131950
 - ast 语法树：https://github.com/CodeLittlePrince/blog/issues/19
 - with、eval、newFunction：https://www.yuque.com/chengzishuo/dty0x8/dvw94r
