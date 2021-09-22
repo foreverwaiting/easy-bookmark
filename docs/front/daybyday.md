@@ -4,6 +4,17 @@
 
 ## 2021-09
 
+### 2021-09-22
+
+- xss 攻击：https://tech.meituan.com/2018/09/27/fe-security.html
+- CSRF 攻击：https://mp.weixin.qq.com/s/sYoccR4-qM4crgkQBYvSpA
+- 甘特图：通过条状图来显示项目、进度和其他时间相关的系统进展的内在关系随着时间进展的情况（React 开源甘特图组件的性能优化）：https://mp.weixin.qq.com/s/eP9M2wBJof_lOgCpVoOoXg
+- SourceMap：https://mp.weixin.qq.com/s/UMDVbq1V-hmVKibweaoURQ
+- npm & yarn：https://mp.weixin.qq.com/s/Zp9p-BAosfvCT0iDMz1aEw
+- Web Component：https://mp.weixin.qq.com/s/h8B1YxqOKtwr5CpNSYm_2A
+- Vue 源码：https://mp.weixin.qq.com/s/ze4PvXuEvup76safzAl5jA
+- 从唤端出发，学习第三方 JS：https://mp.weixin.qq.com/s/jJJHQ3jZfUVQMayqBA6MpQ
+
 ### 2021-09-21
 
 #### 断点续传
@@ -33,12 +44,12 @@ https://juejin.cn/post/6844904046436843527
 - 2.所有组件使用的是同一套更新机制，当所有组件 didmount 后，父组件 didmount，然后执行更新
 - 3.更新时会把每个组件的更新合并，每个组件只会触发一次更新的生命周期。
 
-1.2 异步函数和原生事件中的 setstate？
+  1.2 异步函数和原生事件中的 setstate？
 
 - 1.在父组件 didmount 后执行
 - 2.调用 setState 同步更新
 
-2.为什么有时连续两次 setState 只有一次生效？
+  2.为什么有时连续两次 setState 只有一次生效？
 
 - 1.直接传递对象的 setstate 会被合并成一次
 - 2.使用函数传递 state 不会被合并
