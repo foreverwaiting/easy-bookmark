@@ -4,6 +4,20 @@
 
 ## 2021-09
 
+### 2021-09-23
+
+- Vue.js 3.2： vnode： https://mp.weixin.qq.com/s/z2ZCUFfFzp3c1ly4IQrrMA
+
+  - vnode 本质上是用来描述 DOM 的 JavaScript 对象，它在 Vue.js 中可以描述不同类型的节点，比如普通元素节点、组件节点、纯文本 vnode、注释 vnode 等。
+  - 优点：抽象，引入 vnode，可以把渲染过程抽象化，从而使得组件的抽象能力也得到提升。
+    其次是跨平台，因为 patch vnode 的过程不同平台可以有自己的实现，基于 vnode 再做服务端渲染、weex 平台、小程序平台的渲染都变得容易了很多
+
+- 流程图：draw.io：https://drawio-app.com/examples/
+
+- 时序图：PlantUml：https://plantuml.com/zh/sequence-diagram
+
+- 画图工具：OmniGraffle：https://www.omnigroup.com/omnigraffle
+
 ### 2021-09-22
 
 - xss 攻击：https://tech.meituan.com/2018/09/27/fe-security.html
