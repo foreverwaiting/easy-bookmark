@@ -4,6 +4,464 @@
 
 ## 2021-09
 
+### 2021-09-25
+
+- 代码截图：https://carbon.now.sh
+
+#### Vue3.0
+
+https://mp.weixin.qq.com/s/l9MyfE4sMJTbsOsboYdvIQ
+
+一、Composition API：vue2 的的痛点之一，要在 data、methods、computed 以及 mounted 中反复的跳转，虽然可用 Mixin 解决，但会有命名冲突等问题，所以 vue3 的 Composition API 应运而生。将零散分布的逻辑组合在一起来维护，并且还可以将单独的功能逻辑拆分成单独的文件。
+
+- Composition API：
+  - reactive
+  - ref
+  - toRefs
+  - watch
+  - watchEffect
+  - computed
+  - 生命周期钩子
+
+1、setup：
+
+- 组件内使用 Composition API 的入口，执行时机是在`beforeCreate之前`，故`不可访问this`
+- setup(props, context) {}，两个参数：
+  - props：组件传入的属性，响应式的，传入新的 props 会更新，但由于是响应式的， 所以不可以使用 ES6 解构，解构会消除它的响应式。
+  ```js
+  import { defineComponent, reactive, ref ,toRefs} from "vue";
+  // 如下会消除name的响应式：
+  setup(props, context) {
+    const { name } = props;
+    console.log(name)
+  }
+  ```
+  \*【想要使用解构，还能保持 props 的响应式：toRefs】
+  - context：context 中提供了 this 中最常用的三个属性：attrs、slot 和 emit，分别对应 Vue2.x 中的 $attr属性、slot插槽 和$emit 发射事件。并且这几个属性都是自动同步最新的值，所以我们每次使用拿到的都是最新值。
+
+2、reactive、ref 与 toRefs：
+
+- vue2 中数组定义在 data，3 使用 reactive 和 ref 定义数据
+  - 如下：
+  ```js
+  import { defineComponent, reactive, ref ,toRefs} from "vue";
+  setup(props, context) {
+    // ref可定义数据
+    const obj = ref({count:1, name:"张三"});
+    const year = ref(0);
+    // reactive可以代理一个对象，但是不能代理基本类型
+    const user = reactive({
+      name: 'Bob',
+      sex: '男'
+    })
+  }
+  ```
+- toRefs：
+
+```js
+  import { defineComponent, reactive, ref ,toRefs} from "vue";
+  setup(props, context) {
+    const obj = ref({count:1, name:"张三"});
+  }
+
+  // 当在html中使用时必须 obj.name ，较为繁琐，但解构对象又回消除响应式，故可用：
+
+  // toRefs用于将一个reactive对象转化为属性全部为ref对象的普通对象
+  return {
+    // 使用reRefs
+    ...toRefs(obj)
+  }
+```
+
+3、生命周期钩子
+
+- 新增了 setup 生命周期，将 Vue2.x 中的 beforeDestroy 名称变更成 beforeUnmount; destroyed 表更为 unmounted
+
+- beforeCreate 和 created 被 setup 替换了（但是 Vue3 中你仍然可以使用， 因为 Vue3 是向下兼容的， 也就是你实际使用的是 vue2 的）。其次，钩子命名都增加了 on; Vue3.x 还新增用于调试的钩子函数 onRenderTriggered 和 onRenderTricked
+
+```js
+// 钩子需要导入
+import {
+  defineComponent,
+  onBeforeMount,
+  onMounted,
+  onBeforeUpdate,
+  onUpdated,
+  onBeforeUnmount,
+  onUnmounted,
+  onErrorCaptured,
+  onRenderTracked,
+  onRenderTriggered
+} from 'vue'
+```
+
+4、watch 与 watchEffect 的用法
+
+::: tip watch
+watch 函数用来侦听特定的数据源，并在回调函数中执行副作用。默认情况是惰性的，也就是说仅在侦听的源数据变更时才执行回调。
+watch(source, callback, [options])
+:::
+
+- source:可以支持 string,Object,Function,`Array`; 用于指定要侦听的响应式变量
+- callback: 执行的回调函数
+- options：支持 deep、immediate 和 flush 选项。
+
+🌰：
+
+```js
+import { defineComponent, ref, reactive, toRefs, watch } from 'vue'
+export default defineComponent({
+  setup() {
+    // 1、监听reactive
+    const state = reactive({ nickname: 'name', age: 20 })
+    watch(
+      () => state.age,
+      (curAge, preAge) => {
+        console.log('新值:', curAge, '老值:', preAge)
+      }
+    )
+
+    // 2、监听ref
+    const year = ref(0)
+    watch(year, (newVal, oldVal) => {
+      console.log('新值:', newVal, '老值:', oldVal)
+    })
+
+    // 3、监听多个。source为数组
+    watch([() => state.age, year], ([curAge, preAge], [newVal, oldVal]) => {
+      console.log('新值:', curAge, '老值:', preAge)
+      console.log('新值:', newVal, '老值:', oldVal)
+    })
+
+    // 4、复杂的嵌套对象。使用deep:true
+    const state = reactive({
+      room: {
+        id: 100,
+        attrs: {
+          size: '140平方米',
+          type: '三室两厅'
+        }
+      }
+    })
+    watch(
+      () => state.room,
+      (newType, oldType) => {
+        console.log('新值:', newType, '老值:', oldType)
+      },
+      { deep: true }
+    )
+
+    // 5、默认惰性的，需要立即执行回调：immediate: true即可
+
+    // 6、默认组件销毁会停止监听，若需要自己控制：使用watch的返回值
+    const stopWatchRoom = watch(
+      () => state.room,
+      (newType, oldType) => {
+        console.log('新值:', newType, '老值:', oldType)
+      },
+      { deep: true }
+    )
+    setTimeout(() => {
+      // 停止监听
+      stopWatchRoom()
+    }, 3000)
+    return {
+      ...toRefs(state)
+    }
+  }
+})
+```
+
+::: tip watchEffect
+watchEffect 会自动收集依赖, 只要指定一个回调函数。在组件初始化时， 会先执行一次来收集依赖， 然后当收集到的依赖中数据发生变化时， 就会再次执行回调函数
+:::
+
+- watchEffect 不需要手动传入依赖
+- watchEffect 会先执行一次用来自动收集依赖
+- watchEffect 无法获取到变化前的值， 只能获取变化后的值
+
+```js
+watchEffect(() => {
+  console.log(state)
+  console.log(year)
+})
+```
+
+二、自定义 Hooks
+
+聚合逻辑为 Hooks
+
+```js
+// 1、make Hooks
+import { ref, Ref, computed } from 'vue'
+
+type CountResultProps = {
+  count: Ref<number>,
+  multiple: Ref<number>,
+  increase: (delta?: number) => void,
+  decrease: (delta?: number) => void
+}
+
+export default function useCount(initValue = 1): CountResultProps {
+  const count = ref(initValue)
+
+  const increase = (delta?: number): void => {
+    if (typeof delta !== 'undefined') {
+      count.value += delta
+    } else {
+      count.value += 1
+    }
+  }
+
+  const multiple = computed(() => count.value * 2)
+
+  const decrease = (delta?: number): void => {
+    if (typeof delta !== 'undefined') {
+      count.value -= delta
+    } else {
+      count.value -= 1
+    }
+  }
+
+  return {
+    count,
+    multiple,
+    increase,
+    decrease
+  }
+}
+```
+
+```html
+<!-- 2、use Hooks -->
+<script lang="ts">
+  import useCount from "../hooks/useCount";
+    setup() {
+      const { count, multiple, increase, decrease } = useCount(10);
+      return {
+        count,
+        multiple,
+        increase,
+        decrease,
+      };
+    },
+</script>
+```
+
+三、Vue3.x 将使用 Proxy 取代 Vue2.x 版本的 Object.defineProperty
+
+- Object.defineProperty 只能劫持对象的属性， 而 Proxy 是直接代理对象
+
+由于 Object.defineProperty 只能劫持对象属性，需要遍历对象的每一个属性，如果属性值也是对象，就需要递归进行深度遍历。但是 Proxy 直接代理对象， 不需要遍历操作
+
+- Object.defineProperty 对新增属性需要手动进行 Observe
+
+因为 Object.defineProperty 劫持的是对象的属性，所以新增属性时，需要重新遍历对象， 对其新增属性再次使用 Object.defineProperty 进行劫持。也就是 Vue2.x 中给数组和对象新增属性时，需要使用$set才能保证新增的属性也是响应式的, $set 内部也是通过调用 Object.defineProperty 去处理的。
+
+四、Teleport 传送
+
+希望继续在组件内部使用 Dialog(可以使用到 Vue 组件内的状态（data 或者 props）的值),又希望渲染的 DOM 结构不嵌套在组件的 DOM 中：
+
+- 用`<Teleport>`包裹 Dialog, 此时就建立了一个传送门，可以将 Dialog 渲染的内容传送到任何指定的地方
+
+- 如：
+
+```html
+<!-- 1、在全局根节点增加 dialog DOM  -->
+<!-- 如在index.html 。一般在 App.vue 内 -->
+<body>
+  <div id="app"></div>
+  <div id="dialog"></div>
+</body>
+
+<!-- 2、定义一个Dialog组件Dialog.vue -->
+<template>
+  <!-- to 的 id 与 1 中的id一致 -->
+  <teleport to="#dialog">
+    <div class="dialog">
+      <!-- 一些内容... -->
+    </div>
+  </teleport>
+</template>
+
+<!-- 3、在某组件中使用 -->
+<div class="header">
+  <!-- <navbar />等一些内容 -->
+  <dialog v-if="dialogVisible"></dialog>
+</div>
+
+<!-- 4、最终DOM结构为 -->
+<!-- 使用 teleport 组件，通过 to 属性，指定该组件渲染的位置与 <div id="app"></div> 同级，也就是在 body 下，但是 Dialog 的状态 dialogVisible 又是完全由内部 Vue 组件控制 -->
+<body>
+  <div id="app"></div>
+  <div id="dialog">...</div>
+</body>
+```
+
+五、Suspense 异步渲染
+
+Suspense 只是一个带插槽的组件，只是它的插槽指定了 default 和 fallback 两种状态
+
+Vue3.x 新出的`内置组件Suspense`, 它提供两个`template slot`, 刚`开始`会`渲染`一个`fallback状态`下的内容， 直到到达`某个条件后`才会`渲染default状态`的正式`内容`， 通过使用 Suspense 组件进行展示`异步渲染`就更加的简单。
+
+```html
+<Suspense>
+  <!-- default: 最终正式 -->
+  <template #default>
+    <async-component></async-component>
+  </template>
+  <!-- fallback: 一开始 -->
+  <template #fallback>
+    <div>
+      Loading...
+    </div>
+  </template>
+</Suspense>
+```
+
+六、片段（Fragment）
+
+- 在 Vue2.x 中， template 中只允许有一个根节点
+- 在 Vue3.x 中，你可以直接写多个根节点
+
+七、slot 具名插槽语法
+
+- vue2: 具名插槽和作用域插槽分别使用 slot 和 slot-scope 来实现
+
+```ts
+// 1、具名插槽（带名字）
+// 子：
+<slot name="title"></slot>
+// 父:
+<template slot="title">
+  <h1>歌曲：成都</h1>
+<template>
+
+// 2、作用域插槽（传数据）
+// 子：
+<slot name="content" :data="data"></slot>
+export default {
+  data(){
+    return{
+      data:["走过来人来人往","不喜欢也得欣赏","陪伴是最长情的告白"]
+    }
+  }
+}
+// 父：
+<template slot="content" slot-scope="scoped">
+    <div v-for="item in scoped.data">{{item}}</div>
+<template>
+```
+
+- vue3: 将 slot 和 slot-scope 进行了合并同意使用
+
+```ts
+// 子：
+<slot name="content" :data="data"></slot>
+export default {
+  data(){
+    return{
+      data:["走过来人来人往","不喜欢也得欣赏","陪伴是最长情的告白"]
+    }
+  }
+}
+
+// 父：
+<template v-slot:content="scoped">
+   <div v-for="item in scoped.data">{{item}}</div>
+</template>
+
+// 父：或简写 #content="{data}"
+<template #content="{data}">
+    <div v-for="item in data">{{item}}</div>
+</template>
+```
+
+- [ts 系列](https://mp.weixin.qq.com/s/y6C4R04mpvBmyV80p5WOug)
+- [SourceMap 与前端异常监控](https://mp.weixin.qq.com/s/y6C4R04mpvBmyV80p5WOug)
+- [SourceMap 获取源码](https://zhuanlan.zhihu.com/p/26033573)
+- [mozilla:source-map](https://github.com/mozilla/source-map)
+- [阮一峰：JavaScript Source Map 详解](http://www.ruanyifeng.com/blog/2013/01/javascript_source_map.html)
+
+#### SourceMap 与前端异常监控
+
+1、代码反解
+
+然后每次把 SourceMap 也上传一份给 监控，线上遇到错误将错误上传给 监控 Server，监控 Server 基于错误堆栈和 SourceMap 反解出原始的堆栈就可以了。是的，监控系统要解决的一个核心问题就是代码反解
+
+出于一些性能和安全等的考虑，通常我们发布到线上的代码，通常并非原始的代码，而是经过混淆压缩后的代码，即使不经过压缩，大部分的前端工程都会经过一个 build 的过程，这个过程里通常会包括代码的转换、打包和压缩等，这使得调试生成的代码变得异常困难，因此，我们需要一个工具帮我们解决这类调试问题。
+
+2、SourceMap
+
+编译的时候除了生成最终产物 xxx.js 文件外还会额外生成一个 xxx.js.map 的文件，这个 map 文件里包含了`原始代码及其位置映射信息`，这样我们利用 xxx.js 和 xxx.js.map 就可以将 xxx.js 的代码及其位置完美的映射会源代码以及位置，这样我们的调试工具就可以基于这个 map 文件实现源码调试了。
+
+- transformer: Babel、typescript、emscripten、esbuild【】
+- minifier 压缩混淆: esbuild ,terser
+- bundler 打包: esbuild, webpack, rollup【打包时也需配置生成 SourceMap】
+- runtime 开发调试: browser & node & deno【用的浏览器的 SourceMap 支持和 node 的 SourceMap 支持】
+- 日志上报: client server 【将 SourceMap 发布到内网而非公网上，不然别人也可以解析你的源码了】
+
+3、SourceMap 格式
+
+将一个 .ts 文件编译为 .js 文件，看看其 SourceMap 信息是如何处理映射的。我们项目包含了原始的 ts 文件 add.ts、编译后的产物文件 add.js 和 SourceMap 文件 add.js.map
+
+```js
+// add.ts
+const add = (x:number, y:number) => {
+  return x + y;
+}
+
+// add.js
+var add = function (x, y) {
+    return x + y;
+};
+//# sourceMappingURL=module.js.map【访问 http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js，打开压缩后的版本，滚动到底部，你可以看到最后一行是这样的：//@ sourceMappingURL=jquery.min.map; 这就是Source Map。它是一个独立的map文件，与源码在同一个目录下】
+
+// SourceMap
+{
+  version : 3, // SourceMap标准版本,最新的为3
+  file: "add.js", // 转换后的文件名
+  sourceRoot : "", // 转换前的文件所在目录，如果与转换前的文件在同一目录，该项为空
+  sources: ["add.ts"], // 转换前的文件，该项是一个数组，表示可能存在多个文件合并
+  names: [], // 转换前的所有变量名和属性名,多用于minify的场景
+  sourcesContent: [ // 原始文件内容
+    "const add = (x:number,y:number) => {\n  return x+y;\n}"
+  ]
+  mappings: "AAAA,IAAM,GAAG,GAAG,UAAC,CAAQ,EAAC,CAAQ;IAC5B,OAAO,CAAC,GAAC,CAAC,CAAC;AACb,CAAC,CAAA",
+}
+```
+
+mapping 的格式:
+
+- 实际上是个三级结构
+
+```js
+let mappings: "AAAA,IAAM,GAAG,GAAG,UAAC,CAAQ,EAAC,CAAQ;IAC5B,OAAO,CAAC,GAAC,CAAC,CAAC;AACb,CAAC,CAAA";
+lines = mappings.split(';')
+[
+  'AAAA,IAAM,GAAG,GAAG,UAAC,CAAQ,EAAC,CAAQ', // var add = function (x, y) { 一级
+  'IAC5B,OAAO,CAAC,GAAC,CAAC,CAAC',     // return x + y; 二级
+  'AACb,CAAC,CAAA' // }; 三级
+]
+* 每一行都对应生成代码的每行文件的位置映射信息
+* 此处三行对应 add 方法的三行
+```
+
+- 对于 mappings 的三行：
+  - segment：每一行同包含由 , 分割的多个 segment 信息，其中每个 segment 都对应了产物里每一行里每一个符合所在的列的信息
+  - fields：每个 segment 实际上又包含了几个 field，每个 field 都编码了具体的行列映射信息,依次为：
+    - 第一位: 转换后代码所处的列号，如果这是当前行的第一个 segment，那么是个绝对值，否则是相对于上一个 segment 的相对值
+    - 第二位：表示这个位置属于 sources 属性中的哪一个文件，相对于前一个 segment 的位置（区别于列号，下一行的第一个 segment 仍然是相对于上一行的最后一个 segment，并不会 reset）
+    - 第三位：表示这个位置属于转换前代码的第几行，相对位置，同第二列
+    - 第四位：表示这个位置属于转换前代码的第几列，相对位置，同第二列
+    - 第五位：表示这个位置属于 names 属性中的哪一个变量,相对位置，同第二列
+- field 存储的值并非是直接的数字值，而是将数字使用 vlq 进行了编码，根据上述这些信息我们实际上就可以实现 SourceMap 的双向映射了，即可以根据 SourceMap 和原始代码的位置信息查找到生成代码的信息，也可以根据 SourceMap 和生成代码的位置信息，查找到原始代码的信息
+  - 双向查找流程：vlq 解码
+  - 事实上上面这些反解流程并不需要我们自己去实现，[mozilla:source-map](https://github.com/mozilla/source-map) 已经帮我们提供了很多的编译方法，包括不限于
+    - originalPositionFor：查找源码位置
+    - generatedPositionFor：查找生成代码位置
+    - eachMapping：生成每个 segment 的详细映射信息
+
 ### 2021-09-23
 
 - Vue.js 3.2： vnode： https://mp.weixin.qq.com/s/z2ZCUFfFzp3c1ly4IQrrMA
