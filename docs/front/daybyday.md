@@ -4,6 +4,12 @@
 
 ## 2021-09
 
+### 2021-09-27
+
+- [在项目中实现大文件分片上传，暂停续传的](https://mp.weixin.qq.com/s/b1_6xlBxPmfQOMCtXiIlkw)
+- [Promise.allSettled 的作用，如何自己实现一个 Promise.allSettled](https://mp.weixin.qq.com/s/xmFvgkmm1OdydLU6ingnWw)
+- [Promise.allSettled 的作用，如何自己实现一个 Promise.allSettled](https://mp.weixin.qq.com/s/xmFvgkmm1OdydLU6ingnWw)
+
 ### 2021-09-25
 
 - 代码截图：https://carbon.now.sh
