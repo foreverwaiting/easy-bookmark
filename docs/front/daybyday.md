@@ -2,17 +2,351 @@
 
 日益增长
 
+## 2021-10
+
+### 2021-10-10
+
+[vue 模版编译](https://mp.weixin.qq.com/s/Uvi2r3a2KwXrPdNAkexqLg)
+
+[vue 源码](http://caibaojian.com/vue-design/appendix/ast.html)
+
+[with newFunction eval](https://www.yuque.com/chengzishuo/dty0x8/dvw94r)
+
+[webpack](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=Mzg3OTYwMjcxMA==&action=getalbum&album_id=1856066636768722949&scene=173&from_msgid=2247484642&from_itemidx=1&count=3&nolastread=1#wechat_redirect)
+
+[矩形树图](https://mp.weixin.qq.com/s/IxfbVPc8Nx_8x-C9g3eyMw)
+
+[语雀代码画图语法](https://plantuml.com/zh/)
+
+#### js
+
+js 数字分割符号：
+
+```js
+const myMoney = 1_000_000_000_000
+console.log(myMoney) // 1000000000000
+```
+
+`new Error().stack`调试：获取当前调用栈
+
+```js
+function firstFunction() {
+  secondFunction()
+}
+function secondFunction() {
+  thridFunction()
+}
+function thridFunction() {
+  console.log(new Error().stack)
+}
+
+firstFunction()
+
+//=> Error
+//  at thridFunction (<anonymous>:2:17)
+//  at secondFunction (<anonymous>:5:5)
+//  at firstFunction (<anonymous>:8:5)
+//  at <anonymous>:10:1
+```
+
+生成随机字符串：
+Date.now().toString(36)
+
+#### Node.js 在不同时间格式处理上的差异
+
+- 使用「补 0」形式的以 - 连接的日期字符串时，会认为传入的字符串是基于 UTC 时区的
+- 其他形式的会基于本地时区
+
+```js
+console.log(new Date('2021-10-01'));
+console.log(new Date('2021-10-1'));
+console.log(new Date('2021/10/01'));
+console.log(new Date('2021/10/1'));
+console.log(new Date('2021-10-01 00:00:00'));
+console.log(new Date('2021/10/01 00:00:00'));
+
+// 在 Node.js 中的执行结果为：
+
+2021-10-01T00:00:00.000Z  // 与其他不同，比其它快 8 小时
+2021-09-30T16:00:00.000Z
+2021-09-30T16:00:00.000Z
+2021-09-30T16:00:00.000Z
+2021-09-30T16:00:00.000Z
+2021-09-30T16:00:00.000Z
+```
+
+ISO 8601 的时间字符串定义了两种时间格式：
+
+- 一种是 YYYY-MM-DD 格式的日期格式
+- 另外一种是 YYYY-MM-DDTHH:MM:DD 格式的日期+时间格式
+- 如果是日期格式，那么将会使用 UTC 时区 来解析该参数
+- 如果是时间+日期的格式，则将会被作为 本地时区 处理
+
+ECMA262 定义的是：
+
+- 如果输入字符串是符合 ISO 8601 格式的字符串，那各种 JavaScript 引擎的行为是固定的
+- 如果不符合，比如除了第一个例子之外的 case，那就是各个引擎各显神通了
+
+#### Tree-shaking
+
+[Tree-shaking](https://mp.weixin.qq.com/s/iO3ASHjB0gIvcAjw8AqyXg)
+
+Tree-shaking 可以使得项目最终构建（Bundle）结果中只包含你实际需要的代码：
+
+- Tree-shaking 是保留 Live Code。打包前处理好
+- DCE(Dead Code Elimaion) 是消除 Dead Code。打完包再剔除
+
+Rollup 官方上对 Tree-shaking 的介绍：Tree-shaking，也被称为 Live Code Inclusion，是指 Rollup 消除项目中实际未使用的代码的过程，它是一种 Dead Code Elimation 的方式，但是在输出方面会比其他方法更有效。该名称源自模块的抽象语法树（Abstract Sytanx Tree）。该算法首先会标记所有相关的语句，然后通过摇动语法树来删除所有的 Dead Code。它在思想上类似于 GC（Garbage Collection）中的标记清除算法。尽管，该算法不限于 ES Module，但它们使其效率更高，因为它允许 Rollup 将所有模块一起视为具有共享绑定的大抽象语法树。
+
+- 1、利用 ES Module 可以进行静态分析的特点来检测模块内容的导出、导入以及被使用的情况，保留 Live Code
+- 2、消除不会被执行和没有副作用（Side Effect） 的 Dead Code，即 DCE 过程
+
+#### async await
+
+async await 其实就是 迭代函数——generator 函数 的语法糖
+
+- await 只能在 async 函数中使用，不然会报错
+- async 函数返回的是一个状态为 fuifilled 的 Promise 对象，有无值看有无 return 值
+- await 后面只有接了 Promise 才能实现排队效果
+- async/await 作用是用同步方式，执行异步操作
+
+generator 函数：yield 使用 Promise 且 + next 传参，实现 async/await【差 async】
+
+- 多了一个星号\*
+- 其内才可使用 yield，表暂停
+- yield 后面接函数的话，会立即执行，且把函数的执行返回值当作此点的 value，那么当其接的函数是 promise 时候
+- next 方法，可前进
+- next 函数传参，yield 可接收
+- next 方法执行后会返回一个对象，对象中有 value 和 done 两个属性
+  - value：暂停点后面接的值，也就是 yield 后面接的值
+  - done：是否 generator 函数已走完，没走完为 false，走完为 true
+
+```js
+function* gen() {
+  yield 1
+  yield 2
+  yield 3
+}
+const g = gen()
+console.log(g.next()) // { value: 1, done: false }
+console.log(g.next()) // { value: 2, done: false }
+console.log(g.next()) // { value: 3, done: false }
+console.log(g.next()) // { value: undefined, done: true }
+// 最后的value是undefined，取决于你generator函数有无return返回值
+```
+
+实现 async 功能：高阶函数，接收一个 generator 函数，并经过一系列处理，返回一个具有 async 函数功能的函数
+
+- async 函数的执行返回值是一个 Promise
+
+最终：
+
+```js
+// async await
+async function asyncFn() {
+  const num1 = await fn(1)
+  console.log(num1) // 2
+  const num2 = await fn(num1)
+  console.log(num2) // 4
+  const num3 = await fn(num2)
+  console.log(num3) // 8
+  return num3
+}
+const asyncRes = asyncFn()
+console.log(asyncRes) // Promise
+asyncRes.then(res => console.log(res)) // 8
+
+// generator
+// 1、generatorToAsync方法
+function generatorToAsync(generatorFn) {
+  return function() {
+    const gen = generatorFn.apply(this, arguments) // gen有可能传参
+
+    // 返回一个Promise
+    return new Promise((resolve, reject) => {
+      function go(key, arg) {
+        let res
+        try {
+          res = gen[key](arg) // 这里有可能会执行返回reject状态的Promise
+        } catch (error) {
+          return reject(error) // 报错的话会走catch，直接reject
+        }
+
+        // 解构获得value和done
+        const { value, done } = res
+        if (done) {
+          // 如果done为true，说明走完了，进行resolve(value)
+          return resolve(value)
+        } else {
+          // 如果done为false，说明没走完，还得继续走
+
+          // value有可能是：常量，Promise，Promise有可能是成功或者失败
+          return Promise.resolve(value).then(
+            val => go('next', val),
+            err => go('throw', err)
+          )
+        }
+      }
+
+      go('next') // 第一次执行
+    })
+  }
+}
+// const asyncFn = generatorToAsync(gen)
+// asyncFn().then(res => console.log(res))
+
+// 2、调用
+function* gen() {
+  const num1 = yield fn(1)
+  console.log(num1) // 2
+  const num2 = yield fn(num1)
+  console.log(num2) // 4
+  const num3 = yield fn(num2)
+  console.log(num3) // 8
+  return num3
+}
+
+const genToAsync = generatorToAsync(gen)
+const asyncRes = genToAsync()
+console.log(asyncRes) // Promise
+asyncRes.then(res => console.log(res)) // 8
+```
+
+#### 衡量性能优化的性能指标 Lighthouse
+
+1、需要观测的性能指标
+
+- First Paint(FP) 首次绘制：首次渲染的时间点，可以视为`白屏时间`，比如完成背景色渲染的时间点。通常作为时间点最早的一个性能指标。
+- First Contentful Paint(FCP) 首次内容绘制：首次`有内容`渲染的`时间点`，指标测量页面从开始加载到页面内容的任何部分在屏幕上完成渲染的时间。对于该指标，"内容"指的是文本、图像、svg 元素或非白色的 canvas 元素。可以作为首屏时间
+- Largest Contentful Paint (LCP) 最大内容绘制：页面的最大内容（通常是比较`核心的内容`）加载`完成`的`时间`，这个最大内容可以是图片/文本块。它是一个 SEO 相关的指标。
+- First Input Delay(FID) 首次输入延迟：交互延迟时间。这个指标的触发是在用户第一次与页面交互的的时候，记录的是是用户第一次与页面交互到浏览器真正能够开始处理事件处理程序以响应该交互的时间，即`交互延迟时间`。比如发生在用户第一次在页面进行 click， keydown 等交互。发生输入延迟是因为浏览器的主线程正忙着执行其他工作（比如解析和执行大型 JS 文件），还不能响应用户。
+- Cumulative Layout Shift(CLS) 累积布局偏移：在一个页面的生命周期中，会不断的发生布局变化（layout shift），对每一次布局变化做一个累积的记分，其中得分最大布局变化即为 CLS。是衡量页面稳定性的重要指标（visual stability）
+- Time to Interactive(TTI) 可交互时间：从页面加载开始到页面处于完全可交互状态所花费的时间。通常是发生在页面依赖的资源已经加载完成，此时浏览器可以快速响应用户交互的时间。
+- DOMContentLoaded：DOM 加载完成即触发，不用等页面资源加载。
+- Load：页面及其依赖的资源全部加载完成的时间，包括所有的资源文件，如样式表和图片等。
+
+2、性能指标相关的 API 及采集方式
+
+Performance Observer API 下包含一组性能监测相关的 API
+
+- Paint Timing API：收集 FP / FCP
+- Largest Contentful Paint API：收集 LCP
+- Event Timing API：收集 FID
+- Navigation Timing API：收集 Load / DOMContentLoaded
+- Layout Instability API：收集 CLS: 将加载过程分块（session），监听 layout-shift 变化获得每次布局变动的 value 值，统计每个 session 的布局变动分数，最大的布局变动分数时段，即为 CLS。[代码 demo](https://github.com/GoogleChrome/web-vitals/blob/main/src/getCLS.ts)
+- Long Tasks API & Resource Timing API：TTI 的采集依赖这两个 API
+- MutationObserver API：收集 FMP：通过 MutationObserver 对 DOM 变化进行监听，每次回调根据新旧 DOM 数量、种类、深度等，计算出当前 DOM 树的分数，分数变化最剧烈的时刻视为 FMP ，Load 事件触发后 200ms 停止监听，取最大变动的记录做上报。
+
+3、性能指标采集工具
+
+- Chrome DevTools
+- Lighthouse
+- web-vitals
+
+#### CSS 命名规范
+
+BEM【块（Block）、元素（Element**）、修饰符（Modifier--）】。如：block-name**element-name--modifier-name--modifier-value
+
+#### Chrome 中体验实验性特性
+
+地址：chrome://flags/ 查看新特性
+
+url：chrome://flags/#side-panel 激活阅读列表
+
+url：chrome://whats-new/ 查看 Chrome 新变化（中文）
+
+- [16 个 CSS 新特性-上](https://mp.weixin.qq.com/s/CIuMVwBNX4fAZzuohH7nrg)
+- [16 个 CSS 新特性-下](https://mp.weixin.qq.com/s/ww_DOWfooA1sUxhF9ptfVw)
+
+- [微前端](https://mp.weixin.qq.com/s/ZyVIlX8OSZvN5zvBa8lmoQ)
+- [字节-微前端](https://mp.weixin.qq.com/s/Q4gbnMKTs9Fsn53XhGmxhw)
+
+#### WeakMap 和 Map 的区别，WeakMap 原理，为什么能被 GC？
+
+程序运行中会有一些垃圾数据不再使用，如果没正确及时释放，会导致内存泄露
+
+「垃圾回收器」（Garbage Collection，缩写为 GC）：JS 中的垃圾数据都是由其自动回收的，不需要手动释放。其监视所有对象：引用计数（对象循环引用会导致内存泄漏，低版本 IE 采用这个）、标记清除（看对象是否被引用）。详见：[垃圾回收](https://juejin.cn/post/6981588276356317214)、[内存泄漏](https://juejin.cn/post/6984188410659340324)
+
+开发中，想要让垃圾回收器回收某一对象，就将对象的引用直接设置为 null 即可，但如果一个对象被多次引用时，例如作为另一对象的键、值或子元素时，将该对象引用设置为 null 时，该对象是不会被回收的，依然存在。当然作为 map 的 key 时，也是
+
+故，ES6 考虑到了这一点，推出了：WeakMap 。它对于值的引用都是不计入垃圾回收机制的，所以名字里面才会有一个"Weak"，表示这是弱引用（对对象的弱引用是指当该对象应该被 GC 回收时不会阻止 GC 的回收行为）。
+
+Map 相对于 WeakMap ：
+
+- Map 的键可以是任意类型，WeakMap 只接受对象作为键（null 除外），不接受其他类型的值作为键
+- Map 的键实际上是跟内存地址绑定的，只要内存地址不一样，就视为两个键；WeakMap 的键是弱引用，键所指向的对象可以被垃圾回收，此时键是无效的
+- Map 可以被遍历， WeakMap 不能被遍历
+- WeakMap 对象是一组键值对的集合，其中的键是弱引用对象，而值可以是任意。
+- WeakMap 弱引用的只是键名，而不是键值。键值依然是正常引用。
+- WeakMap 中，每个键对自己所引用对象的引用都是弱引用，在没有其他引用和该键引用同一对象，这个对象将会被垃圾回收（相应的 key 则变成无效的），所以，WeakMap 的 key 是不可枚举的
+- 除了 WeakMap 还有 WeakSet 都是弱引用，可以被垃圾回收机制回收，可以用来保存 DOM 节点，不容易造成内存泄漏
+
+判断 🌰：
+
+```js
+Map时候
+//map.js
+global.gc(); // 0 每次查询内存都先执行gc()再memoryUsage()，是为了确保垃圾回收，保证获取的内存使用状态准确
+
+function usedSize() {
+    const used = process.memoryUsage().heapUsed;
+    return Math.round((used / 1024 / 1024) * 100) / 100 + "M";
+}
+
+console.log(usedSize()); // 1 初始状态，执行gc()和memoryUsage()以后，heapUsed 值为 1.64M
+
+var map = new Map();
+var b = new Array(5 * 1024 * 1024);
+
+map.set(b, 1);
+
+global.gc();
+console.log(usedSize()); // 2 在 Map 中加入元素b，为一个 5*1024*1024 的数组后，heapUsed为41.82M左右
+
+b = null;
+global.gc();
+
+console.log(usedSize()); // 3 将b置为空以后，heapUsed 仍为41.82M，说明Map中的那个长度为5*1024*1024的数组依然存在
+
+/* 执行 */
+node --expose-gc map.js // --expose-gc 参数表示允许手动执行垃圾回收机制
+
+WeakMap时候
+// weakmap.js
+function usedSize() {
+    const used = process.memoryUsage().heapUsed;
+    return Math.round((used / 1024 / 1024) * 100) / 100 + "M";
+}
+
+global.gc(); // 0 每次查询内存都先执行gc()再memoryUsage()，是为了确保垃圾回收，保证获取的内存使用状态准确
+console.log(usedSize()); // 1 初始状态，执行gc()和 memoryUsage()以后，heapUsed 值为 1.64M
+var map = new WeakMap();
+var b = new Array(5 * 1024 * 1024);
+
+map.set(b, 1);
+
+global.gc();
+console.log(usedSize()); // 2 在 Map 中加入元素b，为一个 5*1024*1024 的数组后，heapUsed为41.82M左右
+
+b = null;
+global.gc();
+
+console.log(usedSize()); // 3 将b置为空以后，heapUsed 变成了1.82M左右，说明WeakMap中的那个长度为5*1024*1024的数组被销毁了
+
+/* 执行 */
+node --expose-gc weakmap.js // --expose-gc 参数表示允许手动执行垃圾回收机制
+```
+
 ## 2021-09
 
 ### 2021-09-27
 
 - [在项目中实现大文件分片上传，暂停续传的](https://mp.weixin.qq.com/s/b1_6xlBxPmfQOMCtXiIlkw)
 - [Promise.allSettled 的作用，如何自己实现一个 Promise.allSettled](https://mp.weixin.qq.com/s/xmFvgkmm1OdydLU6ingnWw)
-- [Promise.allSettled 的作用，如何自己实现一个 Promise.allSettled](https://mp.weixin.qq.com/s/xmFvgkmm1OdydLU6ingnWw)
 
 ### 2021-09-25
 
-- 代码截图：https://carbon.now.sh
+- 代码截图工具：https://carbon.now.sh
 
 #### Vue3.0
 
