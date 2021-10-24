@@ -1,10 +1,10 @@
 <p align="center">
-  <img width="320" src="https://wpimg.wallstcn.com/9e77e0ae-3018-45a2-bf9f-1a4c88dd300a.svg">
+  <img width="320" src="https://foreverwaiting.github.io/easy-bookmark/logo.jpg">
 </p>
 
-**本项目为个人技术收藏集，里面会不定期分享一些作者平时用到的一些库，或者常用的网站和小工具。同时作者也会在上面不定期的写一些简单的博文**
+**个人书签 🔖，一些简单的记录 📝**
 
-**如果你有好的推荐你可以提 issue 或者 pr 来告诉作者**
+**如有需要可提 issue 或者 pr**
 
 - [态度](#%E6%80%81%E5%BA%A6)
   - [功不唐捐](#%E5%8A%9F%E4%B8%8D%E5%94%90%E6%8D%90)
@@ -13,7 +13,7 @@
   - [工具](#%E5%B7%A5%E5%85%B7)
   - [图片](#%E5%9B%BE%E7%89%87)
   - [开发](#%E5%BC%80%E5%8F%91)
-  - [值得一看、学习](#%E5%80%BC%E5%BE%97%E4%B8%80%E7%9C%8B%E5%AD%A6%E4%B9%A0)
+  - [学习](#%E5%AD%A6%E4%B9%A0)
   - [javascript 工具库](#javascript-%E5%B7%A5%E5%85%B7%E5%BA%93)
   - [小程序](#%E5%B0%8F%E7%A8%8B%E5%BA%8F)
   - [css](#css)
@@ -59,9 +59,9 @@
 
 [轻松玩转 PDF](https://smallpdf.com/cn)
 
-## 图片
+[谷歌访问助手-语雀](https://www.yuque.com/newday-me/doc/roppru)
 
-[在线获取随机图片](https://picsum.photos/)
+## 图片
 
 [图片素材（免费 CCO 授权）](https://www.pexels.com/)
 
@@ -69,11 +69,19 @@
 
 [在线获取随机图片](https://picsum.photos/)
 
+[在线获取随机 placeholder 图片](https://placeholder.com/)
+
 [clip-path 在线神器（作者 Bennett Feely 首页其他项目也很不错）](https://bennettfeely.com/clippy/)
 
 [AI 人工智能图片放大（动漫、插画图片的放大几乎可以说是完美的）](https://bigjpg.com/zh)
 
 [抠图（消除背景）](https://www.remove.bg/zh)
+
+[彼岸壁纸](http://www.netbian.com/)
+
+[故宫壁纸](https://www.dpm.org.cn/lights/royal.html)
+
+[bing 壁纸](https://cn.bing.com/)
 
 ## 开发
 
@@ -83,7 +91,7 @@
 
 [编程文档 API 文档大全（下载 Dash 本地浏览 MDN 文档）](https://devdocs.io/)
 
-## 值得一看、学习
+## 学习
 
 [张鑫旭（css 世界作者）](https://www.zhangxinxu.com/)
 
@@ -105,17 +113,27 @@
 
 [前端技术文档](http://caibaojian.com/book/)
 
-[奇舞团](https://blog.csdn.net/qiwoo_weekly)
+[奇舞团周刊](https://weekly.75.team/)
 
-[蚂蚁金服](https://blog.csdn.net/weixin_44326589)
+[算法](https://leetcode-solution-leetcode-pp.gitbook.io/leetcode-solution/)
+
+[data_structures_and_algorithms_using_javascript](https://github.com/oreillymedia/data_structures_and_algorithms_using_javascript)
+
+[JavaScript 算法与数据结构](https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md)
+
+[JD](https://blog.poetries.top/FE-Interview-Questions/)
+
+[reJD](https://github.com/yifeikong/reverse-interview-zh)
+
+[frontend9](https://www.yuque.com/fe9)
 
 ## javascript 工具库
 
 [Lodash 是一个一致性、模块化、高性能的 JavaScript 实用工具库](https://www.lodashjs.com/)
 
-[函数式编程的 JavaScript 库](https://underscorejs.org/)
+[underscore 函数式编程的 JavaScript 库](https://underscorejs.org/)
 
-[一款实用的 JavaScript 函数式编程库](https://ramda.cn/)
+[ramda 一款实用的 JavaScript 函数式编程库](https://ramda.cn/)
 
 [正则大全](https://any86.github.io/any-rule/)
 
@@ -148,5 +166,3 @@
 - [**react-kawaii**](https://github.com/miukimiu/react-kawaii) 一个非常可爱的 React 卡通人脸库，很有意思
 - [**chart-race-react**](https://github.com/Mckinsey666/chart-race-react) 图表竞赛 长条图赛跑动画 在微博或者 b 站这种类型视频很火
 - [**98.css**](https://jdan.github.io/98.css/#tree-view) windows 98 主题分格 css
-
-https://panjiachen.github.io/awesome-bookmarks/diary/read.html

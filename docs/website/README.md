@@ -34,9 +34,9 @@ sidebar: auto
 
 [轻松玩转 PDF](https://smallpdf.com/cn)
 
-## 图片
+[谷歌访问助手-语雀](https://www.yuque.com/newday-me/doc/roppru)
 
-[在线获取随机图片](https://picsum.photos/)
+## 图片
 
 [图片素材（免费 CCO 授权）](https://www.pexels.com/)
 
@@ -44,11 +44,19 @@ sidebar: auto
 
 [在线获取随机图片](https://picsum.photos/)
 
+[在线获取随机 placeholder 图片](https://placeholder.com/)
+
 [clip-path 在线神器（作者 Bennett Feely 首页其他项目也很不错）](https://bennettfeely.com/clippy/)
 
 [AI 人工智能图片放大（动漫、插画图片的放大几乎可以说是完美的）](https://bigjpg.com/zh)
 
 [抠图（消除背景）](https://www.remove.bg/zh)
+
+[彼岸壁纸](http://www.netbian.com/)
+
+[故宫壁纸](https://www.dpm.org.cn/lights/royal.html)
+
+[bing 壁纸](https://cn.bing.com/)
 
 ## 开发
 
@@ -58,7 +66,7 @@ sidebar: auto
 
 [编程文档 API 文档大全（下载 Dash 本地浏览 MDN 文档）](https://devdocs.io/)
 
-## 值得一看、学习
+## 学习
 
 [张鑫旭（css 世界作者）](https://www.zhangxinxu.com/)
 
@@ -80,17 +88,27 @@ sidebar: auto
 
 [前端技术文档](http://caibaojian.com/book/)
 
-[奇舞团](https://blog.csdn.net/qiwoo_weekly)
+[奇舞团周刊](https://weekly.75.team/)
 
-[蚂蚁金服](https://blog.csdn.net/weixin_44326589)
+[算法](https://leetcode-solution-leetcode-pp.gitbook.io/leetcode-solution/)
+
+[data_structures_and_algorithms_using_javascript](https://github.com/oreillymedia/data_structures_and_algorithms_using_javascript)
+
+[JavaScript 算法与数据结构](https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md)
+
+[JD](https://blog.poetries.top/FE-Interview-Questions/)
+
+[reJD](https://github.com/yifeikong/reverse-interview-zh)
+
+[frontend9](https://www.yuque.com/fe9)
 
 ## javascript 工具库
 
 [Lodash 是一个一致性、模块化、高性能的 JavaScript 实用工具库](https://www.lodashjs.com/)
 
-[函数式编程的 JavaScript 库](https://underscorejs.org/)
+[underscore 函数式编程的 JavaScript 库](https://underscorejs.org/)
 
-[一款实用的 JavaScript 函数式编程库](https://ramda.cn/)
+[ramda 一款实用的 JavaScript 函数式编程库](https://ramda.cn/)
 
 [正则大全](https://any86.github.io/any-rule/)
 
@@ -123,5 +141,3 @@ sidebar: auto
 - [**react-kawaii**](https://github.com/miukimiu/react-kawaii) 一个非常可爱的 React 卡通人脸库，很有意思
 - [**chart-race-react**](https://github.com/Mckinsey666/chart-race-react) 图表竞赛 长条图赛跑动画 在微博或者 b 站这种类型视频很火
 - [**98.css**](https://jdan.github.io/98.css/#tree-view) windows 98 主题分格 css
-
-https://panjiachen.github.io/awesome-bookmarks/diary/read.html

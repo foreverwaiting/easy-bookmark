@@ -7,3 +7,5 @@
 ## Electron vue
 
 ## NuxtJS ssr
+
+## Vite SystemJs ESM

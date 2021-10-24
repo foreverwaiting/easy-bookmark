@@ -4,6 +4,12 @@
 
 ## 2021-10
 
+### 2021-10-12
+
+npx 调用项目内部安装的模块，让项目内部安装的模块用起来更方便，不用在 scripts 内配置或者执行 .node-modules/.bin/mocha --version 之类的命令，也可以使用，如：npx package --version
+
+[ts 高级](https://mp.weixin.qq.com/s/VeepNN2518QASUmYoBWDqw)
+
 ### 2021-10-10
 
 [vue 模版编译](https://mp.weixin.qq.com/s/Uvi2r3a2KwXrPdNAkexqLg)
@@ -1394,8 +1400,6 @@ Cookies 相关更新：显示 url 解码后的 cookie 的新选项
 ### 2021-09-12
 
 - 文件上传，断点上传：https://mp.weixin.qq.com/s/hOkxwjSHGZ-3oXyN3CwwqQ
-
-  - https://panjiachen.github.io/awesome-bookmarks/diary/read.html#%E4%BA%94%E6%9C%88
 
 - 前端异常埋点：https://mp.weixin.qq.com/s/ithQ2DDFvTfpuaixH8pt2A
 
