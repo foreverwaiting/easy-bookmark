@@ -102,6 +102,8 @@ sidebar: auto
 
 [frontend9](https://www.yuque.com/fe9)
 
+[interview](https://panjiachen.github.io/awesome-bookmarks/interview/)
+
 ## javascript 工具库
 
 [Lodash 是一个一致性、模块化、高性能的 JavaScript 实用工具库](https://www.lodashjs.com/)
