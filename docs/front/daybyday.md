@@ -2,7 +2,236 @@
 
 日益增长
 
+## 2021-11
+
+### 2021-11-04
+
+[Web Component](https://mp.weixin.qq.com/s/kYSs3jiSZ6xxrrLemH1ZaQ)
+
+pwa：离线可访问技术（渐进式网络开发应用程序），使用 serviceworker 和 workbox 技术。优点是离线也能访问，缺点是兼容性差
+
+#### console 实用
+
+```js
+// 1、带颜色
+console.log('My Name is %cCUGGZ', 'color: skyblue; font-size: 30px;')
+
+// 2、图片
+console.log('%c ','background-image:url("http://iyeslogo.orbrand.com/150902Google/005.gif");background-size:120% 120%;background-repeat:no-repeat;background-position:center center;line-height:60px;padding:30px 120px;');
+
+// 3、时间
+console.time()  console.timeEnd()
+
+console.time("timer2");
+console.timeEnd("timer2")
+
+// 3、计时器当前时间
+console.timeLog("key")
+
+// 4、执行次数
+console.count()
+
+console.dir()
+
+// 5、table
+const app = ["facebook", "google", "twitter"];
+console.table(app);
+// 第一个参数是需要打印的对象，第二个参数是需要打印的表格的标题，这里就是数组对象的属性值
+console.table(users, ['first_name', 'last_name', 'city']);
+
+// 调用栈
+console.trace()
+
+// 当前console的内存
+console.memory
+```
+
+#### Open Graph 分享
+
+[Open Graph protocol 分析链接生成可视化分享：如钉钉识别链接](https://juejin.cn/post/7023173942001008670)
+
+- 基础属性：向页面添加基本元数据
+- og:title - 指定你想要在共享时展示的标题。这通常与你网页的<title>标签相同，例如“百度一下，你就知道”。
+- og:type- 对象的类型，例如“video.movi​​e”。根据你指定的类型的不同，可能还需要添加一些其他的不同属性。
+- og:image - 一个图片 URL。
+- og:url - 指定你想要共享的 URL/当前页面的 URL（可以是短链接），例如，“www.baidu.com/”。
+
+如下 Open Graph 协议标记：
+
+```html
+<!-- 详见：https://ogp.me/ -->
+<html prefix="og: https://ogp.me/ns#">
+  <head>
+    <title>The Rock (1996)</title>
+    <meta property="og:title" content="The Rock" />
+    <meta property="og:type" content="video.movie" />
+    <meta property="og:url" content="https://www.imdb.com/title/tt0117500/" />
+    <meta
+      property="og:image"
+      content="https://ia.media-imdb.com/images/rock.jpg"
+    />
+    ...
+  </head>
+  ...
+</html>
+```
+
+### 2021-11-03
+
+- [盛水问题](https://www.cnblogs.com/forever-xuehf/p/12776145.html)
+- [接雨水](https://leetcode-cn.com/problems/trapping-rain-water/)
+- [接雨水 2](https://leetcode-cn.com/problems/trapping-rain-water-ii/)
+
+### 2021-11-02
+
+- [输入是 1,2,3,5,7,8,10 输出要求是 1~3 5 7~8 10](https://mp.weixin.qq.com/s/-RNaRd1rQ4-1sbzGWwu2yg)
+
+```js
+function calcContinuousRanges(arr) {
+  let continuousRanges = []
+  let index = 0
+  while (index < arr.length) {
+    const range = {
+      start: arr[index],
+      end: arr[index]
+    }
+    while (index < arr.length && arr[index + 1] === arr[index] + 1) {
+      range.end = arr[index + 1]
+      index++
+    }
+    continuousRanges.push(range)
+    index++
+  }
+  // console.log(JSON.stringify(continuousRanges));
+  const formatted = continuousRanges
+    .map(({ start, end }) => {
+      return start === end ? start : `${start}~${end}`
+    })
+    .join(' ')
+  console.log(formatted)
+}
+
+calcContinuousRanges([1, 2, 3, 5, 7, 8, 10])
+```
+
 ## 2021-10
+
+### 2021-10-30
+
+- [正则](https://mp.weixin.qq.com/s/XRIm4b5d10a2os20SRcD4Q)
+
+- [package.json](https://juejin.cn/post/7023539063424548872)
+
+- [复制文字：execCommand & Clipboard API](https://www.zhangxinxu.com/wordpress/2021/10/js-copy-paste-clipboard/)
+
+#### 呼起 chrome 吸取颜色 api
+
+```js
+const eyeDropper = new EyeDropper()
+const result = await eyeDropper.open()
+```
+
+#### JavaScript 允许一个块状作用域既不充当循环也不充当 if 语句的一部分而独立存在。下面的代码演示了这样一个例子，你可以通过标签命名块状作用域，并在合适的时机跳出这个作用域，返回到上层作用域中：
+
+```js
+function test(printTwo) {
+  printing: {
+      console.log("One");
+      if (!printTwo) break printing;
+      console.log("Two");
+  }
+  console.log("Three");
+}
+
+// 结果
+> test(false)
+  One
+  Three
+> test(true)
+  One
+  Two
+  Three
+```
+
+### 2021-10-28
+
+- [JavaScript 沙箱](https://mp.weixin.qq.com/s/euHJpS6rcRRqVBIPAnbUHA)
+- [Google V8 引擎浅析](https://mp.weixin.qq.com/s/8uwzZT_5unzHVY4BMx9htA)
+- [二维码](https://mp.weixin.qq.com/s/tLKQLe1IjGv5vkDfhXIK2Q)
+- [CSS 计数器](https://mp.weixin.qq.com/s/SM76He2iHEcpSH8Nqd07gA)
+
+#### 学习
+
+- 学什么：围绕工作学可以落地实践，不然学的没有深入场景只是 demo 级别;
+- 如何读懂复杂代码：多用 debugger;
+- 长期收益：重视计算机基础
+  - 编译原理（它把人能读懂的源代码转成计算机能运行的代码）
+  - 操作系统（它封装了硬件能力给上层应用，并且很好的调度各种软件资源）
+  - 计算机网络（它提供了计算机和计算机之间的长距离通信的机制，是互联网的基础）
+  - 计算机图形学（它是显示器中显示二维、三维图形的基础）
+  - 音视频处理（它是音视频相关技术的基础））
+- 提升学习效果和工作效率：“费曼学习法”。学完想要吸收就要多做 技术分享、写文章、给别人讲解技术点（提升学习效果和工作效率）
+
+#### 阅读源码
+
+- 通过文档和测试用例了解代码的功能
+- 自己思考功能的实现方式
+- 粗读源码理清实现思路
+- 通过 debugger 理清实现细节
+- 输出文章来讲述源码实现思路
+
+### 2021-10-25
+
+- 查询搜索、减枝、二分、定义左右两个指针、使用 while 循环
+
+- 双重 for 循环遍历二维数组
+
+- 递归时，可缓存已递归的值，记忆性递归。尾递归
+
+- str.indexOf(searchValue [, fromIndex]) indexOf 第二个参数可指定开始查询的位置
+
+#### css 自定义 ul li 的 type
+
+- 1、`:empty`伪类，表示当元素里面什么都没有的时候（包括空格、标签内换行），应用相关样式。空元素内部使用伪元素(如：::before, ::after)生成的内容，即设置 content，是不被:empty 伪类认可的，选择器依然认为这是个空元素
+
+- 2、伪类以 content 动态呈现值无法获取。[获得.total 这个元素目前的数值是拿不到的](https://www.zhangxinxu.com/study/201412/css-counters-get-checked-number.html)
+
+- css 计数器 ↔ 伪元素 ↔content 属性 [CSS 计数器用法](https://mp.weixin.qq.com/s/SM76He2iHEcpSH8Nqd07gA)
+
+- 实现 UI 效果：每行 li 前面有个点，使用`list-style-type`设置为`square`实心方块，可根据`text-indent`设置方块与 li 第一个字之间的距离
+
+[list-style-type: 可以设置列表元素的 marker（比如圆点、符号、或者自定义计数器样式）](https://developer.mozilla.org/zh-CN/docs/Web/CSS/list-style-type)
+[@counter-style: 自定义 counter 的样式](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@counter-style)
+[张鑫旭：CSS @counter-style 规则](https://www.zhangxinxu.com/wordpress/2021/10/css-counter-style/)
+
+```css
+/* 设置如下样式给 ui li */
+@counter-style circled-alpha {
+  system: fixed;
+  symbols: Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ;
+  suffix: " ";
+}
+
+.items {
+  list-style-type: circled-alpha;
+}
+
+/* 得到如下效果 */
+Ⓐ One
+Ⓑ Two
+Ⓒ Three
+Ⓓ Four
+Ⓔ FIve
+....
+...
+Ⓨ Twenty Five
+Ⓩ Twenty Six
+
+27 Twenty Seven
+28 Twenty Eight
+29 Twenty Nine
+30 Thirty
+```
 
 ### 2021-10-12
 
@@ -55,8 +284,9 @@ firstFunction()
 //  at <anonymous>:10:1
 ```
 
-生成随机字符串：
-Date.now().toString(36)
+生成随机字符串：Date.now().toString(36)
+
+生成随机字符串：Math.random().toString(36).slice(2)
 
 #### Node.js 在不同时间格式处理上的差异
 
@@ -219,6 +449,8 @@ asyncRes.then(res => console.log(res)) // 8
 ```
 
 #### 衡量性能优化的性能指标 Lighthouse
+
+[新时代的 Google Web Vitals 性能指标](https://mp.weixin.qq.com/s/mwgeuZbYGKn_I-7k41ZquQ)
 
 1、需要观测的性能指标
 

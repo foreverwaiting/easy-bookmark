@@ -1,5 +1,8 @@
 # 数据结构与算法
 
+- 时间复杂度：O(1)、 O(n) 、O(logN) 、O(n\*logN) 、O(n 方) 、O(n 立方)
+- 空间复杂度：O(1)、 O(n) 、O(mn)二维
+
 ## 数据结构
 
 分类：数组、字符串、列表、栈、队列、链表、字典、散列、集合、二叉树、图、等等
@@ -1991,6 +1994,60 @@ var lengthOfLongestSubstring = function(s) {
     map.set(s[j], j)
   }
   return max
+}
+```
+
+### 搜索二维矩阵
+
+```js
+输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
+输出：true
+
+// 查询搜索、减枝、二分、
+// 定义左右两个指针、使用while循环
+var searchMatrix = function(matrix, target) {
+    const m = matrix.length, n = matrix[0].length;
+    let x = 0, y = n - 1;
+    while (x < m && y >= 0) {
+        if (matrix[x][y] === target) {
+            return true;
+        }
+        if (matrix[x][y] > target) {
+            --y;
+        } else {
+            ++x;
+        }
+    }
+    return false;
+};
+```
+
+### 异或运算
+
+- 排序数组中的搜索问题，首先想到 二分法 解决
+- 寻找重复元素：异或^
+
+- 任何数和 0 做 ^异或运算，结果仍然是原来的数，即 a ^0 = a。
+- 任何数和其自身做异或运算，结果是 0，即 a ^a = 0。
+- 异或运算满足交换律和结合律
+
+```js
+// 给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+// 说明：
+// 你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+// 示例 1:
+// 输入: [2,2,1]
+// 输出: 1
+// 示例 2:
+// 输入: [4,1,2,1,2]
+// 输出: 4
+
+var singleNumber = function(nums) {
+  let res = 0
+  for (let i = 0; i < nums.length; i++) {
+    res ^= nums[i]
+  }
+  return res
 }
 ```
 
