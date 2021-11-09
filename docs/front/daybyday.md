@@ -4,6 +4,10 @@
 
 ## 2021-11
 
+[ms](https://github.com/yygmind/blog/issues/43)
+
+[webpack](https://webpack.wuhaolin.cn/1%E5%85%A5%E9%97%A8/1-3%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8.html)
+
 ### 2021-11-04
 
 [Web Component](https://mp.weixin.qq.com/s/kYSs3jiSZ6xxrrLemH1ZaQ)
@@ -1311,7 +1315,15 @@ TypeScript 与 babel：
 
 #### 链式调用
 
+[ms](https://mp.weixin.qq.com/s/k8OFSFGQ-FdNLFGCoDyIHg)
+
 `return this`实现，把对象再返回回来，对象就可以继续调用方法，实现链式操作了。
+
+- Object.keys() 方法会返回一个由一个给定对象的自身可枚举属性组成的数组，数组中属性名的排列顺序和正常循环遍历该对象时返回的顺序一致
+
+- Reflect.ownKeys() :相当于 Object.getOwnPropertyNames(target) concat(Object.getOwnPropertySymbols(target)
+- Object.getOwnPropertySymbols() 方法返回一个给定对象自身的所有 Symbol 属性的数组
+- Object.getOwnPropertyNames() 方法返回一个由指定对象的所有自身属性的属性名（包括不可枚举属性但不包括 Symbol 值作为名称的属性）组成的数组
 
 ```js
 // 实现一个find函数，并且find函数能够满足下列条件
@@ -1370,6 +1382,34 @@ function find(origin) {
 #### 判断对象是否存在循环引用
 
 可以通过 map 来进行暂存，当值是对象的情况下，我们将对象存在 map 中，循环判断是否存在，如果存在就是存在环了，同时进行递归调用。
+
+```js
+function isHasCircle(obj) {
+  let hasCircle = false
+  const map = new Map()
+
+  function loop(obj) {
+    const keys = Object.keys(obj)
+
+    keys.forEach(key => {
+      const value = obj[key]
+      if (typeof value == 'object' && value !== null) {
+        if (map.has(value)) {
+          hasCircle = true
+          return
+        } else {
+          map.set(value)
+          loop(value)
+        }
+      }
+    })
+  }
+
+  loop(obj)
+
+  return hasCircle
+}
+```
 
 #### 高阶函数
 
