@@ -2,33 +2,33 @@
 
 ## 基础语法
 
-### ECMAScript一切区分大小写
+### ECMAScript 一切区分大小写
 
 ### 标识符（变量/函数/属性名/函数参数）的规定：
 
-- 第一个字符：必须是一个字母、下划线、或者$
+- 第一个字符：必须是一个字母、下划线、或者\$
 
-- 其他字符：可以是字母、下划线、$、数字，标识符的字母可以是ASCII或者Unicode。
+- 其他字符：可以是字母、下划线、\$、数字，标识符的字母可以是 ASCII 或者 Unicode。
 
 - 格式：驼峰大小写
 
-- 关键字、保留字、true、false、null不可以用作标识符
+- 关键字、保留字、true、false、null 不可以用作标识符
 
 ### 严格模式下不确定行为将得到处理、不安全操作会报错
 
-- 整个脚本使用严格模式：顶部添加    "use strict"
+- 整个脚本使用严格模式：顶部添加 "use strict"
 
 ```js
 // 指定函数严格模式：
 function doSomething() {
-"use strict";
-//函数体
+  'use strict'
+  //函数体
 }
 ```
 
 ### 语句由分号结尾，省略则由解析器确定句尾。建议加分号！！！
 
-### 关键字不可用于标识符，保留字（将来用作关键字的）也不可。严格模式下，eval和arguments也不可用作标识符或者属性名。
+### 关键字不可用于标识符，保留字（将来用作关键字的）也不可。严格模式下，eval 和 arguments 也不可用作标识符或者属性名。
 
 ### 变量，松散类型。
 
@@ -43,93 +43,90 @@ alert(x);会报错，
 
 ## 数据类型
 
-### 基本数据类型undefined、null、number、string、boolean，复杂数据类型object
+### 基本数据类型 undefined、null、number、string、boolean，复杂数据类型 object
 
-### typeof操作值的返回值：undefined、boolean、string、number、object、function、
+### typeof 操作值的返回值：undefined、boolean、string、number、object、function、
 
-- 写法：typeof  被操作值。    typeof是一个操作值不是函数，所以被操作值不用带括号。
+- 写法：typeof 被操作值。 typeof 是一个操作值不是函数，所以被操作值不用带括号。
 
-### typeof对未声明的变量和未初始化的变量都反悔undefined
+### typeof 对未声明的变量和未初始化的变量都反悔 undefined
 
-### Boolean()方法对空字符串、0、NaN、null、undefined转为false
+### Boolean()方法对空字符串、0、NaN、null、undefined 转为 false
 
-### Number范围，Number.MIN_VALUE、Number.MAX_VALUE，如果计算值不在范围内，自动转换为infinity和-infinity且后续无法参与计算，isFinite()检测是否超出范围。
+### Number 范围，Number.MIN_VALUE、Number.MAX_VALUE，如果计算值不在范围内，自动转换为 infinity 和-infinity 且后续无法参与计算，isFinite()检测是否超出范围。
 
-### 任何数除以0返回NaN，not a number。且NaN!=NaN。isNaN()判断是否是个数，会转化后判断。
+### 任何数除以 0 返回 NaN，not a number。且 NaN!=NaN。isNaN()判断是否是个数，会转化后判断。
 
-- 调用valueOf()方法、toString()方法
+- 调用 valueOf()方法、toString()方法
 
-### 一元加操作符的操作跟Number()一样，parseInt(val，进制)，parseFloat()只解析十进制，且解析遇到第一个无效浮点字符停止，即在第二个小数点停止。
+### 一元加操作符的操作跟 Number()一样，parseInt(val，进制)，parseFloat()只解析十进制，且解析遇到第一个无效浮点字符停止，即在第二个小数点停止。
 
-### string字符串，转义序列，\n换行、\b空格、\r回车、\\斜杠、\'单引号、\"双引号、\Unicode字符。
+### string 字符串，转义序列，\n 换行、\b 空格、\r 回车、\\斜杠、\'单引号、\"双引号、\Unicode 字符。
 
 toString()：
 数值.toString(进制)默认十进制，可传参。
-布尔值.toString()：‘true‘  ‘false‘。
+布尔值.toString()：‘true‘ ‘false‘。
 字符串.toString()：返回字符串的副本。
-对null和undefined报错
+对 null 和 undefined 报错
 
 String():
-以上同上且对null返回‘null‘，对undefined返回‘undefined‘。
+以上同上且对 null 返回‘null‘，对 undefined 返回‘undefined‘。
 
 ## 操作符
 
-### 用于操作数据值的操作符【算术操作符、位操作符、关系操作符、相等操作符】。操作符可适用于字符串数字布尔对象，对对象回先执行valueOf或者toString方法。
+### 用于操作数据值的操作符【算术操作符、位操作符、关系操作符、相等操作符】。操作符可适用于字符串数字布尔对象，对对象回先执行 valueOf 或者 toString 方法。
 
 ### 一元操作符：只能操作一个值。
 
 【++、--前置后置】前置先加或减，再操作；后置先操作再加或减。对所有类型值都可以操作。
 【+、-加减】
-【～、&、|、^按位】二进制操作：64位转为32位，执行位操作（0变1，1变0），32转回64位。正数同上，负数先转二进制补码（求绝对值二进制码，0变1，1变0就是二进制反码，二进制反码加1，就是这个负数的二进制），后续同理。
-按位非～，操作数的负值减1。如～25  === -26
-按位与&，23 & 3   两个数二进制数按规则求值。两个都为1才1，否则为0
-按位或|，23 | 3   两个数二进制数按规则求值。有一个为1就是1，否则为0
-按位异或^，23 ^ 3   两个数二进制数按规则求值。两个都为1和都为0是0，否则为1
-【<<、>>、>>>左移有符号右移无符号右移】二进制移动
-##：“<<”运算符执行左移位运算。在移位运算过程中，符号位始终保持不变。如果右侧空出位置，则自动填充为 0；超出 32 位的值，则自动丢弃。
-##：“>>”运算符执行有符号右移位运算。与左移运算操作相反，它把 32 位数字中的所有有效位整体右移，再使用符号位的值填充空位。移动过程中超出的值将被丢弃。
-##：“>>>”运算符执行五符号右移位运算。它把无符号的 32 位整数所有数位整体右移。
+【～、&、|、^按位】二进制操作：64 位转为 32 位，执行位操作（0 变 1，1 变 0），32 转回 64 位。正数同上，负数先转二进制补码（求绝对值二进制码，0 变 1，1 变 0 就是二进制反码，二进制反码加 1，就是这个负数的二进制），后续同理。
+按位非～，操作数的负值减 1。如～ 25 === -26
+按位与&，23 & 3 两个数二进制数按规则求值。两个都为 1 才 1，否则为 0
+按位或|，23 | 3 两个数二进制数按规则求值。有一个为 1 就是 1，否则为 0
+按位异或^，23 ^ 3 两个数二进制数按规则求值。两个都为 1 和都为 0 是 0，否则为 1
+【<<、>>、>>>左移有符号右移无符号右移】二进制移动 ##：“<<”运算符执行左移位运算。在移位运算过程中，符号位始终保持不变。如果右侧空出位置，则自动填充为 0；超出 32 位的值，则自动丢弃。 ##：“>>”运算符执行有符号右移位运算。与左移运算操作相反，它把 32 位数字中的所有有效位整体右移，再使用符号位的值填充空位。移动过程中超出的值将被丢弃。 ##：“>>>”运算符执行五符号右移位运算。它把无符号的 32 位整数所有数位整体右移。
 对于无符号数或正数右移运算，无符号右移与有符号右移运算的结果是相同的。
 对于负数来说，无符号右移将使用 0 来填充所有的空位，同时会把负数作为正数来处理，所得结果会非常大所以，使用无符号右移运算符时要特别小心，避免意外错误。
 【!、!!、&&、||】
-【*、/、+、-、>、<、>=、<=、==、===、三元运算符、赋值=、逗号操作符，】
+【\*、/、+、-、>、<、>=、<=、==、===、三元运算符、赋值=、逗号操作符，】
 
 ## 语句、函数
 
-### label用户跳出循环，结合break、continue。
+### label 用户跳出循环，结合 break、continue。
 
-- [label用户跳出循环](https://www.cnblogs.com/forever-xuehf/p/12775024.html)
+- [label 用户跳出循环](https://www.cnblogs.com/forever-xuehf/p/12775024.html)
 
-函数的命名参数可与arguments一起使用，arguments值永远跟对应命名参数值保持同步，但是独立的内存空间。
-没有传递值的命名参数会是undefined，ECMAScript中所有参数传递的都是值，不可能通过引用传递参数。
+函数的命名参数可与 arguments 一起使用，arguments 值永远跟对应命名参数值保持同步，但是独立的内存空间。
+没有传递值的命名参数会是 undefined，ECMAScript 中所有参数传递的都是值，不可能通过引用传递参数。
 没有重载，同名函数会覆盖。
 
 ## 基本类型引用类型
 
 ### 定义
 
-按照JavaScript变量松散类型的本质，决定了他只是在特定时间用于保存特定值的一个名字而已。由于不存在定义某个变量必须要保存何种数据类型值的规则，变量的值及数据类型可以在脚本的生命周期内改变。
+按照 JavaScript 变量松散类型的本质，决定了他只是在特定时间用于保存特定值的一个名字而已。由于不存在定义某个变量必须要保存何种数据类型值的规则，变量的值及数据类型可以在脚本的生命周期内改变。
 
 ### 基本类型、引用类型
 
-js引擎对变量的存储：堆（object对象）、栈（Boolean、Number、String、Undefined、Null、以及对象变量的指针）
-栈内存中的变量一般都是已知大小或者有范围上限的，算作一种简单存储。而堆内存存储的对象类型数据对于大小这方面，一般都是未知的。个人认为，这也是为什么null作为一个object类型的变量却存储在栈内存中的原因。
-【const定义常量其实就是指针，实际保证的就是这个常量指向的那个内存地址不可改动。
+js 引擎对变量的存储：堆（object 对象）、栈（Boolean、Number、String、Undefined、Null、以及对象变量的指针）
+栈内存中的变量一般都是已知大小或者有范围上限的，算作一种简单存储。而堆内存存储的对象类型数据对于大小这方面，一般都是未知的。个人认为，这也是为什么 null 作为一个 object 类型的变量却存储在栈内存中的原因。
+【const 定义常量其实就是指针，实际保证的就是这个常量指向的那个内存地址不可改动。
 基本类型：的值指向的内存地址就是那个值，所以就是等于常量。
-引用类型：的值指向的内存地址保存的只是一个指针，所以只能保证指针固定，对其依旧可写，但重新赋值会报错（因为改内存地址了），若想冻结对象使用Object.freeze()】
+引用类型：的值指向的内存地址保存的只是一个指针，所以只能保证指针固定，对其依旧可写，但重新赋值会报错（因为改内存地址了），若想冻结对象使用 Object.freeze()】
 基本类型：是简单的数据段。按值访问，因为可以操作保存在变量中的实际的值。存在栈内存中
 引用类型：是指那些可能由多个值构成的对象。存在堆内存中
 
 ### 传递参数【按值传递】
 
-在向函数传递基本类型参数值时，被传递的值会被复制给一个局部变量（即命名参数，或者用ECMASscript的话来说，就是Arguements对象中的一个元素）。
+在向函数传递基本类型参数值时，被传递的值会被复制给一个局部变量（即命名参数，或者用 ECMASscript 的话来说，就是 Arguements 对象中的一个元素）。
 在向函数传递引用类型参数值时，会把这个值在内存中的地址复制一份给局部变量，因此这个局部变量的变化会反应在函数的外部。
 
 ### 检测类型
 
-检测变量基本数据类型使用typeof，instanceof根据原型链识别
+检测变量基本数据类型使用 typeof，instanceof 根据原型链识别
 
-### var逗号隔开可定义多个变量
+### var 逗号隔开可定义多个变量
 
 ## 环境
 
@@ -138,13 +135,13 @@ js引擎对变量的存储：堆（object对象）、栈（Boolean、Number、St
 执行环境定义了变量和函数有权限访问的其他数据，决定各自行为。
 每个执行环境都有一个与之关联的变量对象，环境中定义的所有变量和函数都定义在这个对象中。
 
-### 全局环境就是最外成的执行环境，根据ECMAScript实现所在的宿主环境不同，表示宿主环境的对象也不一样，在web浏览器，全局执行环境被认为是window对象。
+### 全局环境就是最外成的执行环境，根据 ECMAScript 实现所在的宿主环境不同，表示宿主环境的对象也不一样，在 web 浏览器，全局执行环境被认为是 window 对象。
 
 某个执行环境中所有代码执行完毕，该环境被销毁，保存在其中的函数定义和变量也随之销毁。
 全局执行环境只有到应用程序退出（如关闭网页或者浏览器）才销毁。
 每个函数都有自己执行环境。
 
-### ECMAScript执行流：
+### ECMAScript 执行流：
 
 执行流进入一个函数 =》该函数执行环境推入环境栈中 =》执行完后 =》栈将其环境弹出 =》控制权返还给之前的执行环境。
 
@@ -153,10 +150,10 @@ js引擎对变量的存储：堆（object对象）、栈（Boolean、Number、St
 当代码在一个执行环境中时，会创建变量对象的一个作用域链。
 作用域链：保证对执行环境有权限访问的所有变量和函数有序访问。
 
-### 链的前端============作用域链（由一个个变量对象连接）=========链的后端（最终是window）
+### 链的前端============作用域链（由一个个变量对象连接）=========链的后端（最终是 window）
 
-前端1：当前执行代码所在环境的变量对象（环境中定义的所有变量和函数都定义在这个对象中）。
-前端2：如果这个环境是函数，则其活动对象（arguments对象）就是变量对象。
+前端 1：当前执行代码所在环境的变量对象（环境中定义的所有变量和函数都定义在这个对象中）。
+前端 2：如果这个环境是函数，则其活动对象（arguments 对象）就是变量对象。
 内部环境可以通过作用域链访问所有外部环境，但外部环境不能访问内部环境的任何变量和函数。
 环境之间的联系是线性的有序的，每个环境都可以向上搜索作用域链以查询变量和函数。
 
@@ -164,18 +161,18 @@ js引擎对变量的存储：堆（object对象）、栈（Boolean、Number、St
 
 执行环境类型：全局（window）、局部（函数）
 延长原理：在作用域链前端临时加一个变量对象，在代码执行完后移除。
-try-catch延长：创建一个新的变量对象，其中包含被抛出的错误对象的声明
-with延长：将指定对象加到作用域链中
+try-catch 延长：创建一个新的变量对象，其中包含被抛出的错误对象的声明
+with 延长：将指定对象加到作用域链中
 
 ### 垃圾回收
 
 自动垃圾回收机制：执行环境负责管理代码执行过程中使用的内存。
 标记清除：执行流，进入执行环境标记为‘进入环境’，离开环境后，标记为‘离开环境’。然后最终，去除环境中的变量和被环境中变量引用的变量，此后标记的就是需要清除的。
-引用计数：引用计的数为0是清除。（循环引用有问题）
+引用计数：引用计的数为 0 是清除。（循环引用有问题）
 
 ### 管理内存
 
-解除引用：设置为null（解除引用的真正作用是让值脱离执行环境，以便下次垃圾回收器运行是将其回收）
+解除引用：设置为 null（解除引用的真正作用是让值脱离执行环境，以便下次垃圾回收器运行是将其回收）
 
 ## 引用类型
 
@@ -228,14 +225,14 @@ Netscape「网景」：事件捕获流：不太具体的节点应该更早接收
 
 ```js
 // 给DOM赋值事件：
-var btn = document.getElementById("myBtn");
-btn.onclick = function(){
- alert("Clicked");
-}; 
+var btn = document.getElementById('myBtn')
+btn.onclick = function() {
+  alert('Clicked')
+}
 // 移除直接：btn.onclick = null; //删除事件处理程序
 ```
 
-### “DOM2级事件
+### “DOM2 级事件
 
 「3 个参数：要处理的事件名、作为事件处理程序的函数和一个布尔值。（最后这个布尔值参数如果是 true，表示在捕获
 阶段调用事件处理程序；如果是 false，表示在冒泡阶段调用事件处理程序。）」
@@ -243,23 +240,27 @@ btn.onclick = function(){
 ```js
 // addEventListener()添加
 // removeEventListener()移除
-var btn = document.getElementById("myBtn");
-btn.addEventListener("click", function(){
- alert(this.id);
-}, false); 
+var btn = document.getElementById('myBtn')
+btn.addEventListener(
+  'click',
+  function() {
+    alert(this.id)
+  },
+  false
+)
 ```
 
 通过 addEventListener()添加的事件处理程序只能使用 removeEventListener()来移除，移除时传入的参数与添加处理程序时使用的参数相同。所以：通过 addEventListener()添加的匿名函数将无法移除
 
-### IE事件处理程序【IE8 及更早版本只支持事件冒泡，所以通过attachEvent()添加的事件处理程序都会被添加到冒泡阶段。所以就两个参数】
+### IE 事件处理程序【IE8 及更早版本只支持事件冒泡，所以通过 attachEvent()添加的事件处理程序都会被添加到冒泡阶段。所以就两个参数】
 
 ```js
 attachEvent()
 detachEvent()
-var btn = document.getElementById("myBtn");
-btn.attachEvent("onclick", function(){
- alert("Clicked");
-});
+var btn = document.getElementById('myBtn')
+btn.attachEvent('onclick', function() {
+  alert('Clicked')
+})
 ```
 
 ### 事件对象 event
@@ -280,22 +281,22 @@ btn.attachEvent("onclick", function(){
  合成事件，当为 IME（Input Method Editor，输入法编辑器）输入字符时触发；
  变动（mutation）事件，当底层 DOM 结构发生变化时触发。
 
-### UI事件
+### UI 事件
 
-load 事件：当页面完全加载后（包括所有图像、JavaScript 文件、CSS 文件等外部资源），就会触发 window 上面的 load 事件。图像上面也可以触发 load 事件。动态创建的img，要在指定 src 属性之前先指定onload事件。
+load 事件：当页面完全加载后（包括所有图像、JavaScript 文件、CSS 文件等外部资源），就会触发 window 上面的 load 事件。图像上面也可以触发 load 事件。动态创建的 img，要在指定 src 属性之前先指定 onload 事件。
 unload 事件：切换页面触发
 resize 事件：当浏览器窗口被调整到一个新的高度或宽度时，就会触发 resize 事件。浏览器窗口最小化或最大化时也会触发。
 scroll 事件：
 
 ### 焦点事件
 
-焦点事件会在页面元素获得或失去焦点时触发。利用这些事件并与 document.hasFocus()方法及document.activeElement 属性配合，可以知晓用户在页面上的行踪。
+焦点事件会在页面元素获得或失去焦点时触发。利用这些事件并与 document.hasFocus()方法及 document.activeElement 属性配合，可以知晓用户在页面上的行踪。
 
 ### 鼠标与滚轮事件
 
 click、dblclick、mousedown、mouseenter、mouseleave、mousemove、mouseout、mouseover、mouseup
-a. 客户区坐标位置clientX 和clientY：鼠标事件都是在浏览器视口中的特定位置上发生的。这个位置信息保存在事件对象的 clientX 和clientY 属性中。所有浏览器都支持这两个属性，它们的值表示事件发生时鼠标指针在视口中的水平和垂直坐标。【不包括页面滚动的距离】
-b. 页面坐标位置pageX 和pageY：这两个属性表示鼠标光标在页面中的位置【坐标是从页面本身而非视口的左边和顶边计算的】
+a. 客户区坐标位置 clientX 和 clientY：鼠标事件都是在浏览器视口中的特定位置上发生的。这个位置信息保存在事件对象的 clientX 和 clientY 属性中。所有浏览器都支持这两个属性，它们的值表示事件发生时鼠标指针在视口中的水平和垂直坐标。【不包括页面滚动的距离】
+b. 页面坐标位置 pageX 和 pageY：这两个属性表示鼠标光标在页面中的位置【坐标是从页面本身而非视口的左边和顶边计算的】
 c. 电脑屏幕坐标位置：鼠标事件发生时，不仅会有相对于浏览器窗口的位置，还有一个相对于整个电脑屏幕的位置。而通过 screenX 和 screenY 属性就可以确定鼠标事件发生时鼠标指针相对于整个屏幕的坐标信息。
 d. 修改键：按下鼠标时键盘上的某些键的状态也可以影响到所要采取的操作。
 这些修改键就是 Shift、Ctrl、Alt 和 Meta（在 Windows 键盘中是 Windows 键，在苹果机中是 Cmd 键）
@@ -319,13 +320,14 @@ event 对象中还提供了 detail 属性，对于鼠标事件来说，detail �
 ### beforeunload 事件
 
 这个事件会在浏览器卸载页面之前触发，可以通过它来取消卸载并继续使用原有页面。
+
 ```js
-EventUtil.addHandler(window, "beforeunload", function(event){
- event = EventUtil.getEvent(event);
- var message = "I'm really going to miss you if you go.";
- event.returnValue = message;
- return message;
-}); 
+EventUtil.addHandler(window, 'beforeunload', function(event) {
+  event = EventUtil.getEvent(event)
+  var message = "I'm really going to miss you if you go."
+  event.returnValue = message
+  return message
+})
 ```
 
 ### DOMContentLoaded 事件
@@ -344,22 +346,22 @@ HTML5 新增了 hashchange 事件，以便在 URL 的参数列表（及 URL 中�
 变化前后的完整 URL。
 
 ```js
-EventUtil.addHandler(window, "hashchange", function(event){
- alert("Old URL: " + event.oldURL + "\nNew URL: " + event.newURL);
-}); 
+EventUtil.addHandler(window, 'hashchange', function(event) {
+  alert('Old URL: ' + event.oldURL + '\nNew URL: ' + event.newURL)
+})
 ```
 
 ### 设备事件
 
-orientationchange苹果的横屏竖屏
-MozOrientation火狐的包括xyz竖直左倾右倾，只有带加速计的设备才支持 MozOrientation 事件。设备如何移动
-deviceorientation设备在空间中朝向哪儿xyz
-devicemotion告诉开发人员设备什么时候移动，而不仅仅是设备方向如何改变。例如，通过 devicemotion 能够检测到设备是不是正在往下掉，或者是不是被走着的人拿在手里。
+orientationchange 苹果的横屏竖屏
+MozOrientation 火狐的包括 xyz 竖直左倾右倾，只有带加速计的设备才支持 MozOrientation 事件。设备如何移动
+deviceorientation 设备在空间中朝向哪儿 xyz
+devicemotion 告诉开发人员设备什么时候移动，而不仅仅是设备方向如何改变。例如，通过 devicemotion 能够检测到设备是不是正在往下掉，或者是不是被走着的人拿在手里。
 
 ### 触摸与手势事件
 
  touchstart：当手指触摸屏幕时触发；即使已经有一个手指放在了屏幕上也会触发。
- touchmove：当手指在屏幕上滑动时连续地触发。在这个事件发生期间，调用preventDefault()
+ touchmove：当手指在屏幕上滑动时连续地触发。在这个事件发生期间，调用 preventDefault()
 可以阻止滚动。
  touchend：当手指从屏幕上移开时触发。
  touchcancel：当系统停止跟踪触摸时触发。
@@ -387,38 +389,38 @@ iOS 2.0 中的 Safari 还引入了一组手势事件。当两个手指触摸屏�
 
 ```js
 // 复杂：
-var item1 = document.getElementById("goSomewhere");
-var item2 = document.getElementById("doSomething");
-var item3 = document.getElementById("sayHi");
-EventUtil.addHandler(item1, "click", function(event){
- location.href = "http://www.wrox.com";
-});
-EventUtil.addHandler(item2, "click", function(event){
- document.title = "I changed the document's title";
-});
-EventUtil.addHandler(item3, "click", function(event){
- alert("hi");
-}); 
+var item1 = document.getElementById('goSomewhere')
+var item2 = document.getElementById('doSomething')
+var item3 = document.getElementById('sayHi')
+EventUtil.addHandler(item1, 'click', function(event) {
+  location.href = 'http://www.wrox.com'
+})
+EventUtil.addHandler(item2, 'click', function(event) {
+  document.title = "I changed the document's title"
+})
+EventUtil.addHandler(item3, 'click', function(event) {
+  alert('hi')
+})
 ```
 
 ```js
 // 简单：
-var list = document.getElementById("myLinks");
-EventUtil.addHandler(list, "click", function(event){
- event = EventUtil.getEvent(event);
- var target = EventUtil.getTarget(event);
- switch(target.id){
- case "doSomething":
- document.title = "I changed the document's title";
- break;
- case "goSomewhere":
- location.href = "http://www.wrox.com";
- break;
- case "sayHi":
- alert("hi");
- break;
- }
-}); 
+var list = document.getElementById('myLinks')
+EventUtil.addHandler(list, 'click', function(event) {
+  event = EventUtil.getEvent(event)
+  var target = EventUtil.getTarget(event)
+  switch (target.id) {
+    case 'doSomething':
+      document.title = "I changed the document's title"
+      break
+    case 'goSomewhere':
+      location.href = 'http://www.wrox.com'
+      break
+    case 'sayHi':
+      alert('hi')
+      break
+  }
+})
 ```
 
 与前面未使用事件委托的代码比一比，会发现这段代码的事前消耗更低，因为只取得了一个 DOM 元素，只添加了一个事件处理程序。虽然对用户来说最终的结果相同，但这种技术需要占用的内存更少。所有用到按钮的事件（多数鼠标事件和键盘事件）都适合采用事件委托技术。
@@ -429,8 +431,8 @@ EventUtil.addHandler(list, "click", function(event){
 
 ### 基础
 
-通过 document.forms 可以取得页面中所有的表单。在这个集合中，可以通过数值索引或name 值来取得特定的表单。
-使用 type 特性值为"reset"的input或button都可以创建重置按钮
+通过 document.forms 可以取得页面中所有的表单。在这个集合中，可以通过数值索引或 name 值来取得特定的表单。
+使用 type 特性值为"reset"的 input 或 button 都可以创建重置按钮
 
 ### 共有的表单字段属性
 
@@ -453,16 +455,16 @@ HTML5 为表单字段新增了一个 autofocus 属性
  focus：当前字段获得焦点时触发。
 
 ```js
-EventUtil.addHandler(textbox, "change", function(event){
- event = EventUtil.getEvent(event);
- var target = EventUtil.getTarget(event);
+EventUtil.addHandler(textbox, 'change', function(event) {
+  event = EventUtil.getEvent(event)
+  var target = EventUtil.getTarget(event)
 
- if (/[^\d]/.test(target.value)){
- target.style.backgroundColor = "red";
- } else {
- target.style.backgroundColor = "";
- }
-}); 
+  if (/[^\d]/.test(target.value)) {
+    target.style.backgroundColor = 'red'
+  } else {
+    target.style.backgroundColor = ''
+  }
+})
 ```
 
 ### select()
@@ -471,8 +473,8 @@ select()方法：选择所有文本，
 select()事件：可以知道用户什么时候选择了文本，但仍然不知道用户选择了什么文本
 返回选择了什么文本
 function getSelectedText(textbox){
- return textbox.value.substring(textbox.selectionStart, textbox.selectionEnd);
-} 
+return textbox.value.substring(textbox.selectionStart, textbox.selectionEnd);
+}
 
 ### 选择部分文本
 
@@ -493,9 +495,9 @@ IE 中，这个对象是 window 对象的属性；
 的未授权访问；
 在 IE 中，则可以随时访问 clipboardData 对象。
 
-### HTML5 约束验证API 
+### HTML5 约束验证 API
 
-required、input的type为"email"和"url"、【"number"、"range"、"datetime"、"datetime-local"、"date"、"month"、"week"，
+required、input 的 type 为"email"和"url"、【"number"、"range"、"datetime"、"datetime-local"、"date"、"month"、"week"，
 还有"time"】、min 属性（最小的可能值）、max 属性（最大的可能值）和 step 属性（从 min 到 max 的两个刻度间的差值）。
 
 ### 输入模式
@@ -505,72 +507,72 @@ HTML5 为文本字段新增了 pattern 属性。这个属性的值是一个正�
 
 ### 检测表单有效性
 
-checkValidity()方法可以检测表单中的某个字段是否有效。所有表单字段都有个方法，有效true，否则返回false。
+checkValidity()方法可以检测表单中的某个字段是否有效。所有表单字段都有个方法，有效 true，否则返回 false。
 值是否有效的判断依据：a。必填字段中如果没有值就是无效的。b。字段中的值与 pattern 属性不匹配也是无效的。
 【要检测整个表单是否有效，可以在表单自身调用 checkValidity()方法。如果所有表单字段都有效，这个方法返回 true；即使有一个字段无效，这个方法也会返回 false。】
 
 ### validity 属性则会告诉你为什么字段有效或无效。
 
-customError ：如果设置了setCustomValidity()，则为true，否则返回false。
- patternMismatch：如果值与指定的pattern 属性不匹配，返回true。
- rangeOverflow：如果值比max 值大，返回true。
- rangeUnderflow：如果值比min 值小，返回true。
- stepMisMatch：如果min 和max 之间的步长值不合理，返回true。
- tooLong：如果值的长度超过了maxlength 属性指定的长度，返回true。有的浏览器（如Firefox 4）
-会自动约束字符数量，因此这个值可能永远都返回false。
- typeMismatch：如果值不是"mail"或"url"要求的格式，返回true。
- valid：如果这里的其他属性都是false，返回true。checkValidity()也要求相同的值。
- valueMissing：如果标注为required 的字段中没有值，返回true。
+customError ：如果设置了 setCustomValidity()，则为 true，否则返回 false。
+ patternMismatch：如果值与指定的 pattern 属性不匹配，返回 true。
+ rangeOverflow：如果值比 max 值大，返回 true。
+ rangeUnderflow：如果值比 min 值小，返回 true。
+ stepMisMatch：如果 min 和 max 之间的步长值不合理，返回 true。
+ tooLong：如果值的长度超过了 maxlength 属性指定的长度，返回 true。有的浏览器（如 Firefox 4）
+会自动约束字符数量，因此这个值可能永远都返回 false。
+ typeMismatch：如果值不是"mail"或"url"要求的格式，返回 true。
+ valid：如果这里的其他属性都是 false，返回 true。checkValidity()也要求相同的值。
+ valueMissing：如果标注为 required 的字段中没有值，返回 true。
 如下：
 
 ```js
-if (input.validity && !input.validity.valid){
- if (input.validity.valueMissing){
- alert("Please specify a value.")
- } else if (input.validity.typeMismatch){
- alert("Please enter an email address.");
- } else {
- alert("Value is invalid.");
- }
-} 
+if (input.validity && !input.validity.valid) {
+  if (input.validity.valueMissing) {
+    alert('Please specify a value.')
+  } else if (input.validity.typeMismatch) {
+    alert('Please enter an email address.')
+  } else {
+    alert('Value is invalid.')
+  }
+}
 ```
 
-### 通过对form设置 novalidate 属性，可以告诉表单不进行验证。
+### 通过对 form 设置 novalidate 属性，可以告诉表单不进行验证。
 
 ### 如果为 appendChild()方法传入一个文档中已有的元素，那么就会先从该元素的父节点中移除它，再把它添加到指定的位置。【将一个选择框中的选项移动到另一个选择框中】
 
 ### 富文本编辑【两种实现】
 
-frames 与designMode【富文本编辑功能是通过一个包含空 HTML 文档的 iframe 元素来实现】
+frames 与 designMode【富文本编辑功能是通过一个包含空 HTML 文档的 iframe 元素来实现】
 contenteditable
 
 ### 操作富文本【使用 document.execCommand()】
 
-execCommand命令修改富文本
-【3 个参数：要执行的命令名称、false，执行命令必须的一个值（如果不需要值，则传递null）】：如
+execCommand 命令修改富文本
+【3 个参数：要执行的命令名称、false，执行命令必须的一个值（如果不需要值，则传递 null）】：如
 
 document.execCommand("bold", false, null);
 document.execCommand("fontsize", false, 6);
 命令相关的方法：
-第一个方法： queryCommandEnabled()检测是否可以针对当前选择的文本，或者当前插入字符所在位置执行某个命令。【参数命令名称，返回bool值】【也可用于确定是否已将指定命令应用到了选择的文本】
-第二个方法： queryCommandValue()用于取得执行命令时传入的值（即前面例子中传给document.execCommand()的第三个参数）
+第一个方法： queryCommandEnabled()检测是否可以针对当前选择的文本，或者当前插入字符所在位置执行某个命令。【参数命令名称，返回 bool 值】【也可用于确定是否已将指定命令应用到了选择的文本】
+第二个方法： queryCommandValue()用于取得执行命令时传入的值（即前面例子中传给 document.execCommand()的第三个参数）
 
 ## canvas2D
 
-### 要使用canvas元素，必须先设置其 width 和 height 属性
+### 要使用 canvas 元素，必须先设置其 width 和 height 属性
 
 ### 要在这块画布（canvas）上绘图，需要取得绘图上下文
 
-### 要取得绘图上下文对象的引用，需要调用getContext()方法并传入上下文的名字。传入"2d"，就可以取得 2D 上下文对象。
+### 要取得绘图上下文对象的引用，需要调用 getContext()方法并传入上下文的名字。传入"2d"，就可以取得 2D 上下文对象。
 
 ```js
-var drawing = document.getElementById("drawing"); 
-var context = drawing.getContext("2d"); 
-context.drawImage(image, 50, 10, 20, 30); //【图片url、x、y、图片宽高】
-context.drawImage(image, 0, 10, 50, 50, 0, 100, 40, 60); //【要绘制的图像、源图像的 x 坐标、源图像的 y 坐标、源图像的宽度、源图像的高度、目标图像的 x 坐标、目标图像的 y 坐标、目标图像的宽度、目标图像的高度】
+var drawing = document.getElementById('drawing')
+var context = drawing.getContext('2d')
+context.drawImage(image, 50, 10, 20, 30) //【图片url、x、y、图片宽高】
+context.drawImage(image, 0, 10, 50, 50, 0, 100, 40, 60) //【要绘制的图像、源图像的 x 坐标、源图像的 y 坐标、源图像的宽度、源图像的高度、目标图像的 x 坐标、目标图像的 y 坐标、目标图像的宽度、目标图像的高度】
 ```
 
-给 drawImage()方法传入 HTML 元素外，还可以传入另一个canvas元素作为其第一个参数。这样，就可以把另一个画布内容绘制到当前画布上。
+给 drawImage()方法传入 HTML 元素外，还可以传入另一个 canvas 元素作为其第一个参数。这样，就可以把另一个画布内容绘制到当前画布上。
 
 ### toDataURL()方法，可以导出在元素上绘制的图像【跨域限制】
 
@@ -578,67 +580,72 @@ context.drawImage(image, 0, 10, 50, 50, 0, 100, 40, 60); //【要绘制的图像
 
 ### 使用图像数据
 
-getImageData()取得原始图像数据【4个参数：要取得其数据的画面区域的 x 和 y 坐标以及该区域的像素宽度和高度】
-返回值三个属性：width、height 和data
+getImageData()取得原始图像数据【4 个参数：要取得其数据的画面区域的 x 和 y 坐标以及该区域的像素宽度和高度】
+返回值三个属性：width、height 和 data
 data 属性是一个数组，保存着图像中每一个像素的数据。
-data 数组中，每一个像素用4 个元素来保存，分别表示红、绿、蓝和透明度值。如：
+data 数组中，每一个像素用 4 个元素来保存，分别表示红、绿、蓝和透明度值。如：
 
 ```js
 var data = imageData.data,
- red = data[0],
- green = data[1],
- blue = data[2],
- alpha = data[3]; 
+  red = data[0],
+  green = data[1],
+  blue = data[2],
+  alpha = data[3]
 ```
 
 数组中每个元素的值都介于 0 到 255 之间（包括 0 和 255）。
 能够直接访问到原始图像数据，就能够以各种方式来操作这些数据。【创建一个简单的灰阶过滤器】
 
 ```js
-var drawing = document.getElementById("drawing");
+var drawing = document.getElementById('drawing')
 //确定浏览器支持
 元素
-if (drawing.getContext){
- var context = drawing.getContext("2d"),
- image = document.images[0],
- imageData, data,
- i, len, average,
- red, green, blue, alpha;
- //绘制原始图像
- context.drawImage(image, 0, 0);
- //取得图像数据
- imageData = context.getImageData(0, 0, image.width, image.height);
- data = imageData.data;
- for (i=0, len=data.length; i < len; i+=4){
- red = data[i];
- green = data[i+1];
- blue = data[i+2];
- alpha = data[i+3];
- //求得 rgb 平均值
- average = Math.floor((red + green + blue) / 3);
- //设置颜色值，透明度不变
- data[i] = average;
- data[i+1] = average;
- data[i+2] = average;
- }
+if (drawing.getContext) {
+  var context = drawing.getContext('2d'),
+    image = document.images[0],
+    imageData,
+    data,
+    i,
+    len,
+    average,
+    red,
+    green,
+    blue,
+    alpha
+  //绘制原始图像
+  context.drawImage(image, 0, 0)
+  //取得图像数据
+  imageData = context.getImageData(0, 0, image.width, image.height)
+  data = imageData.data
+  for (i = 0, len = data.length; i < len; i += 4) {
+    red = data[i]
+    green = data[i + 1]
+    blue = data[i + 2]
+    alpha = data[i + 3]
+    //求得 rgb 平均值
+    average = Math.floor((red + green + blue) / 3)
+    //设置颜色值，透明度不变
+    data[i] = average
+    data[i + 1] = average
+    data[i + 2] = average
+  }
 
- //回写图像数据并显示结果
- imageData.data = data;
- context.putImageData(imageData, 0, 0);
-} 
+  //回写图像数据并显示结果
+  imageData.data = data
+  context.putImageData(imageData, 0, 0)
+}
 ```
 
 *绘制一幅图像
 *取得原始图像数据
 *for 循环遍历图像数据中的每一个像素「循环控制变量 i 都递增 4」
-*在取得每个像素的红、绿、蓝颜色值后，计算出它们的平均值。再把这个平均值设置为每个颜色的值，结果就是去掉了每个像素的颜色，只保留了亮度接近的灰度值（即彩色变黑白）。
-*把 data 数组回写到 imageData 对象后，调用putImageData()方法把图像数据绘制到画布上
+*在取得每个像素的红、绿、蓝颜色值后，计算出它们的平均值。再把这个平均值设置为每个颜色的值，结果就是去掉了每个像素的颜色，只保留了亮度接近的灰度值（即彩色变黑白）。 \*把 data 数组回写到 imageData 对象后，调用 putImageData()方法把图像数据绘制到画布上
 
 ### 合成
 
 globalAlpha 是一个介于 0 和 1 之间的值（包括 0 和 1），用于指定所有绘制的透明度。默认值为 0。
 //修改全局透明度
-context.globalAlpha = 0.5; 
+context.globalAlpha = 0.5;
 
 globalCompositionOperation 表示后绘制的图形怎样与先绘制的图形结合。这个属性的值是字符串如下：
 
@@ -651,28 +658,28 @@ context.globalCompositeOperation = "destination-over";
 
 ### postMessage()方法：目的：向另一个地方传递数据。【“另一个地方”指的是包含在当前页面中的元素，或者由当前页面弹出的窗口。】
 
-两个参数：一条消息【最好JSON.stringify()转一下】和一个表示消息接收方来自哪个域的字符串。
+两个参数：一条消息【最好 JSON.stringify()转一下】和一个表示消息接收方来自哪个域的字符串。
 //注意：所有支持 XDM 的浏览器也支持 iframe 的 contentWindow 属性
 var iframeWindow = document.getElementById("myframe").contentWindow;
-iframeWindow.postMessage("A secret", "http://www.wrox.com"); 
+iframeWindow.postMessage("A secret", "http://www.wrox.com");
 
 ### 接收到 XDM 消息时，会触发 window 对象的 message 事件。
 
 onmessage 处理程序的事件对象：
  data：作为 postMessage()第一个参数传入的字符串数据。
  origin：发送消息的文档所在的域，例如"http://www.wrox.com"。
- source：发送消息的文档的 window 对象的代理。这个代理对象主要用于在发送上一条消息的窗口中调用 postMessage()方法。如果发送消息的窗口来自同一个域，那这个对象就是window。
+ source：发送消息的文档的 window 对象的代理。这个代理对象主要用于在发送上一条消息的窗口中调用 postMessage()方法。如果发送消息的窗口来自同一个域，那这个对象就是 window。
 
 ```js
-EventUtil.addHandler(window, "message", function(event){
- //确保发送消息的域是已知的域
- if (event.origin == "http://www.wrox.com"){
- //处理接收到的数据
- processMessage(event.data);
- //可选：向来源窗口发送回执
- event.source.postMessage("Received!", "http://p2p.wrox.com");
- }
-});
+EventUtil.addHandler(window, 'message', function(event) {
+  //确保发送消息的域是已知的域
+  if (event.origin == 'http://www.wrox.com') {
+    //处理接收到的数据
+    processMessage(event.data)
+    //可选：向来源窗口发送回执
+    event.source.postMessage('Received!', 'http://p2p.wrox.com')
+  }
+})
 ```
 
 ## 拖放
@@ -683,7 +690,7 @@ EventUtil.addHandler(window, "message", function(event){
 
 (1) dragstart
 (2) drag
-(3) dragend 
+(3) dragend
 (1) dragenter
 (2) dragover
 (3) dragleave 或 drop
@@ -692,11 +699,11 @@ EventUtil.addHandler(window, "message", function(event){
 
 可以把任何元素变成有效的放置目标，方法是重写 dragenter 和 dragover 事件的默认行为
 
-### dataTransfer对象【在拖放事件的事件处理程序中访问 dataTransfer 对象。】
+### dataTransfer 对象【在拖放事件的事件处理程序中访问 dataTransfer 对象。】
 
 有两个主要方法：getData()和 setData()。
 getData()可以取得由 setData()保存的值。
-setData()方法的第一个参数，也是 getData()方法唯一的一个参数，是一个字符串，表示保存的数据类型，取为"text"或"URL"【HTML5则对此加以扩展，允许指定各种MIME类型】
+setData()方法的第一个参数，也是 getData()方法唯一的一个参数，是一个字符串，表示保存的数据类型，取为"text"或"URL"【HTML5 则对此加以扩展，允许指定各种 MIME 类型】
 //设置和接收文本数据
 event.dataTransfer.setData("text", "some text");
 var text = event.dataTransfer.getData("text");
@@ -704,7 +711,7 @@ var text = event.dataTransfer.getData("text");
 event.dataTransfer.setData("URL", "http://www.wrox.com/");
 var url = event.dataTransfer.getData("URL");
 
-### dataTransfer 对象的两个属性：dropEffect 和effectAllowed 
+### dataTransfer 对象的两个属性：dropEffect 和 effectAllowed
 
 dropEffect：被拖动的元素能够执行哪种放置行为【在 ondragenter 事件处理程序中针对放置目标来设置它】
  "none"：不能把拖动的元素放在这里。这是除文本框之外所有元素的默认值。
@@ -726,13 +733,13 @@ effectAllowed：允许拖动元素的哪种 dropEffect【在 ondragstart 事件�
 
 ### 开始和结束标签之间的任何内容都将作为后备内容，在浏览器不支持这两个媒体元素的情况下显示。
 
-width、 height播放器大小
-poster视频海报封面
-controls显示UI控件
+width、 height 播放器大小
+poster 视频海报封面
+controls 显示 UI 控件
 
 ### 因为并非所有浏览器都支持所有媒体格式，所以可以指定多个不同的媒体来源。为此，不用在标签中指定 src 属性，而是要像下面这样使用一或多个元素。
 
-### 音视频audio，video共有的属性
+### 音视频 audio，video 共有的属性
 
 ### 事件
 
@@ -740,38 +747,38 @@ controls显示UI控件
 
 ```js
 //取得元素的引用
-var player = document.getElementById("player"),
- btn = document.getElementById("video-btn"),
- curtime = document.getElementById("curtime"),
- duration = document.getElementById("duration");
+var player = document.getElementById('player'),
+  btn = document.getElementById('video-btn'),
+  curtime = document.getElementById('curtime'),
+  duration = document.getElementById('duration')
 //更新播放时间
-duration.innerHTML = player.duration;
+duration.innerHTML = player.duration
 //为按钮添加事件处理程序
-EventUtil.addHandler(btn, "click", function(event){
- if (player.paused){
- player.play();
- btn.value = "Pause";
- } else {
- player.pause();
- btn.value = "Play";
- }
-});
+EventUtil.addHandler(btn, 'click', function(event) {
+  if (player.paused) {
+    player.play()
+    btn.value = 'Pause'
+  } else {
+    player.pause()
+    btn.value = 'Play'
+  }
+})
 //定时更新当前时间
-setInterval(function(){
- curtime.innerHTML = player.currentTime;
-}, 250);
+setInterval(function() {
+  curtime.innerHTML = player.currentTime
+}, 250)
 ```
 
-### audio元素还有一个原生的 JavaScript 构造函数 Audio，可以在任何时候播放音频 。
+### audio 元素还有一个原生的 JavaScript 构造函数 Audio，可以在任何时候播放音频 。
 
-从同为 DOM元素的角度看，Audio 与 Image 很相似，但 Audio 不用像 Image 那样必须插入到文档中。
+从同为 DOM 元素的角度看，Audio 与 Image 很相似，但 Audio 不用像 Image 那样必须插入到文档中。
 只要创建一个新实例，并传入音频源文件即可。
 
 ```js
-var audio = new Audio("sound.mp3");
-EventUtil.addHandler(audio, "canplaythrough", function(event){
- audio.play();
-}); 
+var audio = new Audio('sound.mp3')
+EventUtil.addHandler(audio, 'canplaythrough', function(event) {
+  audio.play()
+})
 ```
 
 ## 错误
@@ -779,32 +786,32 @@ EventUtil.addHandler(audio, "canplaythrough", function(event){
 ### 捕获错误
 
 ```js
-try{
- // 可能会导致错误的代码
-} catch(error){
- // 在错误发生时怎么处理
+try {
+  // 可能会导致错误的代码
+} catch (error) {
+  // 在错误发生时怎么处理
 }
 ```
 
 ### finally【只要代码中包含 finally 子句，则无论 try 或 catch 语句块中包含什么代码——甚至 return 语句，都不会阻止 finally 子句的执行】
 
 ```js
-function testFinally(){
- try {
- return 2;
- } catch (error){
- return 1;
- } finally {
- return 0;
- }
+function testFinally() {
+  try {
+    return 2
+  } catch (error) {
+    return 1
+  } finally {
+    return 0
+  }
 }
 ```
 
-3、抛出错误【与 try-catch 语句相配的还有一个 throw 操作符，用于随时抛出自定义错误。】  
+3、抛出错误【与 try-catch 语句相配的还有一个 throw 操作符，用于随时抛出自定义错误。】
 
 ## JSON
 
-### 序列化选项JSON.stringify()：除了要序列化的 JavaScript 对象外，还可以接收另外两个参数
+### 序列化选项 JSON.stringify()：除了要序列化的 JavaScript 对象外，还可以接收另外两个参数
 
 第一个参数是个过滤器，可以是一个数组，也可以是一个函数；
 
@@ -812,18 +819,18 @@ function testFinally(){
 
 ```js
 // 如下：
-var jsonText = JSON.stringify(book, function(key, value){
- switch(key){
- case "authors":
- return value.join(",")
- case "year":
- return 5000;
- case "edition":
- return undefined;
- default:
- return value;
- }
-});
+var jsonText = JSON.stringify(book, function(key, value) {
+  switch (key) {
+    case 'authors':
+      return value.join(',')
+    case 'year':
+      return 5000
+    case 'edition':
+      return undefined
+    default:
+      return value
+  }
+})
 ```
 
 ### JSON.parse()方法也可以接收另一个参数，该参数是一个函数，将在每个键值对儿上调用
@@ -832,17 +839,17 @@ var jsonText = JSON.stringify(book, function(key, value){
 
 ## 跨域
 
-### 利用图像Ping 【在线广告跟踪浏览量的主要方式】【动态地创建图像，使用它们的 onload 和 onerror 事件处理程序来确定是否接收到了响应。】
+### 利用图像 Ping 【在线广告跟踪浏览量的主要方式】【动态地创建图像，使用它们的 onload 和 onerror 事件处理程序来确定是否接收到了响应。】
 
 ```js
-var img = new Image();
-img.onload = img.onerror = function(){
- alert("Done!");
-};
-img.src = "http://www.example.com/test?name=Nicholas"; 
+var img = new Image()
+img.onload = img.onerror = function() {
+  alert('Done!')
+}
+img.src = 'http://www.example.com/test?name=Nicholas'
 ```
 
-使用img标签，图像 Ping 最常用于跟踪用户点击页面或动态广告曝光次数。
+使用 img 标签，图像 Ping 最常用于跟踪用户点击页面或动态广告曝光次数。
 缺点：一、只能发送 GET 请求，二：无法访问服务器的响应文本。
 图像 Ping 只能用于浏览器与服务器间的单向通信
 
@@ -852,24 +859,30 @@ img.src = "http://www.example.com/test?name=Nicholas";
 - 【缺点：JSONP 是从其他域中加载代码执行，其他域不一定安全，且不知道调用是否成功】
 
 ```js
-function handleResponse(response){
- alert("You’re at IP address " + response.ip + ", which is in " +
- response.city + ", " + response.region_name);
+function handleResponse(response) {
+  alert(
+    'You’re at IP address ' +
+      response.ip +
+      ', which is in ' +
+      response.city +
+      ', ' +
+      response.region_name
+  )
 }
-var script = document.createElement("script");
-script.src = "http://freegeoip.net/json/?callback=handleResponse";
-document.body.insertBefore(script, document.body.firstChild); 
+var script = document.createElement('script')
+script.src = 'http://freegeoip.net/json/?callback=handleResponse'
+document.body.insertBefore(script, document.body.firstChild)
 ```
 
 通过查询地理定位服务来显示你的 IP 地址和位置信息
 
-### Comet服务器推送
+### Comet 服务器推送
 
 Ajax 是一种从页面向服务器请求数据的技术，而 Comet 则是一种服务器向页面推送数据的技术。Comet 能够让信息近乎实时地被推送到页面上。
-- 两种实现 Comet 的方式：
-    - 1、长轮询和流【长轮询是传统轮询（也称为短轮询）的一个翻版】。
-    - 2、HTTP 流。
 
+- 两种实现 Comet 的方式：
+  - 1、长轮询和流【长轮询是传统轮询（也称为短轮询）的一个翻版】。
+  - 2、HTTP 流。
 
 ### Web Sockets【可跨域】
 
@@ -887,36 +900,37 @@ var socket = new WebSocket("ws://www.example.com/server.php"); 【必须给 WebS
 
 - send【客户端给服务器发消息】
 
-Web Sockets 只能通过连接发送纯文本数据，发前json转下
+Web Sockets 只能通过连接发送纯文本数据，发前 json 转下
 socket.send(JSON.stringify(data));
 
-- message事件【服务端给客户端发消息】
+- message 事件【服务端给客户端发消息】
 
-当服务器向客户端发来消息时：监听message
+当服务器向客户端发来消息时：监听 message
 
 ```js
-socket.onmessage = function(event){
- var data = event.data; // data是字符串要转一下
- //处理数据
-}; 
+socket.onmessage = function(event) {
+  var data = event.data // data是字符串要转一下
+  //处理数据
+}
 ```
 
 - 其他事件
- open：在成功建立连接时触发。
- error：在发生错误时触发，连接不能持续。
- close：在连接关闭时触发。【事件对象event的属性：wasClean布尔值是否已经明确地关闭、code服务器返回的数值状态码、reason字符串，包含服务器发回的消息】
-- 
+   open：在成功建立连接时触发。
+   error：在发生错误时触发，连接不能持续。
+   close：在连接关闭时触发。【事件对象 event 的属性：wasClean 布尔值是否已经明确地关闭、code 服务器返回的数值状态码、reason 字符串，包含服务器发回的消息】
+-
+
 ```js
-var socket = new WebSocket("ws://www.example.com/server.php");
-socket.onopen = function(){
- alert("Connection established.");
-};
-socket.onerror = function(){
- alert("Connection error.");
-};
-socket.onclose = function(){
- alert("Connection closed.");
-}; 
+var socket = new WebSocket('ws://www.example.com/server.php')
+socket.onopen = function() {
+  alert('Connection established.')
+}
+socket.onerror = function() {
+  alert('Connection error.')
+}
+socket.onclose = function() {
+  alert('Connection closed.')
+}
 ```
 
 ## 安全的类型检测
@@ -924,9 +938,9 @@ socket.onclose = function(){
 ### Object.prototype.toString
 
 ```js
-function isArray(value){
- return Object.prototype.toString.call(value) == "[object Array]";
-} 
+function isArray(value) {
+  return Object.prototype.toString.call(value) == '[object Array]'
+}
 ```
 
 ### Page Visibility API
@@ -935,19 +949,19 @@ function isArray(value){
  document.hidden：表示页面是否隐藏的布尔值。页面隐藏包括页面在后台标签页中或者浏览
 器最小化。
  document.visibilityState：表示下列 4 个可能状态的值。
-	页面在后台标签页中或浏览器最小化。
-	页面在前台标签页中。
-	实际的页面已经隐藏，但用户可以看到页面的预览（就像在 Windows 7 中，用户把鼠标移动到
+页面在后台标签页中或浏览器最小化。
+页面在前台标签页中。
+实际的页面已经隐藏，但用户可以看到页面的预览（就像在 Windows 7 中，用户把鼠标移动到
 任务栏的图标上，就可以显示浏览器中当前页面的预览）。
-	页面在屏幕外执行预渲染处理。
+页面在屏幕外执行预渲染处理。
  visibilitychange 事件：当文档从可见变为不可见或从不可见变为可见时，触发该事件。
 
-### Geolocation API 
+### Geolocation API
 
 navigator.geolocation 对象：
 第一个方法是 getCurrentPosition()，调用这个方法就会触发请求用户共享地理定位信息的对话框。
 方法接收 3 个参数：成功回调函数、可选的失败回调函数、可选的选项对象
-成功回调函数：返回Position 对象参数【对象有两个属性：coords 和timestamp】
+成功回调函数：返回 Position 对象参数【对象有两个属性：coords 和 timestamp】
 coords 对象中将包含下列与位置相关的信息：
  latitude：以十进制度数表示的纬度。
  longitude：以十进制度数表示的经度。
@@ -955,25 +969,25 @@ coords 对象中将包含下列与位置相关的信息：
 有些浏览器还可能会在 coords 对象中提供如下属性。
  altitude：以米为单位的海拔高度，如果没有相关数据则值为 null。
  altitudeAccuracy：海拔高度的精度，以米为单位，数值越大越不精确。
- heading：指南针的方向，0°表示正北，值为 NaN 表示没有检测到数据。
+ heading：指南针的方向，0° 表示正北，值为 NaN 表示没有检测到数据。
  speed：速度，即每秒移动多少米，如果没有相关数据则值为 null。
 失败回调函数：参数是一个对象，包含两个属性：message 和 code。
 【code 属性中保存着一个数值，表示错误的类型：用户拒绝共享（1）、位置无效（2）或者超时（3）】
-第二个方法：希望跟踪用户的位置，那么可以使用另一个方法 watchPosition()。watchPosition() 与定时调用getCurrentPosition()的效果相同
+第二个方法：希望跟踪用户的位置，那么可以使用另一个方法 watchPosition()。watchPosition() 与定时调用 getCurrentPosition()的效果相同
 
 ### Web Workers
 
 实例化 Worker 对象并传入要执行的 JavaScript 文件名就可以创建一个新的 Web Worker。例如：
-var worker = new Worker("stufftodo.js"); 
+var worker = new Worker("stufftodo.js");
 这行代码会导致浏览器下载 stufftodo.js，
 但只有 Worker 接收到消息才会实际执行文件中的代码。
 要给 Worker 传递消息，可以使用 postMessage()方法
-worker.postMessage(“start! "); 
+worker.postMessage(“start! ");
 Worker 是通过 message 和 error 事件与页面通信的
 worker.onmessage = function(event){
- var data = event.data;
- //对数据进行处理
-} 
+var data = event.data;
+//对数据进行处理
+}
 Worker 不能完成给定的任务时会触发 error 事件
 发生 error 事件时，事件对象中包含三个属性：filename、lineno 和 message，分别表示发生错误的文件名、代码行号和完整的错误消息
 worker.terminate(); //立即停止 Worker 的工作。【Worker 中的代码会立即停止执行，后续的所有过程都不会再发生（包括 error 和 message 事件也不会再触发）。】
@@ -981,7 +995,7 @@ worker.terminate(); //立即停止 Worker 的工作。【Worker 中的代码会�
 ### 图文不可复制
 
 ```css
--webkit-user-select: none; 
+-webkit-user-select: none;
 -ms-user-select: none;
 -moz-user-select: none;
 -khtml-user-select: none;
@@ -989,8 +1003,8 @@ user-select: none;
 ```
 
 - 复制的文本 都会被加上一段来源说明
-    - 1、监听copy事件，并阻止这个事件的默认行为。
-    - 2、获取选中的内容（window.getSelection()）加上版权信息，然后设置到剪切板（clipboarddata.setData()）。
+  - 1、监听 copy 事件，并阻止这个事件的默认行为。
+  - 2、获取选中的内容（window.getSelection()）加上版权信息，然后设置到剪切板（clipboarddata.setData()）。
 
 ### 微任务 宏任务
 
@@ -998,27 +1012,27 @@ user-select: none;
 
 共同点：用于浏览器端存储的缓存数据
 不同点：
-(1)、存储内容是否发送到服务器端：当设置了Cookie后，数据会发送到服务器端，造成一定的宽带浪费；
-        web storage,会将数据保存到本地，不会造成宽带浪费；
-(2)、数据存储大小不同：Cookie数据不能超过4K,适用于会话标识；web storage数据存储可以达到5M;
-(3)、数据存储的有效期限不同：cookie只在设置了Cookid过期时间之前一直有效，即使关闭窗口或者浏览器；
-        sessionStorage,仅在关闭浏览器之前有效；localStorage,数据存储永久有效；
-(4)、作用域不同：cookie和localStorage是在同源同窗口中都是共享的；sessionStorage不在不同的浏览器窗口中共享，即使是同一个页面；
+(1)、存储内容是否发送到服务器端：当设置了 Cookie 后，数据会发送到服务器端，造成一定的宽带浪费；
+web storage,会将数据保存到本地，不会造成宽带浪费；
+(2)、数据存储大小不同：Cookie 数据不能超过 4K,适用于会话标识；web storage 数据存储可以达到 5M;
+(3)、数据存储的有效期限不同：cookie 只在设置了 Cookid 过期时间之前一直有效，即使关闭窗口或者浏览器；
+sessionStorage,仅在关闭浏览器之前有效；localStorage,数据存储永久有效；
+(4)、作用域不同：cookie 和 localStorage 是在同源同窗口中都是共享的；sessionStorage 不在不同的浏览器窗口中共享，即使是同一个页面；
 
-### Web Storage与Cookie相比存在的优势：
+### Web Storage 与 Cookie 相比存在的优势：
 
-(1)、存储空间更大：IE8下每个独立的存储空间为10M，其他浏览器实现略有不同，但都比Cookie要大很多。
-(2)、存储内容不会发送到服务器：当设置了Cookie后，Cookie的内容会随着请求一并发送的服务器，这对于本地存储的数据是一种带宽浪费。而Web Storage中的数据则仅仅是存在本地，不会与服务器发生任何交互。
-(3)、更多丰富易用的接口：Web Storage提供了一套更为丰富的接口，如setItem,getItem,removeItem,clear等,使得数据操作更为简便。cookie需要自己封装。
+(1)、存储空间更大：IE8 下每个独立的存储空间为 10M，其他浏览器实现略有不同，但都比 Cookie 要大很多。
+(2)、存储内容不会发送到服务器：当设置了 Cookie 后，Cookie 的内容会随着请求一并发送的服务器，这对于本地存储的数据是一种带宽浪费。而 Web Storage 中的数据则仅仅是存在本地，不会与服务器发生任何交互。
+(3)、更多丰富易用的接口：Web Storage 提供了一套更为丰富的接口，如 setItem,getItem,removeItem,clear 等,使得数据操作更为简便。cookie 需要自己封装。
 (4)、独立的存储空间：每个域（包括子域）有独立的存储空间，各个存储空间是完全独立的，因此不会造成数据混乱。
 
-## getXXXByXXX与querySelector
+## getXXXByXXX 与 querySelector
 
-getXXXByXXX 获取的是动态集合，querySelector获取的是静态集合。
+getXXXByXXX 获取的是动态集合，querySelector 获取的是静态集合。
 
 简单的说就是，动态就是选出的元素会随文档改变，静态的不会，取出来之后就和文档的改变无关了。
 
-### lodash稀疏数组
+### lodash 稀疏数组
 
 Array.from(arrayLike[, mapFn[, thisArg]])
 
@@ -1035,11 +1049,11 @@ thisArg
 
 一、填充数组
 【使用值填充】：
-const result = Array.from({ length }, () => 0); 
+const result = Array.from({ length }, () => 0);
 const result = Array(length).fill(0);
 【使用对象填充】：
-const resultA = Array.from({ length }, () => ({}));    每个对象都是独立的
-const resultB = Array(length).fill({});    每个对象都是引用的同一处
+const resultA = Array.from({ length }, () => ({})); 每个对象都是独立的
+const resultB = Array(length).fill({}); 每个对象都是引用的同一处
 由 Array.from 返回的 resultA 使用不同空对象实例进行初始化。之所以发生这种情况是因为每次调用时，mapFunction，即此处的 () => ({}) 都会返回一个新的对象。
 
 二、序列生成器(指定范围)
@@ -1048,27 +1062,46 @@ const resultB = Array(length).fill({});    每个对象都是引用的同一处
 ```js
 let length = 5
 let resultA = Array.from({ length }, () => ({
-    'a': '1',
-    'b': '2',
-}));
+  a: '1',
+  b: '2'
+}))
 let resultB = Array(5).fill({
-    'a': '1',
-    'b': '2',
-});
+  a: '1',
+  b: '2'
+})
 console.log(resultA)
 console.log(resultB)
 console.log(resultA[0] === resultA[1])
 console.log(resultB[0] === resultB[1])
 
-const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
-range(1, 10, 2); 
+const range = (start, stop, step) =>
+  Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step)
+range(1, 10, 2)
 // [1, 3, 5, 7, 9]
 ```
 
 ### 节流函数防抖函数
 
+[demo](http://demo.nimius.net/debounce_throttle/)
+[jieshi](https://juejin.cn/post/6844903651278848014)
+
+debounce 限制多长时间才能执行一次，如果没达到该时间，就不执行
+throttle 限制多长时间必须执行一次，到了时间不论啥操作都要执行下
+
+https://github.com/mqyqingfeng/Blog/issues/22
+
+https://github.com/mqyqingfeng/Blog/issues/26
+
+https://mp.weixin.qq.com/s?__biz=MzI0NTE5NzYyMw==&mid=2247486191&idx=1&sn=7fd82697facf0eb1e70a975943036db2&chksm=e95374b7de24fda1a9df03abcd275d5c5cfac5282c7713d9242af0dc6513786a0b9358cb8e11&scene=178&cur_album_id=1506334666021273601#rd
+
+gifcam 录制动图
+
 ```js
-// 节流函数
+// 节流函数: 所谓节流，就是指连续触发事件但是在 n 秒中只执行一次函数。 节流会稀释函数的执行频率
+特点：每等待某种间隔后，进行操作
+
+持续触发并不会执行多次
+到一定时间 / 其它间隔 ( 如滑动的高度 )再去执行
   const throttle = (fn, delay = 500) => {
     let flag = true;
     return (...args) => {
@@ -1081,7 +1114,12 @@ range(1, 10, 2);
     };
   };
 
-  // 防抖函数
+  // 防抖函数：所谓防抖，就是指触发事件后 n 秒后才执行函数，如果在 n 秒内又触发了事件，则会重新计算函数执行时间
+
+特点：等待某种操作停止后，加以间隔进行操作
+
+持续触发不执行
+不触发的一段时间之后再执行
   const debounce = (fn, delay) => {
     let timer = null;
     return (...args) => {
@@ -1139,14 +1177,14 @@ HTML5 规范规定最小延迟时间不能小于 4ms，即 x 如果小于 4，�
 setTimeout 注册的函数 fn 会交给浏览器的定时器模块来管理，延迟时间到了就将 fn 加入主进程执行队列，如果队列前面还有没有执行完的代码，则又需要花一点时间等待才能执行到 fn，所以实际的延迟时间会比设置的长。如在 fn 之前正好有一个超级大循环，那延迟时间就不是一丁点了。
 
 ```js
-(function testSetTimeout() {
-    const label = 'setTimeout';
-    console.time(label);
-    setTimeout(() => {
-        console.timeEnd(label);
-    }, 10);
-    for(let i = 0; i < 100000000; i++) {}
-})();
+;(function testSetTimeout() {
+  const label = 'setTimeout'
+  console.time(label)
+  setTimeout(() => {
+    console.timeEnd(label)
+  }, 10)
+  for (let i = 0; i < 100000000; i++) {}
+})()
 // setTimeout: 335.187ms，远远不止 10ms。
 ```
 
@@ -1157,17 +1195,17 @@ setInterval 的实现机制跟 setTimeout 类似，只不过 setInterval 是重�
 对于 setInterval(fn, 100) 容易产生一个误区：并不是上一次 fn 执行完了之后再过 100ms 才开始执行下一次 fn。 事实上，setInterval 并不管上一次 fn 的执行结果，而是每隔 100ms 就将 fn 放入主线程队列，而两次 fn 之间具体间隔多久就不一定了，跟 setTimeout 实际延迟时间类似，和 JS 执行情况有关。
 
 ```js
-(function testSetInterval() {
-    let i = 0;
-    const start = Date.now();
-    const timer = setInterval(() => {
-        i += 1;
-        i === 5 && clearInterval(timer);
-        console.log(`第${i}次开始`, Date.now() - start);
-        for(let i = 0; i < 100000000; i++) {}
-        console.log(`第${i}次结束`, Date.now() - start);
-    }, 100);
-})();
+;(function testSetInterval() {
+  let i = 0
+  const start = Date.now()
+  const timer = setInterval(() => {
+    i += 1
+    i === 5 && clearInterval(timer)
+    console.log(`第${i}次开始`, Date.now() - start)
+    for (let i = 0; i < 100000000; i++) {}
+    console.log(`第${i}次结束`, Date.now() - start)
+  }, 100)
+})()
 
 // 第1次开始 100
 // 第1次结束 1089
@@ -1196,14 +1234,14 @@ setInterval 的实现机制跟 setTimeout 类似，只不过 setInterval 是重�
 在 IE11/Edge 中，setImmediate 延迟可以在 1ms 以内，而 setTimeout 有最低 4ms 的延迟，所以 setImmediate 比 setTimeout(0) 更早执行回调函数。不过在 Nodejs 中，两者谁先执行都有可能，原因是 Nodejs 的事件循环和浏览器的略有差异。
 
 ```js
-(function testSetImmediate() {
-    const label = 'setImmediate';
-    console.time(label);
- 
-    setImmediate(() => {
-        console.timeEnd(label);
-    });
-})();
+;(function testSetImmediate() {
+  const label = 'setImmediate'
+  console.time(label)
+
+  setImmediate(() => {
+    console.timeEnd(label)
+  })
+})()
 // Edge 输出：setImmediate: 0.555 毫秒
 ```
 
@@ -1220,14 +1258,14 @@ requestAnimationFrame 跟屏幕刷新同步，大多数屏幕的刷新频率都�
 有趣的是，第一次触发 requestAnimationFrame 的时机在不同浏览器也存在差异，Edge 中，大概 16.7ms 之后触发，而 Chrome 则立即触发，跟 setImmediate 差不多。按理说 Edge 的实现似乎更符合常理。
 
 ```js
-(function testRequestAnimationFrame() {
-    const label = 'requestAnimationFrame';
-    console.time(label);
- 
-    requestAnimationFrame(() => {
-        console.timeEnd(label);
-    });
-})();
+;(function testRequestAnimationFrame() {
+  const label = 'requestAnimationFrame'
+  console.time(label)
+
+  requestAnimationFrame(() => {
+    console.timeEnd(label)
+  })
+})()
 // Edge 输出：requestAnimationFrame: 16.66 毫秒
 
 // Chrome 输出：requestAnimationFrame: 0.698ms
@@ -1243,26 +1281,26 @@ Promise 是很常用的一种异步模型，如果我们想让代码在下一个
 
 ```js
 function testSetImmediate() {
-    const label = 'setImmediate';
-    console.time(label);
- 
-    setImmediate(() => {
-        console.timeEnd(label);
-    });
+  const label = 'setImmediate'
+  console.time(label)
+
+  setImmediate(() => {
+    console.timeEnd(label)
+  })
 }
- 
+
 function testPromise() {
-    const label = 'Promise';
-    console.time(label);
-    new Promise((resolve, reject) => {
-        resolve();
-    }).then(() => {
-        console.timeEnd(label);
-    });
+  const label = 'Promise'
+  console.time(label)
+  new Promise((resolve, reject) => {
+    resolve()
+  }).then(() => {
+    console.timeEnd(label)
+  })
 }
- 
-testSetImmediate();
-testPromise();
+
+testSetImmediate()
+testPromise()
 // Edge 输出：Promise: 0.33 毫秒 setImmediate: 1.66 毫秒
 ```
 
@@ -1282,7 +1320,7 @@ process.nextTick 是 Nodejs 的 API，比 Promise 更早执行。
 
 ## Math 对象
 
-### Math对象提供以下一些静态方法：
+### Math 对象提供以下一些静态方法：
 
 Math.abs()：绝对值
 
@@ -1300,52 +1338,52 @@ Math.sqrt()：平方根
 
 Math.log()：自然对数
 
-Math.exp()：e的指数
+Math.exp()：e 的指数
 
 Math.round()：四舍五入
 
-Math.random()返回0到1之间的一个伪随机数，可能等于0，但是一定小于1。
+Math.random()返回 0 到 1 之间的一个伪随机数，可能等于 0，但是一定小于 1。
 
-### 🌰栗子：任意范围的随机数生成函数如下：
+### 🌰 栗子：任意范围的随机数生成函数如下：
 
 ```js
 function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.random() * (max - min) + min
 }
 
 getRandomArbitrary(1.5, 6.5)
 // 2.4942810038223864
 ```
 
-### 🌰栗子：任意范围的随机整数生成函数如下：
+### 🌰 栗子：任意范围的随机整数生成函数如下：
 
 ```js
 function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 getRandomInt(1, 6) // 5
 ```
 
-### 🌰栗子：返回随机字符的例子如下：
+### 🌰 栗子：返回随机字符的例子如下：
 
 ```js
 function random_str(length) {
-  var ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  ALPHABET += 'abcdefghijklmnopqrstuvwxyz';
-  ALPHABET += '0123456789-_';
-  var str = '';
+  var ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  ALPHABET += 'abcdefghijklmnopqrstuvwxyz'
+  ALPHABET += '0123456789-_'
+  var str = ''
   for (var i = 0; i < length; ++i) {
-    var rand = Math.floor(Math.random() * ALPHABET.length);
-    str += ALPHABET.substring(rand, rand + 1);
+    var rand = Math.floor(Math.random() * ALPHABET.length)
+    str += ALPHABET.substring(rand, rand + 1)
   }
-  return str;
+  return str
 }
 
 random_str(6) // "NdQKOr"
 ```
 
-### 循环for-of Iterator
+### 循环 for-of Iterator
 
 跟 forEach 相比，可以正确响应 break, continue, return。
 
@@ -1363,19 +1401,18 @@ const user = {
   age: 25,
   pet: {
     type: 'dog',
-    name: 'Buttercup',
-  },
-};
+    name: 'Buttercup'
+  }
+}
 
-Object.freeze(user);
+Object.freeze(user)
 
-user.pet.name = 'Daffodil';
+user.pet.name = 'Daffodil'
 
-console.log(user.pet.name); //Daffodil
+console.log(user.pet.name) //Daffodil
 ```
 
 Object.freeze 将会使对象浅冻结，但不会保护深层属性不被修改。在这个例子中，不能对 user.age 进行修改，但是对 user.pet.name 进行修改却没有问题。如果我们觉得需要保护一个对象，避免其“从头到尾”发生改变，则可以递归地应用 Object.freeze 或使用现有的“深度冻结”库。
-
 
 ### Promise 解决的顺序与 Promise.all 无关。
 
@@ -1383,26 +1420,27 @@ Object.freeze 将会使对象浅冻结，但不会保护深层属性不被修改
 const timer = a => {
   return new Promise(res =>
     setTimeout(() => {
-      res(a);
+      res(a)
     }, Math.random() * 100)
-  );
-};
+  )
+}
 
 const all = Promise.all([timer('first'), timer('second')]).then(data =>
   console.log(data)
-);
+)
 // ["first", "second"]
 ```
+
 我们能够可靠地依靠它们按照数组参数中提供的相同顺序返回。
 
 ### 展开操作符
 
 ```js
-const arr1 = [{ firstName: 'James' }];
-const arr2 = [...arr1];
-arr2[0].firstName = 'Jonah';
+const arr1 = [{ firstName: 'James' }]
+const arr2 = [...arr1]
+arr2[0].firstName = 'Jonah'
 
-console.log(arr1);
+console.log(arr1)
 //  [{ firstName: "Jonah" }]
 ```
 
@@ -1411,70 +1449,73 @@ console.log(arr1);
 ### 数组方法绑定
 
 ```js
-const map = ['a', 'b', 'c'].map.bind([1, 2, 3]);
-map(el => console.log(el));
+const map = ['a', 'b', 'c'].map.bind([1, 2, 3])
+map(el => console.log(el))
 // 123
 ```
+
 当 ['a', 'b', 'c'].map 被调用时，将会调用 this' 值为 '['a'，'b'，'c'] 的 Array.prototype.map。但是当用作 引用 时， Array.prototype.map 的引用。
 
-Function.prototype.bind 会将函数的 this 绑定到第一个参数（在本例中为 [1, 2, 3]），用 this 调用Array.prototype.map 将会导致这些项目被迭代并输出。
+Function.prototype.bind 会将函数的 this 绑定到第一个参数（在本例中为 [1, 2, 3]），用 this 调用 Array.prototype.map 将会导致这些项目被迭代并输出。
 
-## JS Base64编码解码
+## JS Base64 编码解码
 
-## Base64解码
+## Base64 解码
 
 （浏览器中）：
 var decodedData = window.atob(encodedData);
-或者（浏览器或js Worker线程中）：
+或者（浏览器或 js Worker 线程中）：
 var decodedData = self.atob(encodedData);
 
-## Base64编码
+## Base64 编码
+
 语法为（浏览器中）：
 var encodedData = window.btoa(stringToEncode);
-或者（浏览器或js Worker线程中）：
+或者（浏览器或 js Worker 线程中）：
 var encodedData = self.btoa(stringToEncode);
 
-## 中文Base64数据转换会有报错问题
+## 中文 Base64 数据转换会有报错问题
 
-中文先encode转码和decode编码。btoa(unescape(encodeURIComponent(str)))
+中文先 encode 转码和 decode 编码。btoa(unescape(encodeURIComponent(str)))
 
-## 任意文件Base64编码
+## 任意文件 Base64 编码
 
-借助FileReader对象和readAsDataURL方法，我们可以把任意的文件转换为Base64 Data-URI。
+借助 FileReader 对象和 readAsDataURL 方法，我们可以把任意的文件转换为 Base64 Data-URI。
 var reader = new FileReader();
 reader.onload = function(e) {
-  // e.target.result就是该文件的完整Base64 Data-URI
+// e.target.result 就是该文件的完整 Base64 Data-URI
 };
 reader.readAsDataURL(file);
 
-# HTML字符的转义和反转义
+# HTML 字符的转义和反转义
 
-## 1. 转义document.createTextNode把HTML内容作为文本节点的textContent内容，然后使用普通元素的innerHTML属性返回下就可以了
+## 1. 转义 document.createTextNode 把 HTML 内容作为文本节点的 textContent 内容，然后使用普通元素的 innerHTML 属性返回下就可以了
 
 ```js
-let textNode = document.createTextNode('<span>by zhangxinxu</span>');
-let div = document.createElement('div');
-div.append(textNode);
-console.log(div.innerHTML);
+let textNode = document.createTextNode('<span>by zhangxinxu</span>')
+let div = document.createElement('div')
+div.append(textNode)
+console.log(div.innerHTML)
 ```
-## 2.反转义DOMParser API。
+
+## 2.反转义 DOMParser API。
 
 let str = '&lt;span&gt;by zhangxinxu&lt;/span&gt;';
 let doc = new DOMParser().parseFromString(str, 'text/html');
 console.log(doc.documentElement.textContent);
 
-## 3.借助textarea元素，这是IE浏览器时代常用的一种方法
+## 3.借助 textarea 元素，这是 IE 浏览器时代常用的一种方法
 
 ```js
-let textarea = document.createElement('textarea');
-textarea.innerHTML = '&lt;span&gt;by zhangxinxu&lt;/span&gt;';
-console.log(textarea.childNodes[0].nodeValue);
+let textarea = document.createElement('textarea')
+textarea.innerHTML = '&lt;span&gt;by zhangxinxu&lt;/span&gt;'
+console.log(textarea.childNodes[0].nodeValue)
 ```
 
-[DOMParser和XMLSerializer两个API简介](https://www.zhangxinxu.com/wordpress/2019/06/domparser-xmlserializer-api/)
+[DOMParser 和 XMLSerializer 两个 API 简介](https://www.zhangxinxu.com/wordpress/2019/06/domparser-xmlserializer-api/)
 
-DOMParser可以让HTML字符串解析为DOM树，格式类型包括XML文档，或者HTML文档。
-XMLSerializer方法的作用和DOMParser相反，XMLSerializer可以让DOM树对象序列化为字符串。
+DOMParser 可以让 HTML 字符串解析为 DOM 树，格式类型包括 XML 文档，或者 HTML 文档。
+XMLSerializer 方法的作用和 DOMParser 相反，XMLSerializer 可以让 DOM 树对象序列化为字符串。
 
 ```js
 传统的字符串处理代码示意：
@@ -1515,8 +1556,6 @@ var funDecodeHTML = function (str) {
     return '';
 };
 ```
-
-
 
 ## 万物皆空之 JavaScript 原型
 
