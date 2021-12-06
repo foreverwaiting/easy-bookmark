@@ -1249,6 +1249,8 @@ setInterval 的实现机制跟 setTimeout 类似，只不过 setInterval 是重�
 
 ### requestAnimationFrame
 
+[requestAnimationFrame](https://mp.weixin.qq.com/s/ocFcBRjj8xzizF5ebFepdA)
+
 requestAnimationFrame 并不是定时器，但和 setTimeout 很相似，在没有 requestAnimationFrame 的浏览器一般都是用 setTimeout 模拟。
 
 requestAnimationFrame 跟屏幕刷新同步，大多数屏幕的刷新频率都是 60Hz，对应的 requestAnimationFrame 大概每隔 16.7ms 触发一次，如果屏幕刷新频率更高，requestAnimationFrame 也会更快触发。基于这点，在支持 requestAnimationFrame 的浏览器还使用 setTimeout 做动画显然是不明智的。

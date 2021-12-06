@@ -831,6 +831,20 @@ function multiarr(arr1) {
   return a
 }
 console.log(multiarr(arr1))
+
+//
+function deep(arr, level) {
+  arr &&
+    arr.forEach(element => {
+      element['level'] = level + 1
+      if (element.hasOwnProperty('children')) {
+        deep(element, level + 1)
+      }
+    })
+  return ele
+}
+deep(arr, (level = 0))
+// 最后拍平arr找出level最大的值
 ```
 
 ### 数组展平通过传入整数参数控制“拉平”层数
