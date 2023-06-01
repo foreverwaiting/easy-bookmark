@@ -2238,3 +2238,31 @@ source ~/.oh-my-zsh/plugins/incr/incr.zsh
 // vim ~/.oh-my-zsh/themes/robbyrussell.zsh-theme
 // %{$fg[cyan]%}%c%{$reset_color%}中的%c就是当前文件夹名的意思，把它修改成[$PWD]，整个也就变成了%{$fg[cyan]%}[$PWD]%{$reset_color%}b，$PWD是终端自带变量，值为当前路径，只是把它取出来而已
 ```
+
+mac新电脑
+
+1、下载git
+官方下载即可：https://sourceforge.net/projects/git-osx-installer/
+
+下载后直接双击pkg包一直下一步安装即可
+
+git --version校验
+
+2、下载homebrew
+中科大的源：/bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"
+
+选择源，然后下载即可
+
+brew -v校验
+
+3、下载wget
+brew install wget
+
+选择源，然后下载即可
+
+wget -V
+
+
+4、下载oh-my-zsh
+
+wget 下载oh-my-zsh ：sh -c "$(wget https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh -O -)"
