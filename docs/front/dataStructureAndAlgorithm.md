@@ -2266,3 +2266,8 @@ wget -V
 4、下载oh-my-zsh
 
 wget 下载oh-my-zsh ：sh -c "$(wget https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh -O -)"
+
+
+5、计算机专业
+
+https://hackway.org/docs/cs/intro
